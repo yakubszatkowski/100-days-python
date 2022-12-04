@@ -51,10 +51,10 @@ def count_down(count):
     if count > 0:
         global timer
         timer = window.after(1000, count_down, count - 1)
-    #else:
-    start_timer()
-    if reps % 2 == 0:
-        check_mark['text'] += '✓'
+    else:
+        start_timer()
+        if reps % 2 == 0:
+            check_mark['text'] += '✓'
 
         # or:
         # marks = ''
