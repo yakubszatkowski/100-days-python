@@ -27,4 +27,12 @@ for index in birthdays:
                 msg=f'Subject:Happy Birthday!\n\n{final_letter}'
             )
 
-
+# uploading to cloud so the code runs everyday
+# sign up to pythonanywhere.com
+# files > upload files
+# consoles > bash
+# in console type:
+# $ python3 main.py (in this case)
+# dashboard > tasks
+# schedule task in UTC
+# create task
