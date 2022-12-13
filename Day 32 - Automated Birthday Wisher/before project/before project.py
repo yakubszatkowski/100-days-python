@@ -1,11 +1,12 @@
 import smtplib
 import datetime as dt
+import os
 
 g_mail = 'rtyrtyqweqwe39@gmail.com'
 yahoo_mail = 'qweqwe.rtyrty@yahoo.com'
-gmail_password = 'wQwerty123'
-gmail_app_password = 'ohkzrosqxtaybnso'
-yahoo_password = 'wQwerty123#@'  # yahoo app password currently doesn't work lol
+gmail_password = os.environ.get('D32_gmail_pass')
+gmail_app_password = os.environ.get('D32_gmail_app_pass')
+yahoo_password = os.environ.get('D32_yahoo_pass')  # yahoo app password currently doesn't work lol
 smtp_yahoo = "smtp.mail.yahoo.com"
 smtp_gmail = "smtp.gmail.com"
 
@@ -23,7 +24,7 @@ with smtplib.SMTP(smtp_gmail) as connection:
     connection.starttls()
     connection.login(user=g_mail, password=gmail_app_password)
     connection.sendmail(
-        from_addr=g_mail, to_addrs=yahoo_mail,
+        from_addr=g_mail, to_addrs='yakub.szatkowski@gmail.com',
         msg='Subject:Hello\n\nThis is another e-mail'
     )
 
@@ -38,3 +39,6 @@ with smtplib.SMTP(smtp_gmail) as connection:
 #
 # date_of_birth = dt.datetime(year=1994, month=8, day=30)
 # print(date_of_birth)
+
+
+# D32_gmail_passw=wQwerty123

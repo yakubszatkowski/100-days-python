@@ -1,10 +1,11 @@
+import os
 import smtplib
 import datetime as dt
 from random import choice
 
 g_mail = 'rtyrtyqweqwe39@gmail.com'
 yahoo_mail = 'qweqwe.rtyrty@yahoo.com'
-gmail_app_password = 'ohkzrosqxtaybnso'
+gmail_app_password = os.environ.get('D32_gmail_app_pass')
 
 with open('quotes.txt', 'r') as quotes:
     quote_list = quotes.readlines()

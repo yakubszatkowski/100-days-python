@@ -1,3 +1,5 @@
+import os
+
 import requests
 import smtplib
 import time
@@ -40,9 +42,10 @@ while True:
                 iss_position[0]+5:
             with smtplib.SMTP("smtp.gmail.com") as connection:
                 connection.starttls()
-                connection.login(user='rtyrtyqweqwe39@gmail.com', password='ohkzrosqxtaybnso')
+                connection.login(user='rtyrtyqweqwe39@gmail.com', password=os.environ.get('D32_gmail_app_pass'))
                 connection.sendmail(
                     from_addr='rtyrtyqweqwe39@gmail.com', to_addrs=email,
                     msg=f'Subject:Look up!\n\nThe ISS satellite is near you!'
                 )
+            print('e-mail sent!')
     time.sleep(60)

@@ -65,10 +65,18 @@ import pandas
 
 # # looping trough pandas dataframe
 # {new_key:new_value for (index,row) in df.iterrows()}
-letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
-           'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-           'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-nr_letters = random.randint(6, 8)
+# letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+#            'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+#            'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+# nr_letters = random.randint(6, 8)
+#
+# random_letters = [random.choice(letters) for number in range(0, nr_letters)]
+# print(random_letters)
 
-random_letters = [random.choice(letters) for number in range(0, nr_letters)]
-print(random_letters)
+
+# LIST COMPREHENSION FORMULA
+# new_list = [new_item for item in list]
+# DICTIONARY COMPREHENSION FORMULA
+# new_dictionary = {new_key:new_value for item in list}
+# Looping trough pandas dataframe
+# new dictionary = {new_key:new_value for (index,row) in df.iterrows()}

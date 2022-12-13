@@ -1,20 +1,21 @@
+import os
 import requests
 from datetime import datetime, timedelta
 from twilio.rest import Client
 
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
-STOCK_API_KEY = '25TJX621MLND64FB'
-NEWS_API_KEY = 'bf87afb2c9b943ba8e04cdfdb77fdf28'
+STOCK_API_KEY = os.environ.get('D36_stock_key')
+NEWS_API_KEY = os.environ.get('D36_news_key')
 account_sid = 'AC02bf2822bb9d5f8590efac3d1ef0ee4a'
-auth_token = 'bcf876df3bec90390971fd41ffe02c7d'
+auth_token = os.environ.get('D35_sms_auth_token')
 # # STEP 1: Use https://www.alphavantage.co
 # When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
 
 # Other (smarter) way would be changing dictionary into list and getting
 # hold of yesterday and day before yesterday data with [0] and [1]
-yesterday = (datetime.today() - timedelta(2)).strftime('%Y-%m-%d')
-two_days_ago = (datetime.today() - timedelta(3)).strftime('%Y-%m-%d')
+yesterday = (datetime.today() - timedelta(1)).strftime('%Y-%m-%d')
+two_days_ago = (datetime.today() - timedelta(2)).strftime('%Y-%m-%d')
 parameters = {
     'function': 'TIME_SERIES_DAILY_ADJUSTED',
     'symbol': STOCK,
@@ -39,14 +40,13 @@ news_parameters = {
     'apiKey': NEWS_API_KEY,
     'q': COMPANY_NAME
 }
-if change_percent > 5:
+if change_percent > 1:
     news_response = requests.get(url='https://newsapi.org/v2/everything', params=news_parameters)
     news_response.raise_for_status()
     news = news_response.json()['articles'][:3]
     message = [f"Headline: {article['title']}\nBrief: {article['description']}\n\n" for article in news]
     message.insert(0, f'{STOCK}: {status}\n')
     final_msg = ''.join(message)
-
     # # STEP 3: Use https://www.twilio.com
     # Send a seperate message with the percentage change and each article's title and description to your phone number.
     client = Client(account_sid, auth_token)

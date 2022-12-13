@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import smtplib
 import datetime as dt
@@ -21,7 +23,7 @@ for index in birthdays:
             final_letter = letter_contents.replace('[NAME]', name)
         with smtplib.SMTP("smtp.gmail.com") as connection:
             connection.starttls()
-            connection.login(user='rtyrtyqweqwe39@gmail.com', password='ohkzrosqxtaybnso')
+            connection.login(user='rtyrtyqweqwe39@gmail.com', password=os.environ.get('D32_gmail_app_pass'))
             connection.sendmail(
                 from_addr='rtyrtyqweqwe39@gmail.com', to_addrs=email,
                 msg=f'Subject:Happy Birthday!\n\n{final_letter}'

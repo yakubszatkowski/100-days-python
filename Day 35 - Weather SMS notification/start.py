@@ -1,11 +1,12 @@
 # API Authentication, Sending SMS, Environment Variables
+import os
 import requests
 from twilio.rest import Client
 
 account_sid = 'AC02bf2822bb9d5f8590efac3d1ef0ee4a'
-auth_token = 'bcf876df3bec90390971fd41ffe02c7d'
+auth_token = os.environ.get('D35_sms_auth_token')
 
-api_key = '8502980a28e764d307f29c248c637b32'  # didn't use because key need verification that takes couple hours
+api_key = os.environ.get('D35_api_key')  # didn't use because key need verification that takes couple hours
 angela_key = '69f04e4613056b159c2761a9d9e664d2'
 onecall_api_key = 'b239ad6816f4e09d41069588e7ac2d80'
 LAT = 50.31

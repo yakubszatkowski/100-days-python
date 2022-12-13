@@ -1,6 +1,8 @@
+import os
+
 import requests
 from datetime import datetime
-TOKEN = 'ofenwa321iojdadsWQEkdso'
+TOKEN = os.environ.get('D37_token')
 USERNAME = 'jacobjacob2222'
 graph_id = 'jacobsgraph'
 pixela_endpoint = 'https://pixe.la/v1/users'

@@ -1,3 +1,5 @@
+import os
+
 import requests
 from datetime import datetime
 
@@ -8,7 +10,7 @@ from datetime import datetime
 # .put() updating data in external service
 # .delete() deleting data in external service
 
-TOKEN = 'ofenwa321iojdadsWQEkdso'
+TOKEN = os.environ.get('D37_token')
 USERNAME = 'jacobjacob2222'
 
 # posting request for creating profile (https://pixe.la/@jacobjacob2222)
