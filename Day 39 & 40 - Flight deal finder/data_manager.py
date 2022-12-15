@@ -6,8 +6,6 @@ sheety_pass = os.environ.get('D39_basicauth_pass')
 sheety_endpoint = f'https://api.sheety.co/{sheety_username}/kopiaFlightDeals/prices'
 
 
-# print(sheety_username + '\n' + sheety_pass + '\n' + sheety_endpoint)
-
 class DataManager:
     def __init__(self):
         self.sheety_data = {}
