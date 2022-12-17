@@ -1,0 +1,7 @@
+HTML - responsible for structure of website
+CSS - responsible for styling the website
+JS - responsible for behaviour of the website
+
+<h1> headings value goes from value 1 to 6
+html mdn documentation is good
+other is w3 school html, devdocs.io, https://docs.emmet.io/cheat-sheet/

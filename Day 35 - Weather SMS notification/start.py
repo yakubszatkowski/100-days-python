@@ -14,7 +14,7 @@ LON = 19.07
 # Site to view json of weather in my city (Czeladź)
 # https://api.openweathermap.org/data/2.5/weather?lat=50.31&lon=19.07&appid=8502980a28e764d307f29c248c637b32
 # https://api.openweathermap.org/data/2.5/onecall?lat=50.31&lon=19.07&appid=b239ad6816f4e09d41069588e7ac2d80
-# Wrong API results in 401 code which means - unauthorized
+# Wrong API results in 401 code means - unauthorized
 
 parameters = {
     'lat': LAT,
