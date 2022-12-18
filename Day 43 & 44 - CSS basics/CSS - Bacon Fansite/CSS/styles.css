@@ -1,0 +1,34 @@
+/* tag selectors */
+
+body {
+    background-color: lightblue;
+}
+
+img:hover {
+    background-color: gold;
+}
+
+/* class selectors */
+
+.bacon {
+    background-color: lightgreen;
+}
+
+.broccoli {
+    background-color: pink;
+}
+
+.circular {
+    border-radius: 100%;
+}
+
+/* id selectors */
+
+#heading {
+    color: darkred;
+    font-size: 150px
+}
+
+/* you cant have same multiple ids but you can have a lot of classes */
+/* one object can have multiple classes but no id */
+
