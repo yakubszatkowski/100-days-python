@@ -76,7 +76,9 @@ import pandas
 
 # LIST COMPREHENSION FORMULA
 # new_list = [new_item for item in list]
+
 # DICTIONARY COMPREHENSION FORMULA
 # new_dictionary = {new_key:new_value for item in list}
+
 # Looping trough pandas dataframe
 # new dictionary = {new_key:new_value for (index,row) in df.iterrows()}
