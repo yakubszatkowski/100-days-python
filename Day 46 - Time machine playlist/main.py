@@ -6,8 +6,7 @@ from bs4 import BeautifulSoup
 from spotipy.oauth2 import SpotifyOAuth
 
 URL = 'https://www.billboard.com/charts/hot-100/'
-# answer = input('Which year do you want to travel to?: (YYYY-MM-DD')
-answer = '2000-08-12'
+answer = input('Which year do you want to travel to?: (YYYY-MM-DD')
 year = int(answer[0:4])
 
 response = requests.get(URL+answer)
@@ -16,7 +15,7 @@ soup = BeautifulSoup(billboard_website, 'html.parser')
 song_titles = soup.select(selector='li.lrv-u-width-100p h3#title-of-a-story')
 song_list = [data.getText().strip() for data in song_titles]
 
-spotify_id = os.environ.get('D46_spotify_if')  # missclicked should've been id instead of if
+spotify_id = os.environ.get('D46_spotify_if')  # miss-clicked should've been id instead of if
 spotify_secret = os.environ.get('D46_spotify_secret')
 spotify_redirect_URI = 'https://example.com'
 scope = "playlist-modify-private"

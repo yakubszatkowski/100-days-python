@@ -21,5 +21,5 @@ if price <= 100.00:
         connection.login(user='rtyrtyqweqwe39@gmail.com', password=os.environ.get('D32_gmail_app_pass'))
         connection.sendmail(
             from_addr='rtyrtyqweqwe39@gmail.com', to_addrs='yakub.szatkowski@gmail.com',
-            msg=f'Subject: New Amazon Deal! \n\n {msg}')
+            msg=f'Subject: New Amazon Deal! \n\n {msg} \n{URL}')
 
