@@ -6,11 +6,11 @@ import time
 import os
 
 URL = 'https://www.instagram.com/'
-# INSTA_NICK = os.environ.get('D52_insta_nick')
-# INSTA_PASS = os.environ.get('D52_insta_pass')
+INSTA_NICK = os.environ.get('D52_insta_nick')
+INSTA_PASS = os.environ.get('D52_insta_pass')
 TARGET_AUDIENCE = 'mmorpgrs'
-INSTA_NICK = 'lubiemakarony'
-INSTA_PASS = 'wjdg66kali'
+
+
 class InstaFollower:
     def __init__(self):
         chrome_driver_path = os.environ.get('D48_chrome_driver_path')
