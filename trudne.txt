@@ -1,0 +1,2 @@
+Day 59:
+What's dynamic url?
