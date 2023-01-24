@@ -2,11 +2,13 @@ from flask import Flask, render_template
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, Length, Email
+from flask_bootstrap import Bootstrap5
 import os
 
 # Flask instance
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('D61_secret_key')
+bootstrap = Bootstrap5(app)
 
 
 # Flask form
@@ -36,7 +38,7 @@ def login():
     return render_template('login.html',
                            email=email,
                            password=password,
-                           form=form,)
+                           form=form, )
 
 
 if __name__ == '__main__':

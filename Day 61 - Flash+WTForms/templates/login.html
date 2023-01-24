@@ -1,31 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Secrets</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% from 'bootstrap4/form.html' import render_form %}
+{% block title %}Secrets{% endblock %}
+
+{% block content %}
     <h1>Login</h1>
-    <form method="POST" action="{{ url_for('login') }}" novalidate>
-        {{ form.csrf_token }}
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.email.label }}
-            {{ form.email() }}
-            {% for err in form.email.errors %}
-            <span style="color:red">{{ err }}</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}
-            {{ form.password() }}
-            {% for err in form.password.errors %}
-            <span style="color:red">{{ err }}</span>
-            {% endfor %}
-        </p>
+    {{ render_form(form) }}
+<!--    <form method="POST" action="{{ url_for('login') }}" novalidate>-->
+<!--        {{ form.csrf_token }}-->
+<!--        {{ form.hidden_tag() }}-->
+<!--        <p>-->
+<!--            {{ form.email.label }}-->
+<!--            {{ form.email() }}-->
+<!--            {% for err in form.email.errors %}-->
+<!--            <span style="color:red">{{ err }}</span>-->
+<!--            {% endfor %}-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            {{ form.password.label }}-->
+<!--            {{ form.password() }}-->
+<!--            {% for err in form.password.errors %}-->
+<!--            <span style="color:red">{{ err }}</span>-->
+<!--            {% endfor %}-->
+<!--        </p>-->
 
-        {{ form.login() }}
-    </form>
-
-</body>
-</html>
+<!--        {{ form.login() }}-->
+<!--    </form>-->
+{% endblock %}
