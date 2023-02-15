@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit</title>
+</head>
+<body>
+
+<p>Book's name: {{book_title}}</p>
+<p>Book's author: {{book_author}}</p>
+<p><b>Current score: {{book_score}}</b></p>
+
+<form action="{{url_for('edit', id=book_id)}}" method="post">
+    <input type="text" placeholder="New score" name="new_score">
+    <button type="submit">Change score</button>
+</form>
+
+</body>
+</html>
