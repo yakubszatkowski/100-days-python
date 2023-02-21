@@ -16,5 +16,11 @@ data = response.json()
 movies = data['results']
 
 for movie in movies:
-    print(movie)
+    title = movie['original_title']
+    img_url = f'https://image.tmdb.org/t/p/w600_and_h900_bestv2/{movie["poster_path"]}'
+    year = movie['release_date']
+    description = movie['overview']
+    movie_api_id = movie['id']
+    print(title, movie_api_id)
+
 

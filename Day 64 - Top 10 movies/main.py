@@ -21,9 +21,9 @@ class Movie(db.Model):
     title = db.Column(db.String(250), unique=True, nullable=False)
     year = db.Column(db.String(250), nullable=False)
     description = db.Column(db.String(250), nullable=False)
-    rating = db.Column(db.Float, nullable=False)
-    ranking = db.Column(db.Integer, nullable=False)
-    review = db.Column(db.String(250), nullable=False)
+    rating = db.Column(db.Float, nullable=True)
+    ranking = db.Column(db.Integer, nullable=True)
+    review = db.Column(db.String(250), nullable=True)
     img_url = db.Column(db.String(250), nullable=False)
 
 
@@ -44,6 +44,7 @@ class NewMovieForm(FlaskForm):
 
 @app.route("/")
 def home():
+    # db.session.query(movies).order_by(Movie.rating)
     return render_template("index.html", movies=movies)
 
 
@@ -64,9 +65,9 @@ def edit():
 def delete():
     movie_id = request.args.get('id')
     movie_to_delete = db.session.get(Movie, movie_id)
-    print(f'{movie_to_delete} would be deleted if not commented lines :)')
-    # db.session.delete(movie_to_delete)
-    # db.session.commit()
+    # print(f'{movie_to_delete} would be deleted if not commented lines :)')
+    db.session.delete(movie_to_delete)
+    db.session.commit()
     return redirect(url_for('home'))
 
 
@@ -81,14 +82,30 @@ def add():
         }
         response = requests.get(f'https://api.themoviedb.org/3/search/movie', params=parameters)
         data = response.json()
-        return redirect(url_for('select'))
-
+        # # #
+        movies_list = data['results']
+        return render_template('select.html', movies=movies_list)
+        # # #
     return render_template('add.html', form=add_form)
 
 
-@app.route('/select', methods=['GET', "POST"])
-def select():
-    return render_template('select.html')
+@app.route('/pick', methods=['GET', "POST"])
+def pick():
+    movie_api_id = request.args.get('id')
+    parameters = {
+        'api_key': api_key,
+    }
+    response = requests.get(f'https://api.themoviedb.org/3/movie/{movie_api_id}', params=parameters)
+    movie_info = response.json()
+    with app.app_context():
+        picked_movie = Movie(title=movie_info['original_title'],
+                             img_url=f'https://image.tmdb.org/t/p/w600_and_h900_bestv2/{movie_info["poster_path"]}',
+                             year=movie_info['release_date'],
+                             description=movie_info['overview'])
+        db.session.add(picked_movie)
+        db.session.commit()
+        picked_movie_id = picked_movie.id  # if I don't create variable like this it bugs out
+    return redirect(url_for('edit', id=picked_movie_id))
 
 
 if __name__ == '__main__':
