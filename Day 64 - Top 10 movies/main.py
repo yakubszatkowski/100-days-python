@@ -9,7 +9,7 @@ import os
 
 db = SQLAlchemy()
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = os.environ.get('D64_secret_key')
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///top-10-movies.db"
 Bootstrap5(app)
 db.init_app(app)
@@ -28,7 +28,7 @@ class Movie(db.Model):
 
 
 with app.app_context():
-    movies = db.session.query(Movie).all()
+    movies = db.session.query(Movie).order_by(Movie.ranking).all()
 
 
 class RateMovieForm(FlaskForm):
@@ -44,7 +44,13 @@ class NewMovieForm(FlaskForm):
 
 @app.route("/")
 def home():
-    # db.session.query(movies).order_by(Movie.rating)
+    sorted_movies = db.session.execute(db.select(Movie).order_by(Movie.rating)).scalars().all()  # this was hard
+    i = len(sorted_movies)
+    for movie in sorted_movies:
+        # print(movie.title)  # this one helped a lot!
+        movie.ranking = i
+        i -= 1
+    db.session.commit()
     return render_template("index.html", movies=movies)
 
 
