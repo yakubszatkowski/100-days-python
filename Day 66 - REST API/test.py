@@ -24,6 +24,9 @@ class Cafe(db.Model):
     can_take_calls = db.Column(db.Boolean, nullable=False)
     coffee_price = db.Column(db.String(250), nullable=True)
 
+    def test(self):
+        return self.__table__.columns
+
     def to_dict(self):
         dictionary = {}
         for column in self.__table__.columns:
@@ -31,43 +34,6 @@ class Cafe(db.Model):
         return dictionary
 
 
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-
-@app.route("/random", methods=['GET'])  # GET is allowed by default on all routes actually
-def get_random_cafe():
-    cafes = db.session.query(Cafe).all()
-    random_cafe = choice(cafes)
-    return jsonify(cafe=random_cafe.to_dict())
-
-
-# # HTTP GET - All the cafés
-@app.route('/all')  # GET is allowed by default on all routes actually
-def all_cafes():
-    cafes = db.session.query(Cafe).all()
-    return jsonify(cafes=[cafe.to_dict() for cafe in cafes])
-    # # ALTERNATIVE
-    # all_cafes_json = {}
-    # for cafe in cafes:
-    #     all_cafes_json[cafe.id] = cafe.to_dict()
-    # return all_cafes_json
-
-
-# # HTTP Get - Find a Cafe
-@app.route('/search')
-def search():
-    location = request.args.get('loc').title()
-    # search all cafes with said location
-    # convert them into jsonify or else create error message
-
-# # HTTP POST - Create Record
-
-# # HTTP PUT/PATCH - Update Record
-
-# # HTTP DELETE - Delete Record
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+cafe = db.session.query(Cafe).all()
+random_cafe = choice(cafe)
+print(cafe)
