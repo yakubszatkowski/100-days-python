@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from random import choice
+from distutils.util import strtobool
 
 app = Flask(__name__)
 
@@ -40,6 +41,7 @@ def home():
 def get_random_cafe():
     cafes = db.session.query(Cafe).all()
     random_cafe = choice(cafes)
+    # print(type(random_cafe))
     return jsonify(cafe=random_cafe.to_dict())
 
 
@@ -47,6 +49,7 @@ def get_random_cafe():
 @app.route('/all')  # GET is allowed by default on all routes actually
 def all_cafes():
     cafes = db.session.query(Cafe).all()
+    # print(type(cafes))
     return jsonify(cafes=[cafe.to_dict() for cafe in cafes])
     # # ALTERNATIVE
     # all_cafes_json = {}
@@ -58,13 +61,45 @@ def all_cafes():
 # # HTTP Get - Find a Cafe
 @app.route('/search')
 def search():
-    location = request.args.get('loc').title()
-    # search all cafes with said location
-    # convert them into jsonify or else create error message
+    loc = request.args.get('loc').title()
+    cafes = db.session.query(Cafe).filter_by(location=loc).all()  # returns the list of all cafés of requested location
+    if len(cafes) == 0:
+        return jsonify(error={"Not Found": "Sorry, we don't have a cafe at that location"})
+    else:
+        return jsonify(cafes=[cafe.to_dict() for cafe in cafes])
+
+
+# def make_bool(val: int) -> bool:  # may be helpful in future
+#     return bool(int(val))
+
 
 # # HTTP POST - Create Record
+@app.route('/add', methods=['POST'])
+def add():
+    new_cafe = Cafe(  # 'args' is for GET requests, 'form' for POST requests
+        name=request.form.get('name'),
+        map_url=request.form.get('map_url'),
+        img_url=request.form.get('img_url'),
+        location=request.form.get('location'),
+        seats=request.form.get('seats'),
+        has_sockets=bool(strtobool(request.form.get("sockets"))),
+        has_toilet=bool(strtobool(request.form.get("toilet"))),
+        has_wifi=bool(strtobool(request.form.get("wifi"))),
+        can_take_calls=bool(strtobool(request.form.get("calls"))),
+        coffee_price=request.form.get('price'),
+    )
+
+    db.session.add(new_cafe)
+    db.session.commit()
+    return jsonify(response={"success": "Successfully added the new cafe."})
+
 
 # # HTTP PUT/PATCH - Update Record
+@app.route('/update-price/<cafe_id>', methods=['POST'])
+def patch(cafe_id):
+    # updpate price of choosen cafe's coffee
+    return cafe_id
+
 
 # # HTTP DELETE - Delete Record
 

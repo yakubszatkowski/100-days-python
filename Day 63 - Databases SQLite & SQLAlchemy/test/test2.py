@@ -21,8 +21,9 @@ class User(db.Model):
 # CRUD - Create, Remove, Update, Delete
 with app.app_context():
     db.create_all()
+
     # Create
-    user = User(username='user6', email='user2@gmail.com')
+    user = User(username='user3', email='user2@gmail.com')
     db.session.add(user)
     db.session.commit()
 
