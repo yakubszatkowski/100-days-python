@@ -1,3 +1,4 @@
+from sqlalchemy import orm
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from random import choice
@@ -9,7 +10,9 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cafes.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+api_key = 'TopSecretAPIKey'
 
+# # API documentation: https://documenter.getpostman.com/view/26194713/2s93Joy6DE
 
 # # Café TABLE Configuration
 class Cafe(db.Model):
@@ -59,7 +62,7 @@ def all_cafes():
 
 
 # # HTTP Get - Find a Cafe
-@app.route('/search')
+@app.route('/search')  # GET is allowed by default on all routes actually
 def search():
     loc = request.args.get('loc').title()
     cafes = db.session.query(Cafe).filter_by(location=loc).all()  # returns the list of all cafés of requested location
@@ -95,13 +98,37 @@ def add():
 
 
 # # HTTP PUT/PATCH - Update Record
-@app.route('/update-price/<cafe_id>', methods=['POST'])
+@app.route('/update-price/<cafe_id>', methods=['PATCH'])
 def patch(cafe_id):
-    # updpate price of choosen cafe's coffee
-    return cafe_id
+    new_price = request.args.get('new_price').title()
+    try:
+        cafe_to_update = db.session.get(Cafe, cafe_id)
+        cafe_to_update.coffee_price = new_price
+        db.session.commit()
+        # print(f'{cafe_id},\n{new_price},\n{cafe_to_update.coffee_price}')
+        return jsonify(success='Successfully updated the price')
+    except AttributeError:
+        return jsonify(error={
+            'Not Found': 'Sorry a cafe with that id was not found in the database.'
+        })
 
 
 # # HTTP DELETE - Delete Record
+@app.route('/report-closed/<cafe_id>', methods=['DELETE'])
+def delete(cafe_id):
+    posted_api_key = request.args.get('api-key')
+    if posted_api_key == api_key:
+        try:
+            cafe_to_delete = db.session.get(Cafe, cafe_id)
+            db.session.delete(cafe_to_delete)
+            db.session.commit()
+            return jsonify(success='Successfully deleted the cafe')
+        except orm.exc.UnmappedInstanceError:
+            return jsonify(error={
+                'Not Found': 'Sorry a cafe with that id was not found in the database.'
+            })
+    else:
+        return jsonify(wrong_api_key='Sorry, that\'s not allowed. Make sure you have correct api key.')
 
 
 if __name__ == '__main__':
