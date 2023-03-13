@@ -1,4 +1,4 @@
-{% extends 'bootstrap/base.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
 
 {% block content %}
 {% include "header.html" %}
@@ -20,9 +20,10 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        
-          <!-- This is where the form will go -->
-
+        <!-- This is where the form will go -->
+        {{ render_form(form, button_map={"submit": "success"}) }}
+        {{ ckeditor.load(pkg_type="full") }}
+<!--        {{ ckeditor.config(name='body') }}-->
       </div>
     </div>
   </div>
