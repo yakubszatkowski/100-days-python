@@ -14,6 +14,7 @@ api_key = 'TopSecretAPIKey'
 
 # # API documentation: https://documenter.getpostman.com/view/26194713/2s93Joy6DE
 
+
 # # Café TABLE Configuration
 class Cafe(db.Model):
     id = db.Column(db.Integer, primary_key=True)

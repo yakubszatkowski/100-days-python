@@ -1,2 +1,3 @@
 Day 59:
 What's dynamic url?
+Step 7 - worth revisiting
