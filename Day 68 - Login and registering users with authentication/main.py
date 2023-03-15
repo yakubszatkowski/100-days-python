@@ -13,15 +13,16 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-# # CREATE TABLE IN DB
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
-
-# Line below only required once, when creating DB.
-# db.create_all()
 
 
 @app.route('/')
@@ -34,41 +35,50 @@ def register():
     if request.method == 'POST':
         name = request.form.get('name')
         email = request.form.get('email')
+        password = request.form.get('password')
         hashed_password = generate_password_hash(
-            request.form.get('password'),
+            password,
             method='pbkdf2:sha256',
             salt_length=8)
-        db.session.add(User(email=email, password=hashed_password, name=name))
+        new_user = User(email=email, password=hashed_password, name=name)
+        db.session.add(new_user)
         db.session.commit()
-        return redirect(url_for('secrets', name=name))
+        login_user(new_user)
+        return redirect(url_for('secrets'))
     return render_template("register.html")
-
-
-@login_manager.user_loader  # to sprawdzic
-def load_user(user_id):
-    return User.get(user_id)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form.get('email')
-        user = db.one_or_404(db.select(User).filter_by(username='email'))
+        password = request.form.get('password')
+        user = db.one_or_404(db.select(User).filter_by(email=email))  # How to handle this one?
+        if check_password_hash(user.password, password):
+            login_user(user)
+            return redirect(url_for('secrets'))
+        else:
+            flash('Invalid credentials. Please try again with different one.')
+
+
     return render_template("login.html")
 
 
 @app.route('/secrets')
+@login_required
 def secrets():
-    name = request.args.get('name')
-    return render_template("secrets.html", name=name)
+    return render_template("secrets.html", name=current_user.name)
 
 
 @app.route('/logout')
 def logout():
-    pass
+    logout_user()
+    flash('You\'ve been logged out.')
+    return redirect(url_for('login'))
 
 
 @app.route('/download')
+@login_required
 def download():
     cheat_sheet_directory = r'.\static\files\cheat_sheet.pdf'
     return send_file(cheat_sheet_directory, as_attachment=False)  # if as_attachment is True then it downloads the file
