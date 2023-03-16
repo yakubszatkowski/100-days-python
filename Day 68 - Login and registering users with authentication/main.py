@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, url_for, redirect, flash, send_from_directory, send_file
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.exceptions import NotFound
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 
 app = Flask(__name__)
-
 app.config['SECRET_KEY'] = 'any-secret-key-you-choose'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -15,7 +15,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return User.query.get(user_id)
 
 
 class User(UserMixin, db.Model):
@@ -34,17 +34,21 @@ def home():
 def register():
     if request.method == 'POST':
         name = request.form.get('name')
-        email = request.form.get('email')
         password = request.form.get('password')
-        hashed_password = generate_password_hash(
-            password,
-            method='pbkdf2:sha256',
-            salt_length=8)
-        new_user = User(email=email, password=hashed_password, name=name)
-        db.session.add(new_user)
-        db.session.commit()
-        login_user(new_user)
-        return redirect(url_for('secrets'))
+        email = request.form.get('email')
+        user = User.query.filter_by(email=email).first()
+        if user:
+            flash('This e-mail already exist.')
+        else:
+            hashed_password = generate_password_hash(
+                password,
+                method='pbkdf2:sha256',
+                salt_length=8)
+            new_user = User(email=email, password=hashed_password, name=name)
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+            return redirect(url_for('secrets'))
     return render_template("register.html")
 
 
@@ -53,13 +57,27 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        user = db.one_or_404(db.select(User).filter_by(email=email))  # How to handle this one?
-        if check_password_hash(user.password, password):
-            login_user(user)
-            return redirect(url_for('secrets'))
+        user = User.query.filter_by(email=email).first()
+        if user:
+            if check_password_hash(user.password, password):
+                login_user(user)
+                return redirect(url_for('secrets'))
+            else:
+                flash('Invalid credentials. Please try again with different one.')
         else:
-            flash('Invalid credentials. Please try again with different one.')
+            flash('This email doesn\'t exist in our database')
 
+        # # Other method which I honestly think is cool
+        # try:
+        #     user = db.one_or_404(db.select(User).filter_by(email=email))
+        # except NotFound:
+        #     flash('This email doesn\'t exist in our database')
+        # else:
+        #     if check_password_hash(user.password, password):
+        #         login_user(user)
+        #         return redirect(url_for('secrets'))
+        #     else:
+        #         flash('Invalid credentials. Please try again with different one.')
 
     return render_template("login.html")
 
