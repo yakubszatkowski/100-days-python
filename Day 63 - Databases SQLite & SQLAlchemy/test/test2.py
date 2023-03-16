@@ -32,8 +32,10 @@ with app.app_context():
     for user in user_database:
         print(user.username)
 
-    # Read a specific record by username "user1"
-    user = db.one_or_404(db.select(User).filter_by(username='user3'))
+    # Read a specific record by username "user3"
+    # user = db.one_or_404(db.select(User).filter_by(username='user3'))
+    # user = User.query.filter_by(username='user3').first()
+    user = db.session.execute(db.select(User).filter_by(username='user3')).scalar_one()
     print(user.id)
 
     # Read a specific record by id
