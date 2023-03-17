@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, url_for, redirect, flash, send_from_directory, send_file
+from flask import Flask, render_template, request, url_for, redirect, flash, send_file
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.exceptions import NotFound
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 
@@ -70,7 +69,7 @@ def login():
         # # Other method which I honestly think is cool
         # try:
         #     user = db.one_or_404(db.select(User).filter_by(email=email))
-        # except NotFound:
+        # except NotFound:  # from werkzeug.exceptions import NotFound
         #     flash('This email doesn\'t exist in our database')
         # else:
         #     if check_password_hash(user.password, password):

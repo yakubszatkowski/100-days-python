@@ -18,10 +18,16 @@ Bootstrap5(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 
 # # CONFIGURE TABLES
-
 class BlogPost(db.Model):
     __tablename__ = "blog_posts"
     id = db.Column(db.Integer, primary_key=True)
@@ -33,12 +39,12 @@ class BlogPost(db.Model):
     img_url = db.Column(db.String(250), nullable=False)
 
 
-class User(db.Model, UserMixin):  # tutaj skończyłem 
+class User(db.Model, UserMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(50), unique=True, nullable=False)
+    name = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(20), nullable=False)
-
+    email = db.Column(db.String(50), unique=True, nullable=False)
 
 
 with app.app_context():
@@ -56,21 +62,36 @@ def get_all_posts():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
-    name = request.form.get('name')
-    password = request.form.get('password')
-    email = request.form.get('email')
-
+    if request.method == 'POST':
+        name = request.form.get('name')
+        password = request.form.get('password')
+        email = request.form.get('email')
+        user = User.query.filter_by(email=email).first()
+        if user:
+            flash('This e-mail is already registered.')
+        else:
+            new_user = User(
+                name=name,
+                password=password,
+                email=email
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+            return redirect(url_for('get_all_posts'))
     return render_template("register.html", form=form)
 
 
-@app.route('/login')
+@app.route('/login', method=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        pass
     return render_template("login.html")
 
 
 @app.route('/logout')
 def logout():
-    return redirect(url_for('get_all_posts'))
+    return redirect(url_for('static'))
 
 
 @app.route("/post/<int:post_id>")
