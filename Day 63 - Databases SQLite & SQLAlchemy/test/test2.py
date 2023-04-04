@@ -23,12 +23,13 @@ with app.app_context():
     db.create_all()
 
     # Create
-    user = User(username='user3', email='user2@gmail.com')
-    db.session.add(user)
-    db.session.commit()
+    # user = User(username='user3', email='user2@gmail.com')
+    # db.session.add(user)
+    # db.session.commit()
 
     # Read all records
-    user_database = db.session.query(User).all()
+    user_database = User.query.all()
+    # user_database = db.session.query(User).all()
     for user in user_database:
         print(user.username)
 
@@ -60,3 +61,6 @@ with app.app_context():
     record_to_delete = db.session.get(User, record_id)
     db.session.delete(record_to_delete)
     db.session.commit()
+
+    # cafes = db.session.query(Cafe).filter_by(location=loc).all()  # returns the list of all cafés of requested location
+
