@@ -1,0 +1,23 @@
+GENERAL WINDOWS COMMANDS:
+cd <directory> - goes forward to <directory>
+cd .. - goes back from current directory by one step
+mkdir - creates a folder
+dir - checks the files in current folder
+type null >> "file.txt" - creates the file.txt in current directory
+start "file.txt" - opens file.txt
+
+Working directory -> Staging area -> Local repository (.git) -> Remote repository (GitHub)
+
+GIT COMMANDS:
+git innit - create an empty Git repo
+git add "file.txt" - adds file.txt content to the index
+git status - shows the working tree status
+git commit -m "something" - commits changes of added files with msg "something"
+git diff - shows changes that has been made in file
+git checkout file.txt - reverts changes - the version in repo replaces current version
+git push - pushes the committed files to repository
+
+PUSHING EXISTING REPOSITORY FROM COMMAND LINE IN GIT
+git remote add origin https://github.com/yakubszatkowski/story.git - creating remote repository
+git branch -M main
+git push -u origin main - pushing local repository to remote repository
