@@ -1,6 +1,5 @@
 import os
 import spotipy
-from pprint import pprint
 import requests
 from bs4 import BeautifulSoup
 from spotipy.oauth2 import SpotifyOAuth
