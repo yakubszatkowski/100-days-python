@@ -1,2 +1,2 @@
-list={}
-print(type(list))
+
+
