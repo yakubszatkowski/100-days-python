@@ -1,3 +1,5 @@
 arg kwarg
 enumerate
+lambda
 decorators
+eval
