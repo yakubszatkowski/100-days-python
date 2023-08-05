@@ -1,5 +1,4 @@
-# Morse code dictionary that translates characters to Morse code
-# in period and underscore symbols
+# Morse code dictionary that translates characters to Morse code in period and underscore symbols
 morse_dict = {
     'a': '._',
     'b': '_...',
@@ -49,4 +48,9 @@ morse_dict = {
     '=': '_..._'
 }
 
-morse_dict
+# text = input('Enter text: ')
+# for character in text:
+#     if character in morse_dict:
+#         print(morse_dict.get(character))
+#     else:
+#         pass  # print('No translation')
