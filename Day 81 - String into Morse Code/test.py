@@ -1,23 +1,13 @@
-# Import the required libraries
-from tkinter import *
-from PIL import Image, ImageTk
+import textwrap
 
-# Create an instance of tkinter frame or window
-win = Tk()
+text = 'HELLO I AM OKAY DUDE '
 
-# Set the size of the window
-win.geometry("700x350")
+text_in_lines = textwrap.fill(text, 17).split('\n')
 
 
-def show_msg(event):
-    label["text"] = "Sale Up to 50% Off!"
-
-
-# Create a label widget
-label = Label(win, text="Press Enter Key", font="TkMenuFont 20")
-label.pack(pady=30)
-
-# Bind the Enter Key to the window
-win.bind('<Return>', show_msg)
-
-win.mainloop()
+line_count = 0
+for line in text_in_lines:
+    line_count += 1
+    print(line_count)
+    for character in line:
+        print(character)
