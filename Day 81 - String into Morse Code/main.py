@@ -7,7 +7,6 @@ import textwrap
 class App:
     def __init__(self):
         # Initial interface
-
         self.root = Tk()
         telegraph_key_img = ImageTk.PhotoImage(Image.open('telegraph_key.png').resize((256, 256)))
         self.root.title('Morse code converter')
@@ -20,7 +19,9 @@ class App:
         # Empty variables
         self.input_text = None
         self.input_frame = None
+        self.text = None
         self.text_and_translation_frame = Frame()
+        self.copy_button = Button()
 
         # Execution
         self.user_interface(telegraph_key_img)
@@ -46,27 +47,31 @@ class App:
 
         # Widgets
         input_label = Label(self.input_frame, text='Enter text for Morse code conversion', font=('Calibri Light', 12))
-        input_label.grid(row=0, column=0)
+        input_label.grid(row=0, column=0, columnspan=2)
 
         self.input_text = Entry(self.input_frame, width=52)
-        self.input_text.grid(row=1, column=0, pady=5)
+        self.input_text.grid(row=1, column=0, pady=5, columnspan=2)
 
-        translate_button = Button(self.input_frame, width=26, text='Translate', command=self.add_translation_frame)
+        translate_button = Button(self.input_frame, width=15, text='Translate', command=self.add_translation_frame)
         translate_button.grid(row=2, column=0)
         self.root.bind("<Return>", self.add_translation_frame)
 
+        self.copy_button = Button(self.input_frame, width=15, text='Copy', command=self.copy_translation)
+        self.copy_button.grid(row=2, column=1)
+        self.copy_button["state"] = "disabled"
+
     def add_translation_frame(self, event=None):
-        text = self.input_text.get()
-        text = text.lower()
+        self.text = self.input_text.get()
+        self.text = self.text.lower()
 
         for widget in self.text_and_translation_frame.winfo_children():
             widget.destroy()
 
         # Translation frame, consists of
         self.text_and_translation_frame = Frame(highlightbackground="light gray", highlightthickness=1)
-        self.text_and_translation_frame.place(in_=self.input_frame, relx=-0.1, rely=1, y=20)
+        self.text_and_translation_frame.place(in_=self.input_frame, relx=-0.1, rely=1, y=20, x=3)
 
-        text_in_lines = textwrap.fill(text, 17).split('\n')
+        text_in_lines = textwrap.fill(self.text, 17).split('\n')
 
         letter_row = 0
         for line in text_in_lines:
@@ -84,11 +89,13 @@ class App:
                 translation_label.grid(row=translation_row, column=letter_column)
                 letter_column += 1
 
-        # TODO add copy button - improve translated text list comprehension
+        self.copy_button["state"] = "active"
 
-        # Control
-        translated_text = [morse_dict.get(letter) for letter in text]
-        print(f'{text}\n{translated_text}\n{len(text)}')
+    def copy_translation(self):
+        translated_text = "".join([morse_dict.get(letter, ' ') for letter in self.text])  # " ".join
+        self.root.clipboard_clear()
+        self.root.clipboard_append(f'{self.text.upper()}\n{translated_text}')
+        print(f'{self.text.upper()}\n{translated_text}')
 
 
 if __name__ == "__main__":

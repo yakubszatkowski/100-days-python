@@ -1,13 +1,14 @@
-import textwrap
+from morse_code_dictionary import morse_dict
 
-text = 'HELLO I AM OKAY DUDE '
+text = 'hello there'
 
-text_in_lines = textwrap.fill(text, 17).split('\n')
+# character_list = ''
+# for character in text:
+#     if morse_dict.get(character) is None:
+#         character_list += ' '
+#     else:
+#         character_list += morse_dict.get(character)
 
+character_list = ''.join([morse_dict.get(character, ' ') for character in text])
 
-line_count = 0
-for line in text_in_lines:
-    line_count += 1
-    print(line_count)
-    for character in line:
-        print(character)
+print(character_list)
