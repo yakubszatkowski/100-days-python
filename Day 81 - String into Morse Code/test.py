@@ -1,14 +1,11 @@
-from morse_code_dictionary import morse_dict
+import pygame
 
-text = 'hello there'
+pygame.mixer.init()
 
-# character_list = ''
-# for character in text:
-#     if morse_dict.get(character) is None:
-#         character_list += ' '
-#     else:
-#         character_list += morse_dict.get(character)
 
-character_list = ''.join([morse_dict.get(character, ' ') for character in text])
+def short_beep():
+    pass
 
-print(character_list)
+
+def long_beep():
+    pass
