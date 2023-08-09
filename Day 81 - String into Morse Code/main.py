@@ -1,6 +1,7 @@
 from morse_code_dictionary import morse_dict
 from tkinter import *
 from PIL import Image, ImageTk
+from pygame import mixer
 import textwrap
 
 
@@ -16,6 +17,11 @@ class App:
         self.root.maxsize(500, 800)
         self.root.config(pady=50, padx=0)
 
+        # Mixer
+        mixer.init()
+        self.long_beep = mixer.Sound("beep sound\dah.wav")
+        self.short_beep = mixer.Sound("beep sound\dit.wav")
+
         # Empty variables
         self.input_text = None
         self.input_frame = None
@@ -25,6 +31,7 @@ class App:
 
         # Execution
         self.user_interface(telegraph_key_img)
+
         self.root.mainloop()
 
     def user_interface(self, telegraph_key_img):
@@ -32,7 +39,6 @@ class App:
         title_frame = Frame()
         title_frame.place(relx=0.5, y=110, anchor='center')  # relative width and fixed height
 
-        # Widgets inside of frames are using grid placement system
         title_label = Label(title_frame, text='Morse Code Converter', font=('Calibri Light', 20, 'bold'))
         title_label.grid(row=1, column=0)
 
@@ -45,7 +51,6 @@ class App:
         self.input_frame = Frame()
         self.input_frame.place(in_=title_frame, relx=-0.1, rely=1, y=20)
 
-        # Widgets
         input_label = Label(self.input_frame, text='Enter text for Morse code conversion', font=('Calibri Light', 12))
         input_label.grid(row=0, column=0, columnspan=2)
 
@@ -66,8 +71,9 @@ class App:
 
         for widget in self.text_and_translation_frame.winfo_children():
             widget.destroy()
+        self.text_and_translation_frame.destroy()
 
-        # Translation frame, consists of
+        # Translation frame
         self.text_and_translation_frame = Frame(highlightbackground="light gray", highlightthickness=1)
         self.text_and_translation_frame.place(in_=self.input_frame, relx=-0.1, rely=1, y=20, x=3)
 
@@ -90,12 +96,34 @@ class App:
                 letter_column += 1
 
         self.copy_button["state"] = "active"
+        self.play_morse_sound()
 
     def copy_translation(self):
         translated_text = "".join([morse_dict.get(letter, ' ') for letter in self.text])  # " ".join
         self.root.clipboard_clear()
         self.root.clipboard_append(f'{self.text.upper()}\n{translated_text}')
-        print(f'{self.text.upper()}\n{translated_text}')
+
+    def play_morse_sound(self):
+        for index, widget in enumerate(self.text_and_translation_frame.winfo_children()):
+            if (index + 1) % 2 == 0:
+                singular_letter_morse = widget.cget('text')
+                for character in singular_letter_morse:
+                    if character == '.':
+                        self.short_beep.play()
+                    elif character == '_':
+                        self.long_beep.play()
+                    while mixer.get_busy():  # TODO Fix this bug where sounds play before tkinter frame appears
+                        pass
+                # self.sound_conversion(singular_letter_morse)
+
+    # def sound_conversion(self, letter_to_translate):
+    #     for character in letter_to_translate:
+    #         if character == '.':
+    #             self.short_beep.play()
+    #         elif character == '_':
+    #             self.long_beep.play()
+    #         while mixer.get_busy():
+    #             pass
 
 
 if __name__ == "__main__":
