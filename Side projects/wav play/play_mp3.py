@@ -11,4 +11,3 @@ for character in morse_code:
         playsound(long_beep)
     elif character == '_':
         playsound(short_beep)
-
