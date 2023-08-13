@@ -1,3 +1,5 @@
+import tkinter.messagebox
+
 from morse_code_dictionary import morse_dict
 from tkinter import *
 from PIL import Image, ImageTk
@@ -12,12 +14,12 @@ class App:
         telegraph_key_img = ImageTk.PhotoImage(Image.open('telegraph_key.png').resize((256, 256)))
         self.root.title('Morse code converter')
         self.root.geometry(
-            f'400x650+{int(self.root.winfo_screenwidth() / 7)}+{int(self.root.winfo_screenheight() / 6)}')  # 400x450
+            f'400x400+{int(self.root.winfo_screenwidth() / 7)}+{int(self.root.winfo_screenheight() / 8)}')  # 400x450
         self.root.minsize(400, 450)
-        self.root.maxsize(500, 800)
+        self.root.maxsize(500, 850)
         self.root.config(pady=50, padx=0)
 
-        # Mixer
+        # Sound mixer
         mixer.init()
         self.long_beep = mixer.Sound("beep sound\dah.wav")
         self.short_beep = mixer.Sound("beep sound\dit.wav")
@@ -78,6 +80,11 @@ class App:
 
         text_in_lines = textwrap.fill(self.text, 17).split('\n')
 
+        if len(text_in_lines) > 8:
+            tkinter.messagebox.showwarning(title='Too many lines', message='Oops! Looks like your message is a bit too long to fit in the window. Please try a shorter message.')
+            self.input_text.delete(0, 'end')
+            return
+
         letter_row = 0
         for line in text_in_lines:
             letter_row += 2
@@ -95,6 +102,9 @@ class App:
                 translation_label.grid(row=translation_row, column=letter_column)
                 letter_column += 1
 
+        # EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+        self.root.update()
+        self.root.geometry(f'400x{450 + self.text_and_translation_frame.winfo_height()}')
         self.root.update()
         self.copy_button["state"] = "active"
         self.play_morse_sound()
