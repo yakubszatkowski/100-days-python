@@ -1,3 +1,4 @@
+# sound testing
 from tkinter import *
 from pygame import *
 from morse_code_dictionary import morse_dict
@@ -36,7 +37,9 @@ def translate():
         translation = Label(translation_frame, text=morse_dict.get(char))
         translation.grid(row=4, column=start_column)
         start_column += 1
-    root.update()
+
+    root.update()  # VERY IMPORTANT
+
     frame_elements = translation_frame.winfo_children()
     root.after(1, play_morse_sound, frame_elements)
 

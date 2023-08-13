@@ -87,9 +87,10 @@ class App:
                 letter_label = Label(self.text_and_translation_frame, text=character.upper(),
                                      font=('Calibri Light', 12),
                                      width=2, height=1)
+
                 letter_label.grid(row=letter_row, column=letter_column)
                 translation_label = Label(self.text_and_translation_frame, text=morse_dict.get(character),
-                                          font=('Calibri Light', 8), width=2,
+                                          font=('Calibri Light', 12), width=2,
                                           height=1)
                 translation_label.grid(row=translation_row, column=letter_column)
                 letter_column += 1
@@ -104,8 +105,12 @@ class App:
         self.root.clipboard_append(f'{self.text.upper()}\n{translated_text}')
 
     def play_morse_sound(self):
-        for index, widget in enumerate(self.text_and_translation_frame.winfo_children()):
+        frame_elements = self.text_and_translation_frame.winfo_children()
+        for index, widget in enumerate(frame_elements):
             if (index + 1) % 2 == 0:
+                frame_elements[index - 1].config(bg="LightSkyBlue2")
+                frame_elements[index].config(bg="LightSkyBlue2")
+                self.root.update()
                 singular_letter_morse = widget.cget('text')
                 for character in singular_letter_morse:
                     if character == '.':
@@ -114,6 +119,9 @@ class App:
                         self.long_beep.play()
                     while mixer.get_busy():
                         pass
+                frame_elements[index - 1].config(bg="LightSkyBlue1")
+                frame_elements[index].config(bg="LightSkyBlue1")
+                self.root.update()
 
 
 if __name__ == "__main__":
