@@ -31,7 +31,6 @@ class App:
 
         # Execution
         self.user_interface(telegraph_key_img)
-
         self.root.mainloop()
 
     def user_interface(self, telegraph_key_img):
@@ -95,11 +94,12 @@ class App:
                 translation_label.grid(row=translation_row, column=letter_column)
                 letter_column += 1
 
+        self.root.update()
         self.copy_button["state"] = "active"
         self.play_morse_sound()
 
     def copy_translation(self):
-        translated_text = "".join([morse_dict.get(letter, ' ') for letter in self.text])  # " ".join
+        translated_text = "".join([morse_dict.get(letter, ' ') for letter in self.text])
         self.root.clipboard_clear()
         self.root.clipboard_append(f'{self.text.upper()}\n{translated_text}')
 
@@ -112,18 +112,8 @@ class App:
                         self.short_beep.play()
                     elif character == '_':
                         self.long_beep.play()
-                    while mixer.get_busy():  # TODO Fix this bug where sounds play before tkinter frame appears
+                    while mixer.get_busy():
                         pass
-                # self.sound_conversion(singular_letter_morse)
-
-    # def sound_conversion(self, letter_to_translate):
-    #     for character in letter_to_translate:
-    #         if character == '.':
-    #             self.short_beep.play()
-    #         elif character == '_':
-    #             self.long_beep.play()
-    #         while mixer.get_busy():
-    #             pass
 
 
 if __name__ == "__main__":

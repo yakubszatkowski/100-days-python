@@ -47,10 +47,3 @@ morse_dict = {
     '/': '_.._.',
     '=': '_..._'
 }
-
-# text = input('Enter text: ')
-# for character in text:
-#     if character in morse_dict:
-#         print(morse_dict.get(character))
-#     else:
-#         pass  # print('No translation')
