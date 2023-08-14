@@ -71,8 +71,7 @@ class App(customtkinter.CTk):
         self.text = self.input_text.get()
         self.text = self.text.lower()
 
-        if len(self.text) == 0:
-            return
+
 
         for widget in self.text_and_translation_frame.winfo_children():
             widget.destroy()
@@ -83,10 +82,13 @@ class App(customtkinter.CTk):
         self.text_and_translation_frame.place(in_=self.input_frame, relx=-0.1, rely=1, y=20, x=3)
 
         text_in_lines = textwrap.fill(self.text, 17).split('\n')
-
+        if len(self.text) == 0:
+            self.geometry('400x400')
+            return
         if len(text_in_lines) > 8:
             tkinter.messagebox.showwarning(title='Too many lines', message='Oops! Looks like your message is a bit too long to fit in the window. Please try a shorter message.')
             self.input_text.delete(0, 'end')
+            self.geometry('400x400')
             return
 
         letter_row = 0

@@ -79,9 +79,14 @@ class App:
 
         text_in_lines = textwrap.fill(self.text, 17).split('\n')
 
+        if len(self.text) == 0:
+            self.root.geometry('400x400')
+            return
         if len(text_in_lines) > 8:
-            tkinter.messagebox.showwarning(title='Too many lines', message='Oops! Looks like your message is a bit too long to fit in the window. Please try a shorter message.')
+            tkinter.messagebox.showwarning(title='Too many lines',
+                                           message='Oops! Looks like your message is a bit too long to fit in the window. Please try a shorter message.')
             self.input_text.delete(0, 'end')
+            self.root.geometry('400x400')
             return
 
         letter_row = 0
