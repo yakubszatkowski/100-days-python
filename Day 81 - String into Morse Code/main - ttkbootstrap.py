@@ -5,7 +5,6 @@ from PIL import Image, ImageTk
 from pygame import mixer
 import textwrap
 import ttkbootstrap as ttk
-from ttkbootstrap.constants import *
 
 
 # TODO fix canvas - add bootstrap
@@ -39,32 +38,32 @@ class App(tkinter.Tk):
 
     def user_interface(self):
         # Title frame consisting of picture and title
-        title_frame = Frame()
+        title_frame = ttk.Frame()
         title_frame.place(relx=0.5, y=110, anchor='center')  # relative width and fixed height
 
-        title_label = Label(title_frame, text='Morse Code Converter', font=('Calibri Light', 20, 'bold'))
+        title_label = ttk.Label(title_frame, text='Morse Code Converter', font=('Roboto', 20, 'bold'))
         title_label.grid(row=1, column=0)
 
-        canvas = Canvas(title_frame, width=256, height=256)
+        canvas = ttk.Canvas(title_frame, width=256, height=256)
         canvas.grid(row=0, column=0)
-        # self.update()
+        self.update()
         canvas.create_image(canvas.winfo_width() / 2, canvas.winfo_height() / 2, image=self.telegraph_key_img)
 
         # Input frame consisting of text label, input box and translation button
-        self.input_frame = Frame()
-        self.input_frame.place(in_=title_frame, relx=-0.1, rely=1, y=20)
+        self.input_frame = ttk.Frame()
+        self.input_frame.place(in_=title_frame, relx=-0.05, rely=1, y=20)
 
-        input_label = Label(self.input_frame, text='Enter text for Morse code conversion', font=('Calibri Light', 12))
+        input_label = ttk.Label(self.input_frame, text='Enter text for Morse code conversion', font=('Roboto', 12))
         input_label.grid(row=0, column=0, columnspan=2)
 
-        self.input_text = Entry(self.input_frame, width=52)
+        self.input_text = ttk.Entry(self.input_frame, width=52)
         self.input_text.grid(row=1, column=0, pady=5, columnspan=2)
 
-        translate_button = Button(self.input_frame, width=15, text='Translate', command=self.add_translation_frame)
+        translate_button = ttk.Button(self.input_frame, width=23, text='Translate', command=self.add_translation_frame, bootstyle="dark")
         translate_button.grid(row=2, column=0)
         self.bind("<Return>", self.add_translation_frame)
 
-        self.copy_button = Button(self.input_frame, width=15, text='Copy', command=self.copy_translation)
+        self.copy_button = ttk.Button(self.input_frame, width=23, text='Copy', command=self.copy_translation, bootstyle="dark")
         self.copy_button.grid(row=2, column=1)
         self.copy_button["state"] = "disabled"
 
@@ -77,8 +76,8 @@ class App(tkinter.Tk):
         self.text_and_translation_frame.destroy()
 
         # Translation frame
-        self.text_and_translation_frame = Frame(highlightbackground="light gray", highlightthickness=1)
-        self.text_and_translation_frame.place(in_=self.input_frame, relx=-0.1, rely=1, y=20, x=3)
+        self.text_and_translation_frame = Frame()
+        self.text_and_translation_frame.place(in_=self.input_frame, relx=-0.08, rely=1, y=20, x=3)
 
         text_in_lines = textwrap.fill(self.text, 17).split('\n')
 
@@ -99,12 +98,12 @@ class App(tkinter.Tk):
             for character in line:
                 translation_row = letter_row + 1
                 letter_label = Label(self.text_and_translation_frame, text=character.upper(),
-                                     font=('Calibri Light', 12),
+                                     font=('Roboto', 10),
                                      width=2, height=1)
 
                 letter_label.grid(row=letter_row, column=letter_column)
                 translation_label = Label(self.text_and_translation_frame, text=morse_dict.get(character),
-                                          font=('Calibri Light', 12), width=2,
+                                          font=('Roboto', 10), width=2,
                                           height=1)
                 translation_label.grid(row=translation_row, column=letter_column)
                 letter_column += 1
