@@ -8,7 +8,7 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
 
-# TODO implement ttkbootstrap
+# TODO fix canvas - add bootstrap
 
 class App(tkinter.Tk):
     def __init__(self):

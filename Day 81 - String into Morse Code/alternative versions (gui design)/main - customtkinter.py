@@ -15,7 +15,6 @@ customtkinter.set_default_color_theme("dark-blue")  # Themes: "blue" (standard),
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
-        # telegraph_key_img = ImageTk.PhotoImage(Image.open('telegraph_key.png').resize((256, 256)))
         self.title('Morse code converter')
         self.geometry(
             f'400x400+{int(self.winfo_screenwidth() / 7)}+{int(self.winfo_screenheight() / 8)}')  # 400x450
