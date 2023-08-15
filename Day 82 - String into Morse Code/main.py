@@ -5,15 +5,28 @@ from PIL import Image, ImageTk
 from pygame import mixer
 import textwrap
 import ttkbootstrap as ttk
+import os
+import sys
 
-
-# TODO fix canvas - add bootstrap
 
 class App(tkinter.Tk):
     def __init__(self):
         super().__init__()
+
+        # Determining the file path for resources
+        if getattr(sys, 'frozen', False):
+            bundle_dir = sys._MEIPASS
+        else:
+            bundle_dir = os.path.dirname(os.path.abspath(__file__))
+
+        image_path = os.path.join(bundle_dir, 'telegraph_key.png')
+        icon_path = os.path.join(bundle_dir, 'icon.ico')
+        long_beep_path = os.path.join(bundle_dir, 'beep sound\dah.wav')
+        short_beep_path = os.path.join(bundle_dir, 'beep sound\dit.wav')
+        self.telegraph_key_img = ImageTk.PhotoImage(Image.open(image_path).resize((256, 256)))
+        self.iconbitmap(icon_path)
+
         # Initial interface
-        self.telegraph_key_img = ImageTk.PhotoImage(Image.open('telegraph_key.png').resize((256, 256)))
         self.title('Morse code converter')
         self.geometry(
             f'400x400+{int(self.winfo_screenwidth() / 7)}+{int(self.winfo_screenheight() / 8)}')
@@ -23,8 +36,8 @@ class App(tkinter.Tk):
 
         # Sound mixer
         mixer.init()
-        self.long_beep = mixer.Sound("beep sound\dah.wav")
-        self.short_beep = mixer.Sound("beep sound\dit.wav")
+        self.long_beep = mixer.Sound(long_beep_path)
+        self.short_beep = mixer.Sound(short_beep_path)
 
         # Empty variables
         self.input_text = None
@@ -59,11 +72,13 @@ class App(tkinter.Tk):
         self.input_text = ttk.Entry(self.input_frame, width=52)
         self.input_text.grid(row=1, column=0, pady=5, columnspan=2)
 
-        translate_button = ttk.Button(self.input_frame, width=23, text='Translate', command=self.add_translation_frame, bootstyle="dark")
+        translate_button = ttk.Button(self.input_frame, width=23, text='Translate', command=self.add_translation_frame,
+                                      bootstyle="dark")
         translate_button.grid(row=2, column=0)
         self.bind("<Return>", self.add_translation_frame)
 
-        self.copy_button = ttk.Button(self.input_frame, width=23, text='Copy', command=self.copy_translation, bootstyle="dark")
+        self.copy_button = ttk.Button(self.input_frame, width=23, text='Copy', command=self.copy_translation,
+                                      bootstyle="dark")
         self.copy_button.grid(row=2, column=1)
         self.copy_button["state"] = "disabled"
 
@@ -142,3 +157,6 @@ class App(tkinter.Tk):
 if __name__ == "__main__":
     app = App()
     app.mainloop()
+
+# command for pyinstaller:
+# pyinstaller --onefile --icon=icon.ico --noconsole --add-data "telegraph_key.png;." --add-data "icon.ico;." --add-data "beep sound\dah.wav;beep sound" --add-data "beep sound\dit.wav;beep sound" main.py
