@@ -1,0 +1,22 @@
+Frontend:
+-smooth transitions
+-responsive design for laptops/tablets/mobile
+-visual design
+
+Backend:
+-uses flask
+-opens up with name card and language selection (Polish, English)
+-depending on language show portfolio
+-navigation and contact on the left side (contact also on the bottom)
+-API: get, post, patch/put, delete (postman? security?):
+--based on language
+--ABOUT ME --personal data
+--PROJECTS --type of projects --title --description(context for each project, explaining the problem, your role, the solution, and the impact.) --link to github --picture/gif(not must have)
+--WORK EXPERIENCE --EDUCATION
+--HARD SKILLS --SOFT SKILLS --LANGUAGE
+--INTRESTS
+-CONTACT -- social media --cv download
+-analytics
+
+
+-projects (based on
