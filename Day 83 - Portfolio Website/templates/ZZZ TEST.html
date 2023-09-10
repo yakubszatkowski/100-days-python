@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>kkk</title>
+    <style>
+        body {
+            background-color: black;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            transition: background-color 0.3s ease; /* Add a smooth transition effect */
+        }
+        .name-card-container {
+            width: 100%;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .name-card {
+            background-image: linear-gradient(90deg, #21D4FD 0%, #B721FF 100%);
+            text-align: center;
+            padding: 1%;
+            border-width: 6px;
+            border-style: solid;
+        }
+
+        .name-card-container:hover ~ body {
+            background-color: purple;
+        }
+    </style>
+</head>
+<body>
+<div class="name-card-container">
+    <div class="name-card">
+        <h3>Jakub Szatkowski</h3>
+    </div>
+</div>
+</body>
+</html>
