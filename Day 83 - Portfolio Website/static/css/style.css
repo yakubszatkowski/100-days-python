@@ -29,7 +29,7 @@ body {
   background: white;
   border-radius: 50%;
   box-shadow: 0 0 10px 4px #9fbce9;
-  animation: fall 3s ease-out infinite
+  animation: fall 3s linear infinite
 }
 
 .shooting-star::before {
@@ -41,18 +41,20 @@ body {
   transform-origin: left;
   transform: rotate(-45deg);
   background: linear-gradient(90deg, #9fbce9, transparent);
-  animation: tail 3s ease-in-out infinite
+  animation: tail 3s linear infinite
 }
 
 @keyframes tail {
   0% {
-    width: 200px;
+    width: 0;
   }
-  20% {
+
+  40% {
     width: 300px;
   }
+
   100% {
-    width: 50px;
+    width: 0;
   }
 }
 
@@ -61,6 +63,6 @@ body {
     transform: translate(0, 0)
   }
   100% {
-    transform: translate(-300px, 300px)
+    transform: translate(-600px, 600px)
   }
 }

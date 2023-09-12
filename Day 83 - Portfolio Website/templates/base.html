@@ -11,5 +11,10 @@
 <body>
   {% block content %} {% endblock %}
   {{ bootstrap.load_js() }}
+    <section class="glowing-bg">
+      <span class="shooting-star"></span>
+    </section>
+
+    <script src="{{ url_for('static', filename='js/shootingStars.js')}}"></script>
 </body>
 </html>
