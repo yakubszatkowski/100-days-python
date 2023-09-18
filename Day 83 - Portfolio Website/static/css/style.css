@@ -52,26 +52,13 @@ body, button {
 }
 
 @keyframes tail {
-  0% {
-    width: 0;
-  }
-
-  40% {
-    width: 300px;
-  }
-
-  100% {
-    width: 0;
-  }
+  0%, 100% { width: 0 }
+  40% { width: 300px }
 }
 
 @keyframes fall {
-  0% {
-    transform: translate(0, 0)
-  }
-  100% {
-    transform: translate(-600px, 600px)
-  }
+  0% { transform: translate(0, 0) }
+  100% { transform: translate(-600px, 600px) }
 }
 
 .card {
@@ -85,20 +72,13 @@ body, button {
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  animation: up-middle 2s linear;
+  animation: up-to-middle 2s linear;
 }
 
-@keyframes up-middle {
-  0% {
-    top: 20%;
-    opacity: 0.1
-  }
-  40% {
-    top: 30%;
-  }
-  90% {
-    top: 40%;
-  }
+@keyframes up-to-middle {
+  0% { top: 20%; opacity: 0.1 }
+  40% { top: 30% }
+  90% { top: 40% }
 }
 
 .main-title {
@@ -108,7 +88,8 @@ body, button {
 }
 
 .language-button {
-  margin: 20px;
+  display: inline-block;
+  margin: 10px 20px;
   text-decoration: none;
   color: white;
   padding: 5px 20px;
@@ -124,4 +105,5 @@ body, button {
 
 .language-button:hover {
   box-shadow: 0 0 6px 4px #9fbce9;
+  color: white;
 }
