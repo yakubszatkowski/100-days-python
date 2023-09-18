@@ -2,7 +2,7 @@
   margin: 0;
 }
 
-body {
+body, button {
   overflow: hidden;
   color: white;
   font-family: 'Montserrat';
@@ -103,5 +103,24 @@ body {
 
 .main-title {
   letter-spacing: 15px;
-  padding-bottom: 10px
+  padding-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.language-button {
+  margin: 20px;
+
+  padding: 5px 20px;
+  background-color: rgba(0,0,0,.2);
+  border: 1px solid black;
+  transition: 0.5s;
+}
+
+.flag-img {
+  vertical-align: middle;
+  height: 20px;
+}
+
+.language-button:hover {
+  box-shadow: 0 0 6px 4px #9fbce9;
 }
