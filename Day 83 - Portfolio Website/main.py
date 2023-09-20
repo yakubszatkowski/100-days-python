@@ -11,11 +11,11 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/main/<language>')
+@app.route('/main')
 def main_page(language):
     if language == 'polish':
         return render_template('main.html')
-    if language == 'english':
+    elif language == 'english':
         return render_template('main.html')
 
 

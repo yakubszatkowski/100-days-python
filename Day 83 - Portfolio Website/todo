@@ -8,13 +8,44 @@ Backend:
 -opens up with name card and language selection (Polish, English)
 -depending on language show portfolio
 -navigation and contact on the left side (contact also on the bottom)
+
 -API: get, post, patch/put, delete (postman? security?):
---based on language
---ABOUT ME --personal data
---PROJECTS --type of projects --title --description(context for each project, explaining the problem, your role, the solution, and the impact.) --link to github --picture/gif(not must have)
---WORK EXPERIENCE --EDUCATION
---HARD SKILLS --SOFT SKILLS --LANGUAGE
---INTRESTS
+--how to create API?
+--how to make an API so only I have access to it?
+--how to secure an API so noone will hack into it?
+--how do I easily access my API so I can add, edit, delete content?
+
+Language
+About me
+		(about me)
+Projects
+		(project title)
+			(technologies)
+			(description: what it does, how it achieves that)
+			(photo)
+			(github link)
+	Technologies
+		Python
+			(libraries, frameworks)
+		MS office
+			(excel)
+		ServiceNOW
+		ActiveDirectory
+	Certificates
+		(currently none)
+	Work experience
+		(job title)
+			(responsibilities)
+	Education
+		(master degree)
+			(description)
+		(bachelor’s degree)
+(description)
+	Language
+	Soft skills
+	Intrests
+
+
 -CONTACT -- social media --cv download
 -analytics
 
