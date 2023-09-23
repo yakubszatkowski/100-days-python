@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>{% block title %} {% endblock %}</title>
     {% block styles %}
-        {{ bootstrap.load_css() }}
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
     {% endblock %}
@@ -13,7 +12,6 @@
   <section class="glowing-bg"></section>
   {% block content %} {% endblock %}
 
-  {{ bootstrap.load_js() }}
   <script src="{{ url_for('static', filename='js/shootingStars.js')}}"></script>
 </body>
 </html>
