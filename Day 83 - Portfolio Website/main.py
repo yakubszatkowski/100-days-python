@@ -1,19 +1,20 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
 
-@app.route('/index.html')
+@app.route('/index')
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
 @app.route('/main')
-def main_page(language):
-    if language == 'polish':
+def main_page():
+    language = request.args.get('language')
+    if language == 'english':
         return render_template('main.html')
-    elif language == 'english':
+    elif language == 'polish':
         return render_template('main.html')
 
 
