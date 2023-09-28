@@ -13,7 +13,7 @@ article_texts = []
 article_links = []
 for article in articles:
     text = article.find(name='a').getText()
-    link = article.find(name='a').get('href')
+    link = article.get('href')
     article_texts.append(text)
     article_links.append(link)
 
