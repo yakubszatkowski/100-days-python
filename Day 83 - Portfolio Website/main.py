@@ -13,15 +13,21 @@ class Technology(db.Model):
     __tablename__ = 'technologies'
     id = db.Column(db.Integer, primary_key=True)
     technology_name = db.Column(db.String(50), nullable=False)
-    subtechnologies = db.relationship('SubTechnology', backref='technology')
+    subtechnologies = db.relationship('SubTechnology', backref='technology')  # experiment with backref/back_populate
+    # descriptions_ids = db.relationship('Description', backref='technology')
 
 
 class SubTechnology(db.Model):
     __tablename__ = 'subtechnologies'
     id = db.Column(db.Integer, primary_key=True)
     # technology_id = db.Column(db.String, db.ForeignKey('technologies.id'))  # create a technology first if doesn't exist exception
-    technology_name = db.Column(db.String, db.ForeignKey('technologies.technology_name'))
+    technology_name = db.Column(db.String, db.ForeignKey('technologies.technology_name')) # test syntax __tablename__
     subtechnology_name = db.Column(db.String(50), nullable=False)
+
+
+class Description(db.Model):
+    __tablename__ = 'descriptions'
+    id = db.Column(db.Integer, primary_key=True)
 
 
 with app.app_context():
@@ -57,12 +63,9 @@ def marshal_wo_null(content):
 
     return content_marshal_wo_null
 
-def abort_if_exist(content, checked_var):
-    try:
-        if checked_var in content[0].values(): # is there a possibility to do it differently? explore content[0].values()
-            abort(409, message=f'{checked_var} is already in database')
-    except IndexError:
-        pass
+def abort_if_exist(contents, args, checked_var):
+    if any(content[checked_var] == args[checked_var] for content in contents):  # !
+        abort(409, message=f'{args[checked_var]} already exist')
 
 
 class GetContent(Resource):
@@ -85,13 +88,13 @@ class PostContent(Resource):
 
         if content_type == 'technology':
             table = all_content['Technologies']
-            abort_if_exist(table, args['technology_name'])
+            abort_if_exist(table, args, 'technology_name')  # <- figure this one
             new_content = Technology(
                 technology_name=args['technology_name']
             )
         elif content_type == 'subtechnology':
             table = all_content['Subtechnologies']
-            abort_if_exist(table, args['subtechnology_name'])
+            abort_if_exist(table, args, 'subtechnology_name')
             new_content = SubTechnology(
                 technology_name=args['technology_name'],
                 subtechnology_name=args['subtechnology_name']
@@ -128,7 +131,6 @@ class DeleteContent(Resource):
             return {'message': f'Content from {content_type} with id {content_id} has been deleted'}, 200
 
 
-# CHECK IF EVERYTHING IS WORKING THEN COMMIT
 api.add_resource(GetContent, '/get/')
 api.add_resource(PostContent, '/post/')
 api.add_resource(GetAllContent, '/get-all/')
