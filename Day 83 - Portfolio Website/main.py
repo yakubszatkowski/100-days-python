@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api, Resource, fields, marshal, abort
-from sqlalchemy_utils import generic_relationship
-
+from sqlalchemy.dialects.postgresql import ENUM
 
 app = Flask(__name__)
 api = Api(app)
@@ -11,33 +10,48 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
+class Description(db.Model):
+    __tablename__ = "descriptions"
+    id = db.Column(db.Integer, primary_key=True)
+    object_id = db.Column(db.Integer, nullable=False)
+    object_type = db.Column(ENUM('aboutme', 'technology', 'subtechnology',  # adress SAWarning
+        name='object_types'), nullable=False)
+    language = db.Column(db.String)
+    text = db.Column(db.String)
+
+
 class AboutMe(db.Model):
     __tablename__ = 'aboutme'
     id = db.Column(db.Integer, primary_key=True)
+    descriptions = db.relationship(
+        'Description',
+        primaryjoin="and_(Description.object_type == 'aboutme', foreign(Description.object_id) == AboutMe.id)",
+        lazy='dynamic'
+    )
 
 
 class Technology(db.Model):
     __tablename__ = 'technologies'
     id = db.Column(db.Integer, primary_key=True)
-    subtechnologies = db.relationship('SubTechnology', backref='technology')
+    subtechnologies = db.relationship('Subtechnology', backref='technology')
     technology_name = db.Column(db.String(50), nullable=False)
+    descriptions = db.relationship(
+        'Description',
+        primaryjoin="and_(Description.object_type == 'technology', foreign(Description.object_id) == Technology.id)",
+        lazy='dynamic'
+    )
 
 
-class SubTechnology(db.Model):
+class Subtechnology(db.Model):
     __tablename__ = 'subtechnologies'
     id = db.Column(db.Integer, primary_key=True)
     technology_name = db.Column(db.String, db.ForeignKey(Technology.technology_name))
     subtechnology_name = db.Column(db.String(50), nullable=False)
-
-
-class Description(db.Model):
-    __tablename__ = 'descriptions'
-    id = db.Column(db.Integer, primary_key=True)
-    object_type = db.Column(db.String)
-    object_id = db.Column(db.Integer)
-    language = db.Column(db.String)
-    text = db.Column(db.String)
-    object = generic_relationship(object_type, object_id)
+    descriptions = db.relationship(
+        'Description',
+        primaryjoin="and_(Description.object_type == 'subtechnology', foreign(Description.object_id) == Subtechnology.id)",
+        lazy='dynamic'
+    )
 
 
 with app.app_context():
@@ -64,7 +78,11 @@ resource_fields = {
     'technology_name': fields.String,
     'subtechnologies': fields.List(fields.String(attribute='subtechnology_name')),
     'subtechnology_name': fields.String,
-    # 'descriptions': fields.List(fields.String)
+    'descriptions': fields.List(fields.String(attribute='text')),
+    'object_type': fields.String,
+    'object_id': fields.Integer,
+    'language': fields.String,
+    'text': fields.String
 }
 
 
@@ -105,7 +123,7 @@ class PostContent(Resource):
         elif content_type == 'subtechnology':
             table = all_content['Subtechnologies']
             abort_if_exist(table, args, 'subtechnology_name')
-            new_content = SubTechnology(
+            new_content = Subtechnology(
                 technology_name=args['technology_name'],
                 subtechnology_name=args['subtechnology_name']
             )
@@ -120,7 +138,7 @@ class PostContent(Resource):
 class GetAllContent(Resource):
     def get(self):
         technologies = [marshal_wo_null(technology) for technology in db.session.query(Technology).all()]
-        subtechnologies = [marshal_wo_null(subtechnology) for subtechnology in db.session.query(SubTechnology).all()]
+        subtechnologies = [marshal_wo_null(subtechnology) for subtechnology in db.session.query(Subtechnology).all()]
         getall = {
             'Technologies': technologies,
             'Subtechnologies': subtechnologies
@@ -145,34 +163,23 @@ class DeleteContent(Resource):
 class PostText(Resource):
     def post(self):
         args = request.form
-        content_type = args['object_type'].title()
-        content_id = args['object_id']
         new_text = Description(
-            object_type= content_type,
-            object_id = content_id,
-            language = args['language'],
-            text = args['text'],
+            object_id=args['object_id'],
+            object_type=args['object_type'],
+            language=args['language'],
+            text=args['text']
         )
-        got_content = globals().get(content_type).query.filter_by(id=content_id).first()
+        db.session.add(new_text)
+        db.session.commit()
 
-        new_text.object = got_content
-        # db.session.add(new_text)
-        # db.session.commit()
-
-        # query by Description
-        descriptions = db.session.query(Description).all()
-        for description in descriptions:
-            print(description.object_id)
-
-        return 'ok'
-
+        return marshal_wo_null(new_text)
 
 
 api.add_resource(GetContent, '/get/')
-api.add_resource(PostContent, '/post/')
 api.add_resource(GetAllContent, '/get-all/')
-api.add_resource(DeleteContent, '/delete/')
+api.add_resource(PostContent, '/post/')
 api.add_resource(PostText, '/post-text/')
+api.add_resource(DeleteContent, '/delete/')
 
 if __name__ == '__main__':
     app.run(debug=True)
