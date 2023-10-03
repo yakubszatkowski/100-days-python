@@ -14,7 +14,7 @@ class Description(db.Model):
     __tablename__ = "descriptions"
     id = db.Column(db.Integer, primary_key=True)
     object_id = db.Column(db.Integer, nullable=False)
-    object_type = db.Column(ENUM('aboutme', 'technology', 'subtechnology',  # adress SAWarning
+    object_type = db.Column(ENUM('aboutme', 'technology', 'subtechnology',
         name='object_types'), nullable=False)
     language = db.Column(db.String)
     text = db.Column(db.String)
@@ -26,8 +26,13 @@ class AboutMe(db.Model):
     descriptions = db.relationship(
         'Description',
         primaryjoin="and_(Description.object_type == 'aboutme', foreign(Description.object_id) == AboutMe.id)",
-        lazy='dynamic'
+        lazy='dynamic',
+        overlaps="descriptions" # addresses SAWarning
     )
+
+
+class MyProject(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
 
 
 class Technology(db.Model):
@@ -38,7 +43,8 @@ class Technology(db.Model):
     descriptions = db.relationship(
         'Description',
         primaryjoin="and_(Description.object_type == 'technology', foreign(Description.object_id) == Technology.id)",
-        lazy='dynamic'
+        lazy='dynamic',
+        overlaps="descriptions"
     )
 
 
@@ -50,8 +56,29 @@ class Subtechnology(db.Model):
     descriptions = db.relationship(
         'Description',
         primaryjoin="and_(Description.object_type == 'subtechnology', foreign(Description.object_id) == Subtechnology.id)",
-        lazy='dynamic'
+        lazy='dynamic',
+        overlaps="descriptions"
     )
+
+
+class WorkExperience(db.Model):  # populate
+    id = db.Column(db.Integer, primary_key=True)
+
+
+class Education(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+
+class Language(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+
+class SoftSkills(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+
+class Interests(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
 
 
 with app.app_context():
@@ -78,17 +105,28 @@ resource_fields = {
     'technology_name': fields.String,
     'subtechnologies': fields.List(fields.String(attribute='subtechnology_name')),
     'subtechnology_name': fields.String,
-    'descriptions': fields.List(fields.String(attribute='text')),
+    'descriptions': fields.List(
+        fields.Nested(
+            {
+                'language': fields.String(attribute='language'),
+                'text': fields.String(attribute='text')
+            }
+        )
+    ),
     'object_type': fields.String,
     'object_id': fields.Integer,
     'language': fields.String,
     'text': fields.String
 }
 
+# fields.Nested({
+#     'language': fields.String(attribute='language'),
+#     'text': fields.String(attribute='text')
+# })
 
 def marshal_wo_null(content):
     content_marshal = marshal(content, resource_fields)
-    content_marshal_wo_null = {k: v for (k, v) in content_marshal.items() if v is not None}  # !
+    content_marshal_wo_null = {k: v for (k, v) in content_marshal.items() if v is not None and v != 0 and v} # some empty lists or 0s appear
     return content_marshal_wo_null
 
 
