@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api, Resource, fields, marshal, abort
 from sqlalchemy.dialects.postgresql import ENUM
 from datetime import datetime
+from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 api = Api(app)
@@ -77,7 +78,7 @@ class Subtechnology(db.Model):
 class Experience(db.Model):
     __tablename__ = 'Experiences'
     id = db.Column(db.Integer, primary_key=True)
-    type_exp = db.Column(db.String)  # either work or education (similar model)
+    type_exp = db.Column(db.String)  # either work or education # either aboutme, language, soft skill, interest
     location = db.Column(db.String)
     time_range = db.Column(db.String)
     translations = db.relationship(
@@ -94,9 +95,15 @@ with app.app_context():
 
 resource_fields = {
     'id': fields.Integer,
+    'type_soft': fields.String,
+    'subtechnologies_used': fields.String,
+    'image_path': fields.String,
+    'link': fields.String,
     'technology_name': fields.String,
     'subtechnologies': fields.List(fields.String(attribute='subtechnology_name')),
     'subtechnology_name': fields.String,
+    'location': fields.String,
+    'time_range': fields.String,
     'translations': fields.List(
         fields.Nested(
             {
@@ -139,10 +146,10 @@ def marshal_wo_null(content):  # !
     return content_marshal_wo_null
 
 
-def if_already_exist(contents, args, checked_var):
-    if any(content[checked_var] == args[checked_var] for content in contents):  # !
-        abort(409, message=f'{args[checked_var]} already exist')
-        # return f'{args[checked_var]} has been changed'
+# def if_already_exist(contents, args, checked_var):
+#     if any(content[checked_var] == args[checked_var] for content in contents):  # !
+#         abort(409, message=f'{args[checked_var]} already exist')
+#         # return f'{args[checked_var]} has been changed'
 
 
 class GetContent(Resource):
@@ -157,51 +164,60 @@ class GetContent(Resource):
             return marshal_wo_null(got_content), 200
 
 
-class PostContent(Resource):
-    def post(self):
+class PutContent(Resource):
+    def put(self):
         args = request.form
         content_type = args['content']
-        all_content = GetAllContent().get()
+        content_id = args['id']
 
         if content_type == 'SoftSkill':
             new_content = SoftSkill(
-                type_soft=args['type_soft']
+                id=content_id,
+                type_soft=args['type_soft'] # either aboutme, language, soft skill, interest
             )
+
         elif content_type == 'MyProject':
-            new_content = SoftSkill(
+            new_content = MyProject(
+                id=content_id,
                 subtechnologies_used=args['subtechnologies_used'],
-                image_path=args['image_path'],  #
+                image_path=args['image_path'],
                 link=args['github_link']
-
             )
-        elif content_type == 'Technology':
-            table = all_content['Technologies']
-            if_already_exist(table, args, 'technology_name')
 
+        elif content_type == 'Technology':
             new_content = Technology(
+                id=content_id,
                 technology_name=args['technology_name']
             )
-        elif content_type == 'Subtechnology':
-            table = all_content['Subtechnologies']
-            if_already_exist(table, args, 'subtechnology_name')
 
+        elif content_type == 'Subtechnology':
             new_content = Subtechnology(
+                id=content_id,
                 technology_name=args['technology_name'],
                 subtechnology_name=args['subtechnology_name']
             )
+
         elif content_type == 'Experience':
-            new_content = SoftSkill(
-                type_soft=args['type_soft'],
+            new_content = Experience(
+                id=content_id,
+                type_exp=args['type_exp'], # either work or education
                 location=args['location'],
                 time_range=date_output(args['starting_date'], args['ending_date'])
             )
         else:
             return 'Wrong content key', 400
 
-        db.session.add(new_content)
-        db.session.commit()
-
-        return marshal_wo_null(new_content), 200
+        try:
+            db.session.add(new_content)  # repair put so can both create and update
+            db.session.commit()
+        except IntegrityError:
+            got_content = globals().get(content_type).query.filter_by(id=content_id).first()
+            db.session.delete(got_content)
+            db.session.commit()
+            db.session.add(new_content)
+            db.session.commit()
+        finally:
+            return marshal_wo_null(new_content), 200
 
 
 class GetAllContent(Resource):
@@ -247,7 +263,7 @@ class PostText(Resource):
 
 api.add_resource(GetContent, '/get/')
 api.add_resource(GetAllContent, '/get-all/')
-api.add_resource(PostContent, '/post/')
+api.add_resource(PutContent, '/put/')
 api.add_resource(PostText, '/post-text/')
 api.add_resource(DeleteContent, '/delete/')
 
