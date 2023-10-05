@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api, Resource, fields, marshal, abort
 from sqlalchemy.dialects.postgresql import ENUM
+from datetime import datetime
 
 app = Flask(__name__)
 api = Api(app)
@@ -14,26 +15,37 @@ class Translation(db.Model):
     __tablename__ = "translations"
     id = db.Column(db.Integer, primary_key=True)
     object_id = db.Column(db.Integer, nullable=False)
-    object_type = db.Column(ENUM('aboutme', 'technology', 'subtechnology',
+    object_type = db.Column(ENUM('softskill', 'project', 'technology', 'subtechnology',
         name='object_types'), nullable=False)
     language = db.Column(db.String)
     title = db.Column(db.String)
     text = db.Column(db.String)
 
 
-class AboutMe(db.Model):
-    __tablename__ = 'aboutme'
+class SoftSkill(db.Model):
+    __tablename__ = 'softskill'
     id = db.Column(db.Integer, primary_key=True)
-    translations = db.relationship(
+    type_soft = db.Column(db.String)  # either about me, languages, soft skills, interests (similar model)
+    translations = db.relationship(  # this contains both title and text and translations for them
         'Translation',
-        primaryjoin="and_(Translation.object_type == 'aboutme', foreign(Translation.object_id) == AboutMe.id)",
+        primaryjoin="and_(Translation.object_type == 'softskill', foreign(Translation.object_id) == SoftSkill.id)",
         lazy='dynamic',
         overlaps="translations" # addresses SAWarning
     )
 
 
 class MyProject(db.Model):
+    __tablename__ = 'projects'
     id = db.Column(db.Integer, primary_key=True)
+    subtechnologies_text = db.Column(db.String)
+    image_path = db.Column(db.String)
+    link = db.Column(db.String)
+    translations = db.relationship(
+        'Translation',
+        primaryjoin="and_(Translation.object_type == 'project', foreign(Translation.object_id) == MyProject.id)",
+        lazy='dynamic',
+        overlaps="translations"
+    )
 
 
 class Technology(db.Model):
@@ -65,11 +77,9 @@ class Subtechnology(db.Model):
 class Experience(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type_exp = db.Column(db.String)  # either work experience or education (similar model)
+    location = db.Column(db.String)
 
 
-class SoftSkill(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    type_soft = db.Column(db.String)  # either languages, soft skills, intrests (similar model
 
 with app.app_context():
     db.create_all()
@@ -111,6 +121,25 @@ resource_fields = {
     'text': fields.String
 }
 
+def date_output(beginning_date, ending_date=None):
+    format_beg_day = datetime.strptime(beginning_date, '%m-%Y')
+    if ending_date:
+        format_end_day = datetime.strptime(ending_date, '%m-%Y')
+        works_here = False
+    else:
+        format_end_day = datetime.today()
+        works_here = True
+
+    years = format_end_day.year - format_beg_day.year
+    months = format_end_day.month - format_beg_day.month
+    output = f'{beginning_date} - {"Now" if works_here else ending_date}{", " if months or years != 0 else ", just started!"}'
+
+    if years > 0:
+        output += f'{years} year{"s" if years > 1 else ""} '
+    if months > 0:
+        output += f'{months} month{"s" if months > 1 else ""}'
+    return output
+
 
 def marshal_wo_null(content):
     content_marshal = marshal(content, resource_fields)
@@ -141,6 +170,7 @@ class PostContent(Resource):
         args = request.form
         content_type = args['content']
         all_content = GetAllContent().get()
+        
         if content_type == 'technology':
             table = all_content['Technologies']
             if_already_exist(table, args, 'technology_name')
