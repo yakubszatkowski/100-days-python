@@ -12,10 +12,10 @@ db = SQLAlchemy(app)
 
 
 class Translation(db.Model):
-    __tablename__ = "translations"
+    __tablename__ = "Translations"
     id = db.Column(db.Integer, primary_key=True)
     object_id = db.Column(db.Integer, nullable=False)
-    object_type = db.Column(ENUM('softskill', 'project', 'technology', 'subtechnology',
+    object_type = db.Column(ENUM('softskill', 'myproject', 'technology', 'subtechnology', 'experience',
         name='object_types'), nullable=False)
     language = db.Column(db.String)
     title = db.Column(db.String)
@@ -23,9 +23,9 @@ class Translation(db.Model):
 
 
 class SoftSkill(db.Model):
-    __tablename__ = 'softskill'
+    __tablename__ = 'Softskills'
     id = db.Column(db.Integer, primary_key=True)
-    type_soft = db.Column(db.String)  # either about me, languages, soft skills, interests (similar model)
+    type_soft = db.Column(db.String)  # either aboutme, language, soft skill, interest
     translations = db.relationship(  # this contains both title and text and translations for them
         'Translation',
         primaryjoin="and_(Translation.object_type == 'softskill', foreign(Translation.object_id) == SoftSkill.id)",
@@ -35,24 +35,24 @@ class SoftSkill(db.Model):
 
 
 class MyProject(db.Model):
-    __tablename__ = 'projects'
+    __tablename__ = 'Projects'
     id = db.Column(db.Integer, primary_key=True)
-    subtechnologies_text = db.Column(db.String)
+    subtechnologies_used = db.Column(db.String) # doesn't require translation
     image_path = db.Column(db.String)
     link = db.Column(db.String)
     translations = db.relationship(
         'Translation',
-        primaryjoin="and_(Translation.object_type == 'project', foreign(Translation.object_id) == MyProject.id)",
+        primaryjoin="and_(Translation.object_type == 'myproject', foreign(Translation.object_id) == MyProject.id)",
         lazy='dynamic',
         overlaps="translations"
     )
 
 
 class Technology(db.Model):
-    __tablename__ = 'technologies'
+    __tablename__ = 'Technologies'
     id = db.Column(db.Integer, primary_key=True)
     subtechnologies = db.relationship('Subtechnology', backref='technology')
-    technology_name = db.Column(db.String(50), nullable=False)
+    technology_name = db.Column(db.String(50), nullable=False) # doesn't require translation
     translations = db.relationship(
         'Translation',
         primaryjoin="and_(Translation.object_type == 'technology', foreign(Translation.object_id) == Technology.id)",
@@ -62,10 +62,10 @@ class Technology(db.Model):
 
 
 class Subtechnology(db.Model):
-    __tablename__ = 'subtechnologies'
+    __tablename__ = 'Subtechnologies'
     id = db.Column(db.Integer, primary_key=True)
     technology_name = db.Column(db.String, db.ForeignKey(Technology.technology_name))
-    subtechnology_name = db.Column(db.String(50), nullable=False)
+    subtechnology_name = db.Column(db.String(50), nullable=False) # doesn't require translation
     translations = db.relationship(
         'Translation',
         primaryjoin="and_(Translation.object_type == 'subtechnology', foreign(Translation.object_id) == Subtechnology.id)",
@@ -75,29 +75,21 @@ class Subtechnology(db.Model):
 
 
 class Experience(db.Model):
+    __tablename__ = 'Experiences'
     id = db.Column(db.Integer, primary_key=True)
-    type_exp = db.Column(db.String)  # either work experience or education (similar model)
+    type_exp = db.Column(db.String)  # either work or education (similar model)
     location = db.Column(db.String)
-
+    time_range = db.Column(db.String)
+    translations = db.relationship(
+        'Translation',
+        primaryjoin="and_(Translation.object_type == 'experience', foreign(Translation.object_id) == Experience.id)",
+        lazy='dynamic',
+        overlaps="translations"
+    )
 
 
 with app.app_context():
     db.create_all()
-
-
-@app.route('/index')
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-
-@app.route('/main')
-def main_page():  # start returning content to the website
-    language = request.args.get('language')
-    if language == 'english':
-        return render_template('main.html')
-    elif language == 'polish':
-        return render_template('main.html')
 
 
 resource_fields = {
@@ -141,7 +133,7 @@ def date_output(beginning_date, ending_date=None):
     return output
 
 
-def marshal_wo_null(content):
+def marshal_wo_null(content):  # !
     content_marshal = marshal(content, resource_fields)
     content_marshal_wo_null = {k: v for (k, v) in content_marshal.items() if v is not None and v != 0 and v}
     return content_marshal_wo_null
@@ -170,16 +162,26 @@ class PostContent(Resource):
         args = request.form
         content_type = args['content']
         all_content = GetAllContent().get()
-        
-        if content_type == 'technology':
+
+        if content_type == 'SoftSkill':
+            new_content = SoftSkill(
+                type_soft=args['type_soft']
+            )
+        elif content_type == 'MyProject':
+            new_content = SoftSkill(
+                subtechnologies_used=args['subtechnologies_used'],
+                image_path=args['image_path'],  #
+                link=args['github_link']
+
+            )
+        elif content_type == 'Technology':
             table = all_content['Technologies']
             if_already_exist(table, args, 'technology_name')
 
             new_content = Technology(
                 technology_name=args['technology_name']
             )
-
-        elif content_type == 'subtechnology':
+        elif content_type == 'Subtechnology':
             table = all_content['Subtechnologies']
             if_already_exist(table, args, 'subtechnology_name')
 
@@ -187,9 +189,15 @@ class PostContent(Resource):
                 technology_name=args['technology_name'],
                 subtechnology_name=args['subtechnology_name']
             )
-
+        elif content_type == 'Experience':
+            new_content = SoftSkill(
+                type_soft=args['type_soft'],
+                location=args['location'],
+                time_range=date_output(args['starting_date'], args['ending_date'])
+            )
         else:
             return 'Wrong content key', 400
+
         db.session.add(new_content)
         db.session.commit()
 
@@ -202,7 +210,7 @@ class GetAllContent(Resource):
         subtechnologies = [marshal_wo_null(subtechnology) for subtechnology in db.session.query(Subtechnology).all()]
         getall = {
             'Technologies': technologies,
-            'Subtechnologies': subtechnologies
+            'Subtechnologies': subtechnologies,
         }
         return getall
 
@@ -242,6 +250,20 @@ api.add_resource(GetAllContent, '/get-all/')
 api.add_resource(PostContent, '/post/')
 api.add_resource(PostText, '/post-text/')
 api.add_resource(DeleteContent, '/delete/')
+
+@app.route('/index')
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/main')
+def main_page():  # start returning content to the website
+    language = request.args.get('language')
+    if language == 'english':
+        return render_template('main.html')
+    elif language == 'polish':
+        return render_template('main.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
