@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api, Resource, fields, marshal, abort
 from sqlalchemy.dialects.postgresql import ENUM
 from datetime import datetime
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, PendingRollbackError
 
 app = Flask(__name__)
 api = Api(app)
@@ -100,7 +100,23 @@ resource_fields = {
     'image_path': fields.String,
     'link': fields.String,
     'technology_name': fields.String,
-    'subtechnologies': fields.List(fields.String(attribute='subtechnology_name')),
+    'subtechnologies': fields.List(
+        fields.Nested(
+            {
+                'id': fields.Integer,
+                'subtechnology_name': fields.String,
+                'translations': fields.List(
+                    fields.Nested(
+                        {
+                            'id': fields.Integer,
+                            'language': fields.String,
+                            'text': fields.String
+                        }
+                    )
+                )
+            }
+        )
+    ),
     'subtechnology_name': fields.String,
     'location': fields.String,
     'time_range': fields.String,
@@ -119,6 +135,7 @@ resource_fields = {
     'title': fields.String(attribute='title'),
     'text': fields.String
 }
+
 
 def date_output(beginning_date, ending_date=None):
     format_beg_day = datetime.strptime(beginning_date, '%m-%Y')
@@ -144,12 +161,6 @@ def marshal_wo_null(content):  # !
     content_marshal = marshal(content, resource_fields)
     content_marshal_wo_null = {k: v for (k, v) in content_marshal.items() if v is not None and v != 0 and v}
     return content_marshal_wo_null
-
-
-# def if_already_exist(contents, args, checked_var):
-#     if any(content[checked_var] == args[checked_var] for content in contents):  # !
-#         abort(409, message=f'{args[checked_var]} already exist')
-#         # return f'{args[checked_var]} has been changed'
 
 
 class GetContent(Resource):
@@ -207,26 +218,24 @@ class PutContent(Resource):
         else:
             return 'Wrong content key', 400
 
-        try:
-            db.session.add(new_content)  # repair put so can both create and update
-            db.session.commit()
-        except IntegrityError:
-            got_content = globals().get(content_type).query.filter_by(id=content_id).first()
-            db.session.delete(got_content)
+        object_to_update = globals().get(content_type).query.filter_by(id=content_id).first()
+        if object_to_update:
+            db.session.delete(object_to_update)
             db.session.commit()
             db.session.add(new_content)
             db.session.commit()
-        finally:
-            return marshal_wo_null(new_content), 200
+        else:
+            db.session.add(new_content)
+            db.session.commit()
+
+        return marshal_wo_null(new_content), 200
 
 
 class GetAllContent(Resource):
-    def get(self):  # populate
-        technologies = [marshal_wo_null(technology) for technology in db.session.query(Technology).all()]
-        subtechnologies = [marshal_wo_null(subtechnology) for subtechnology in db.session.query(Subtechnology).all()]
+    def get(self):  # TODO format & populate & test
+        technologies = [marshal_wo_null(technology) for technology in db.session.query(Technology).all()]  # create function for that?
         getall = {
             'Technologies': technologies,
-            'Subtechnologies': subtechnologies,
         }
         return getall
 
@@ -245,18 +254,28 @@ class DeleteContent(Resource):
             return {'message': f'Content from {content_type} with id {content_id} has been deleted'}, 200
 
 
-class PostText(Resource):
-    def post(self):
+class PutText(Resource):
+    def put(self):  # TODO change to put?
         args = request.form
+        translation_id=args['id']
         new_text = Translation(
+            id=translation_id,
             object_id=args['object_id'],
             object_type=args['object_type'],
             language=args['language'],
             text=args['text'],
             title=args['title']
         )
-        db.session.add(new_text)
-        db.session.commit()
+
+        got_translation = Translation.query.filter_by(id=translation_id).first()
+        if got_translation:
+            db.session.delete(got_translation)
+            db.session.commit()
+            db.session.add(new_text)
+            db.session.commit()
+        else:
+            db.session.add(new_text)
+            db.session.commit()
 
         return marshal_wo_null(new_text)
 
@@ -264,7 +283,7 @@ class PostText(Resource):
 api.add_resource(GetContent, '/get/')
 api.add_resource(GetAllContent, '/get-all/')
 api.add_resource(PutContent, '/put/')
-api.add_resource(PostText, '/post-text/')
+api.add_resource(PutText, '/put-text/')
 api.add_resource(DeleteContent, '/delete/')
 
 @app.route('/index')
@@ -274,7 +293,7 @@ def index():
 
 
 @app.route('/main')
-def main_page():  # start returning content to the website
+def main_page():  # TODO start returning content to the website
     language = request.args.get('language')
     if language == 'english':
         return render_template('main.html')
