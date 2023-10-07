@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api, Resource, fields, marshal, abort
 from sqlalchemy.dialects.postgresql import ENUM
 from datetime import datetime
-from sqlalchemy.exc import IntegrityError, PendingRollbackError
+from dateutil import relativedelta
 
 app = Flask(__name__)
 api = Api(app)
@@ -96,39 +96,27 @@ with app.app_context():
 resource_fields = {
     'id': fields.Integer,
     'type_soft': fields.String,
+    'type_exp': fields.String,
     'subtechnologies_used': fields.String,
     'image_path': fields.String,
     'link': fields.String,
     'technology_name': fields.String,
     'subtechnologies': fields.List(
-        fields.Nested(
-            {
-                'id': fields.Integer,
-                'subtechnology_name': fields.String,
-                'translations': fields.List(
-                    fields.Nested(
-                        {
-                            'id': fields.Integer,
-                            'language': fields.String,
-                            'text': fields.String
-                        }
-                    )
-                )
-            }
-        )
-    ),
+        fields.Nested({'id': fields.Integer,
+                       'subtechnology_name': fields.String,
+                       'translations': fields.List(
+                           fields.Nested({'id': fields.Integer,
+                                          'language': fields.String,
+                                          'text': fields.String}))})),
     'subtechnology_name': fields.String,
     'location': fields.String,
     'time_range': fields.String,
     'translations': fields.List(
-        fields.Nested(
-            {
-                'language': fields.String(attribute='language'),
-                'title': fields.String(attribute='title'),
-                'text': fields.String(attribute='text')
-            }
-        )
-    ),
+        fields.Nested({
+            'id': fields.Integer,
+            'language': fields.String(attribute='language'),
+            'title': fields.String(attribute='title'),
+            'text': fields.String(attribute='text')})),
     'object_type': fields.String,
     'object_id': fields.Integer,
     'language': fields.String,
@@ -146,14 +134,17 @@ def date_output(beginning_date, ending_date=None):
         format_end_day = datetime.today()
         works_here = True
 
-    years = format_end_day.year - format_beg_day.year
-    months = format_end_day.month - format_beg_day.month
+    delta = relativedelta.relativedelta(format_end_day, format_beg_day)
+    years = delta.years
+    months = delta.months
+
     output = f'{beginning_date} - {"Now" if works_here else ending_date}{", " if months or years != 0 else ", just started!"}'
 
     if years > 0:
         output += f'{years} year{"s" if years > 1 else ""} '
     if months > 0:
         output += f'{months} month{"s" if months > 1 else ""}'
+
     return output
 
 
@@ -215,12 +206,13 @@ class PutContent(Resource):
                 location=args['location'],
                 time_range=date_output(args['starting_date'], args['ending_date'])
             )
+
         else:
             return 'Wrong content key', 400
 
-        object_to_update = globals().get(content_type).query.filter_by(id=content_id).first()
-        if object_to_update:
-            db.session.delete(object_to_update)
+        object_to_replate = globals().get(content_type).query.filter_by(id=content_id).first()
+        if object_to_replate:
+            db.session.delete(object_to_replate)
             db.session.commit()
             db.session.add(new_content)
             db.session.commit()
@@ -231,11 +223,23 @@ class PutContent(Resource):
         return marshal_wo_null(new_content), 200
 
 
+def marshall_all(table, var=None):
+    query = [marshal_wo_null(item) for item in db.session.query(table).all()]
+    list_of_contents = [content for content in query if content.get('type_soft') == var or content.get('type_exp') == var]
+    return list_of_contents
+
+
 class GetAllContent(Resource):
-    def get(self):  # TODO format & populate & test
-        technologies = [marshal_wo_null(technology) for technology in db.session.query(Technology).all()]  # create function for that?
+    def get(self):
         getall = {
-            'Technologies': technologies,
+            'About me': marshall_all(SoftSkill, 'aboutme'),
+            'My projects': marshall_all(MyProject),
+            'Technical skills': marshall_all(Technology),
+            'Work experience': marshall_all(Experience, 'work'),
+            'Education': marshall_all(Experience, 'education'),
+            'Languages': marshall_all(SoftSkill, 'language'),
+            'Soft skills': marshall_all(SoftSkill, 'soft skill'),
+            'Interest': marshall_all(SoftSkill, 'interest')
         }
         return getall
 
@@ -255,7 +259,7 @@ class DeleteContent(Resource):
 
 
 class PutText(Resource):
-    def put(self):  # TODO change to put?
+    def put(self):
         args = request.form
         translation_id=args['id']
         new_text = Translation(
@@ -267,9 +271,9 @@ class PutText(Resource):
             title=args['title']
         )
 
-        got_translation = Translation.query.filter_by(id=translation_id).first()
-        if got_translation:
-            db.session.delete(got_translation)
+        translation_to_replace = Translation.query.filter_by(id=translation_id).first()
+        if translation_to_replace:
+            db.session.delete(translation_to_replace)
             db.session.commit()
             db.session.add(new_text)
             db.session.commit()
@@ -285,6 +289,7 @@ api.add_resource(GetAllContent, '/get-all/')
 api.add_resource(PutContent, '/put/')
 api.add_resource(PutText, '/put-text/')
 api.add_resource(DeleteContent, '/delete/')
+
 
 @app.route('/index')
 @app.route('/')
