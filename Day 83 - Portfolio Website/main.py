@@ -125,6 +125,22 @@ resource_fields = {
 }
 
 
+def content_by_language(website_contents, language):  # sorts by language
+    for keyword, section in website_contents.items():
+        for subsection in section:
+            if 'translations' in subsection:
+                translations = subsection['translations']
+                translations = [translation for translation in translations if translation['language'] == language]
+                subsection['translations'] = translations
+            elif 'subtechnologies' in subsection:
+                subtechnologies = subsection['subtechnologies']
+                for subtechnology in subtechnologies:
+                    translations = subtechnology['translations']
+                    translations = [translation for translation in translations if translation['language'] == language]
+                    subtechnology['translations'] = translations
+    return website_contents
+
+
 def date_output(beginning_date, ending_date=None):
     format_beg_day = datetime.strptime(beginning_date, '%m-%Y')
     if ending_date:
@@ -148,10 +164,16 @@ def date_output(beginning_date, ending_date=None):
     return output
 
 
-def marshal_wo_null(content):  # !
+def marshal_wo_null(content):
     content_marshal = marshal(content, resource_fields)
     content_marshal_wo_null = {k: v for (k, v) in content_marshal.items() if v is not None and v != 0 and v}
     return content_marshal_wo_null
+
+
+def marshall_all(table, var=None):
+    query = [marshal_wo_null(item) for item in db.session.query(table).all()]
+    list_of_contents = [content for content in query if content.get('type_soft') == var or content.get('type_exp') == var]
+    return list_of_contents
 
 
 class GetContent(Resource):
@@ -221,12 +243,6 @@ class PutContent(Resource):
             db.session.commit()
 
         return marshal_wo_null(new_content), 200
-
-
-def marshall_all(table, var=None):
-    query = [marshal_wo_null(item) for item in db.session.query(table).all()]
-    list_of_contents = [content for content in query if content.get('type_soft') == var or content.get('type_exp') == var]
-    return list_of_contents
 
 
 class GetAllContent(Resource):
@@ -301,8 +317,10 @@ def index():
 def main_page():  # TODO start returning content to the website
     language = request.args.get('language')
     if language == 'english':
+        website_contents = content_by_language(GetAllContent().get(), language='en')
         return render_template('main.html')
     elif language == 'polish':
+        website_contents = content_by_language(GetAllContent().get(), language='pl')
         return render_template('main.html')
 
 if __name__ == '__main__':
