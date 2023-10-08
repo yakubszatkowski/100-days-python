@@ -1,9 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% for section_title, section in website_contents.items() %}
-    <h1>{{section_title}}</h1>
-
+{% for section_title, content in website_contents.items() %}
+<label for="check-{{section_title}}">
+    <div class="card">
+        <h1 class="main-title">{{section_title}}</h1>
+        <input type="checkbox" id="check-{{section_title}}" class="checks">
+        <div class="hidden-wrapper">
+            <div class="hidden-content" >
+                <p class="content-text">
+                    &emsp;&emsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vitae tortor a est scelerisque fringilla. Aenean nulla purus, posuere sit amet maximus nec, pellentesque ac magna. Suspendisse ut magna dictum, eleifend ligula at, aliquam tortor. Cras vitae sem tempus, egestas nibh sit amet, maximus lectus. Curabitur dui orci, gravida sed convallis vel, pellentesque eget lacus. Proin mattis tincidunt purus ac imperdiet. Etiam et placerat magna. Fusce aliquet facilisis elit, sit amet iaculis nisi feugiat vel. Duis interdum, lorem non posuere ultricies, lorem neque eleifend tortor, ut mattis arcu tortor vel mauris. Aenean malesuada suscipit porta. Ut nec felis eu est sodales dapibus. Maecenas vitae dui nec magna dictum congue. Proin metus nunc, rhoncus id mattis vel, volutpat sit amet orci. Suspendisse sit amet purus posuere, tincidunt massa eget, semper mi.
+                </p>
+            </div>
+        </div>
+    </div>
+</label>
 {% endfor %}
-
+<!--<div class="card">-->
+<!--    <h1 class="main-title">Lorem Ipsum</h1>-->
+<!--    <p class="content-text">-->
+<!--        &emsp;&emsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vitae tortor a est scelerisque fringilla. Aenean nulla purus, posuere sit amet maximus nec, pellentesque ac magna. Suspendisse ut magna dictum, eleifend ligula at, aliquam tortor. Cras vitae sem tempus, egestas nibh sit amet, maximus lectus. Curabitur dui orci, gravida sed convallis vel, pellentesque eget lacus. Proin mattis tincidunt purus ac imperdiet. Etiam et placerat magna. Fusce aliquet facilisis elit, sit amet iaculis nisi feugiat vel. Duis interdum, lorem non posuere ultricies, lorem neque eleifend tortor, ut mattis arcu tortor vel mauris. Aenean malesuada suscipit porta. Ut nec felis eu est sodales dapibus. Maecenas vitae dui nec magna dictum congue. Proin metus nunc, rhoncus id mattis vel, volutpat sit amet orci. Suspendisse sit amet purus posuere, tincidunt massa eget, semper mi.-->
+<!--    </p>-->
+<!--</div>-->
 {% endblock %}

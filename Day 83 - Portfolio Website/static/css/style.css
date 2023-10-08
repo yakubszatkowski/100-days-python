@@ -1,18 +1,18 @@
 * {
-  margin: 0;
 }
 
-body, button {
-  overflow: hidden;
+body {
   color: white;
   font-family: 'Montserrat';
   text-align: center;
+  overflow-x: hidden;
+  margin: 5%;
 }
 
 .glowing-bg {
-  position: absolute;
+  position: fixed;
   width: 100%;
-  height: 100vh;
+  inset: 0;  /* this holds top, bottom, right, left value to 0*/
   background: radial-gradient(circle, #091235 10%, black 80%);
   animation: animateBG 5s linear infinite;
   z-index: -1;
@@ -60,11 +60,25 @@ body, button {
   0% { transform: translate(0, 0) }
   100% { transform: translate(-600px, 600px) }
 }
-
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 .card {
-  padding: 25px;
+  padding: 1%;
   background-color: rgba(0,0,0,.2);
-  border-radius: 10px
+  border-radius: 10px;
+  margin-top: 1%;
+  margin-inline: 20%;
+  transition: 0.5s;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .card {
+    margin-inline: 1%;
+  }
+}
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+.card:hover {
+  box-shadow: 0 0 16px 2px #9fbce9;
 }
 
 .intro-card {
@@ -106,4 +120,27 @@ body, button {
 .language-button:hover {
   box-shadow: 0 0 6px 4px #9fbce9;
   color: white;
+}
+
+.content-text {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.checks {
+  display: none;
+}
+
+.hidden-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: 1s
+}
+
+.hidden-content {
+  overflow: hidden;
+}
+
+.checks:checked ~ .hidden-wrapper {
+  grid-template-rows: 1fr;
 }
