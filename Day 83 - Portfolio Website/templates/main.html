@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Hello</h1>
+
+{% for section_title, section in website_contents.items() %}
+    <h1>{{section_title}}</h1>
+
+{% endfor %}
 
 {% endblock %}

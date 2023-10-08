@@ -528,8 +528,23 @@ website_contents = {
 }
 
 
-def content_by_language(language):  # sorts by language
-    for keyword, section in website_contents.items():
+def content_by_language(contents, language):  # sorts by language
+    titles_translation = {
+        'About me': 'O mnie',
+        'My projects': 'Moje projekty',
+        'Technical skills': 'Umiejętności techniczne',
+        'Work experience': 'Doświadczenie zawodowe',
+        'Education': 'Edukacja',
+        'Languages': 'Języki',
+        'Soft skills': 'Umiejętności miękkie',
+        'Interest': 'Zainteresowania',
+    }
+
+    if language == 'pl':
+        for key in titles_translation:
+            contents[titles_translation[key]] = contents.pop(key)
+
+    for key, section in contents.items():
         for subsection in section:
             if 'translations' in subsection:
                 translations = subsection['translations']
@@ -541,7 +556,7 @@ def content_by_language(language):  # sorts by language
                     translations = subtechnology['translations']
                     translations = [translation for translation in translations if translation['language'] == language]
                     subtechnology['translations'] = translations
-    return website_contents
+    return contents
 
 
-print(content_by_language('pl'))
+print(content_by_language(website_contents, 'pl'))

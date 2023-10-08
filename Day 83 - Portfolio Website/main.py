@@ -92,6 +92,16 @@ class Experience(db.Model):
 with app.app_context():
     db.create_all()
 
+section_titles = {
+	'About me': ['About me', 'O mnie'],
+	'My projects': ['My projects', 'Moje projekty'],
+	'Technical skills': ['Technical skills', 'Umiejętności techniczne'],
+	'Work experience': ['Work experience', 'Doświadczenie zawodowe'],
+	'Education': ['Education', 'Edukacja'],
+	'Languages': ['Languages', 'Języki'],
+	'Soft skills': ['Soft skills', 'Umiejętności miękkie'],
+	'Interest': ['Interest', 'Zainteresowania'],
+}
 
 resource_fields = {
     'id': fields.Integer,
@@ -125,8 +135,23 @@ resource_fields = {
 }
 
 
-def content_by_language(website_contents, language):  # sorts by language
-    for keyword, section in website_contents.items():
+def content_by_language(contents, language):  # sorts by language
+    titles_translation = {
+        'About me': 'O mnie',
+        'My projects': 'Moje projekty',
+        'Technical skills': 'Umiejętności techniczne',
+        'Work experience': 'Doświadczenie zawodowe',
+        'Education': 'Edukacja',
+        'Languages': 'Języki',
+        'Soft skills': 'Umiejętności miękkie',
+        'Interest': 'Zainteresowania',
+    }
+
+    if language == 'pl':
+        for key in titles_translation:
+            contents[titles_translation[key]] = contents.pop(key)
+
+    for key, section in contents.items():
         for subsection in section:
             if 'translations' in subsection:
                 translations = subsection['translations']
@@ -138,7 +163,7 @@ def content_by_language(website_contents, language):  # sorts by language
                     translations = subtechnology['translations']
                     translations = [translation for translation in translations if translation['language'] == language]
                     subtechnology['translations'] = translations
-    return website_contents
+    return contents
 
 
 def date_output(beginning_date, ending_date=None):
@@ -318,10 +343,11 @@ def main_page():  # TODO start returning content to the website
     language = request.args.get('language')
     if language == 'english':
         website_contents = content_by_language(GetAllContent().get(), language='en')
-        return render_template('main.html')
+        return render_template('main.html', website_contents=website_contents)
     elif language == 'polish':
         website_contents = content_by_language(GetAllContent().get(), language='pl')
-        return render_template('main.html')
+        return render_template('main.html', website_contents=website_contents)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
