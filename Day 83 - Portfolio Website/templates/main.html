@@ -9,13 +9,17 @@
         {% for subsection in section %}
           <div class="hidden-wrapper">
             <div class="hidden-content" >
-              <h3>title</h3>
-              <p class="content-text">
-                {{ section }}
-              </p>
+              {% if 'translations' in subsection %}
+              <h3>{{ subsection['translations']['title'] }}</h3>
+              <p class="content-text">{{ subsection['translations']['text'] }}</p>
+              {% else %}
+              <h3></h3>
+              <p class="content-text">{{ subsection['subtechnologies'] }}</p>
+              {% endif %}
             </div>
           </div>
         {% endfor %}
+        <p style="color: pink;">{{section}}</p>
       </div>
     </label>
   {% endfor %}

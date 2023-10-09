@@ -549,14 +549,16 @@ def content_by_language(contents, language):  # sorts by language
             if 'translations' in subsection:
                 translations = subsection['translations']
                 translations = [translation for translation in translations if translation['language'] == language]
-                subsection['translations'] = translations
+                subsection['translations'] = translations[0]
             elif 'subtechnologies' in subsection:
                 subtechnologies = subsection['subtechnologies']
                 for subtechnology in subtechnologies:
                     translations = subtechnology['translations']
                     translations = [translation for translation in translations if translation['language'] == language]
-                    subtechnology['translations'] = translations
+                    subtechnology['translations'] = translations[0]
     return contents
 
 
-print(content_by_language(website_contents, 'en'))
+website = content_by_language(website_contents, 'en')
+
+print(website)

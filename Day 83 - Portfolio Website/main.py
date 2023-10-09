@@ -156,13 +156,17 @@ def content_by_language(contents, language):  # sorts by language
             if 'translations' in subsection:
                 translations = subsection['translations']
                 translations = [translation for translation in translations if translation['language'] == language]
-                subsection['translations'] = translations
+                subsection['translations'] = dict(translations[0])
             elif 'subtechnologies' in subsection:
                 subtechnologies = subsection['subtechnologies']
+                subtechnologies_list = []
                 for subtechnology in subtechnologies:
                     translations = subtechnology['translations']
                     translations = [translation for translation in translations if translation['language'] == language]
-                    subtechnology['translations'] = translations
+                    # subsection['translations'] = dict(translations[0])
+                    # print(subsection['translations'])
+                    subtechnologies_list.append(dict(translations[0]))
+                subsection['subtechnologies'] = subtechnologies_list
     return contents
 
 
@@ -343,6 +347,7 @@ def main_page():  # TODO start returning content to the website
     language = request.args.get('language')
     if language == 'english':
         website_contents = content_by_language(GetAllContent().get(), language='en')
+        print(website_contents)
         return render_template('main.html', website_contents=website_contents)
     elif language == 'polish':
         website_contents = content_by_language(GetAllContent().get(), language='pl')
