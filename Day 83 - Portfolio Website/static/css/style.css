@@ -134,7 +134,8 @@ body {
 .hidden-wrapper {
   display: grid;
   grid-template-rows: 0fr;
-  transition: 1s
+  opacity: 0;
+  transition: grid-template-rows 1s, opacity 1s ease-in-out 0.2s;
 }
 
 .hidden-content {
@@ -143,4 +144,5 @@ body {
 
 .checks:checked ~ .hidden-wrapper {
   grid-template-rows: 1fr;
+  opacity: 1;
 }
