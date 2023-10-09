@@ -14,7 +14,7 @@ body {
   width: 100%;
   inset: 0;  /* this holds top, bottom, right, left value to 0*/
   background: radial-gradient(circle, #091235 10%, black 80%);
-  animation: animateBG 5s linear infinite;
+  animation: animateBG 10s linear infinite;
   z-index: -1;
 }
 
@@ -60,23 +60,18 @@ body {
   0% { transform: translate(0, 0) }
   100% { transform: translate(-600px, 600px) }
 }
-/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
 .card {
+  width: 60%;
+  display: inline-block;  /* fixes margin clickable area */
   padding: 1%;
   background-color: rgba(0,0,0,.2);
   border-radius: 10px;
   margin-top: 1%;
-  margin-inline: 20%;
   transition: 0.5s;
   box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
-  .card {
-    margin-inline: 1%;
-  }
-}
-/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 .card:hover {
   box-shadow: 0 0 16px 2px #9fbce9;
 }
@@ -89,20 +84,44 @@ body {
   animation: up-to-middle 2s linear;
 }
 
+@keyframes page-transition-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 @keyframes up-to-middle {
   0% { top: 20%; opacity: 0.1 }
   40% { top: 30% }
-  90% { top: 40% }
+  100% { top: 40% }
 }
 
 .main-title {
   letter-spacing: 15px;
   padding-bottom: 10px;
   text-transform: uppercase;
+  transition: 0.2s;
+}
+
+.page-transition {
+  animation: page-transition-in 1s;
+}
+
+@keyframes page-transition-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .language-button {
-  display: inline-block;
+  display: inline-block;  /* fixes margin clickable area */
   margin: 30px;
   text-decoration: none;
   color: white;
@@ -122,7 +141,23 @@ body {
   color: white;
 }
 
-.content-text {
+@media (max-width: 1200px) {  /* High res iPad/tablet */
+  .card {
+    width: 75%;
+  }
+}
+
+@media (max-width: 768px) {  /* Low res iPad/tablet */
+  .card {
+    width: 99%;
+  }
+  .main-title {
+    letter-spacing: 5px;
+  }
+}
+
+.content-text, h3 {
+  margin-inline: 20px;
   text-align: justify;
   text-justify: inter-word;
 }
@@ -135,7 +170,7 @@ body {
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
-  transition: grid-template-rows 1s, opacity 1s ease-in-out 0.2s;
+  transition: grid-template-rows 1s ease-in-out, opacity 1s ease-in-out 0.2s; /* multiple transitions */
 }
 
 .hidden-content {
@@ -143,6 +178,7 @@ body {
 }
 
 .checks:checked ~ .hidden-wrapper {
-  grid-template-rows: 1fr;
+  grid-template-rows: 1fr;  /* height 0 -> auto hack */
   opacity: 1;
 }
+
