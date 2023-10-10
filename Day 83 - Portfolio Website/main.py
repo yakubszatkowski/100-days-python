@@ -92,17 +92,6 @@ class Experience(db.Model):
 with app.app_context():
     db.create_all()
 
-section_titles = {
-	'About me': ['About me', 'O mnie'],
-	'My projects': ['My projects', 'Moje projekty'],
-	'Technical skills': ['Technical skills', 'Umiejętności techniczne'],
-	'Work experience': ['Work experience', 'Doświadczenie zawodowe'],
-	'Education': ['Education', 'Edukacja'],
-	'Languages': ['Languages', 'Języki'],
-	'Soft skills': ['Soft skills', 'Umiejętności miękkie'],
-	'Interest': ['Interest', 'Zainteresowania'],
-}
-
 resource_fields = {
     'id': fields.Integer,
     'type_soft': fields.String,
@@ -136,6 +125,7 @@ resource_fields = {
 
 
 def content_by_language(contents, language):  # sorts by language and formats OrderedDict
+    contents['Contact'] = [{'contact': None}]
     titles_translation = {
         'About me': 'O mnie',
         'My projects': 'Moje projekty',
@@ -145,6 +135,7 @@ def content_by_language(contents, language):  # sorts by language and formats Or
         'Languages': 'Języki',
         'Soft skills': 'Umiejętności miękkie',
         'Interests': 'Zainteresowania',
+        'Contact': 'Kontakt',
     }
 
     if language == 'pl':
@@ -164,6 +155,7 @@ def content_by_language(contents, language):  # sorts by language and formats Or
                     translations = [translation for translation in translations if translation['language'] == language]
                     subtechnology['translations'] = dict(translations[0])
                 subsection['subtechnologies'] = [dict(subtechnology) for subtechnology in subsection['subtechnologies']]
+
     return contents
 
 

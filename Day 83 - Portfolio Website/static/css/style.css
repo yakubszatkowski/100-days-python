@@ -48,7 +48,7 @@ body {
   transform-origin: left;
   transform: rotate(-45deg);
   background: linear-gradient(90deg, #9fbce9, transparent);
-  animation: tail 3s linear infinite
+  animation: tail 5s linear infinite
 }
 
 @keyframes tail {
@@ -73,7 +73,7 @@ body {
 }
 
 .card:hover {
-  box-shadow: 0 0 16px 2px #9fbce9;
+  box-shadow: 0 0 20px 2px #9fbce9;
 }
 
 .intro-card {
@@ -126,7 +126,7 @@ body {
 
 .glowing-button {
   display: inline-block;  /* fixes margin clickable area */
-  margin: 30px;
+  margin: 15px;
   text-decoration: none;
   color: white;
   padding: 5px 20px;
@@ -134,18 +134,18 @@ body {
   border: 1px solid black;
   transition: 0.5s;
 }
-
+.img-project {
+  opacity: 0.8;
+}
 .flag-img {
   vertical-align: middle;
   height: 20px;
 }
 
 .glowing-button:hover {
-  box-shadow: 0 0 6px 4px #9fbce9;
+  box-shadow: 0 0 20px 4px #9fbce9;
   color: white;
 }
-
-
 
 p, h3, h4, h5, h6 {  /* .content-text previously instead of p */
   margin-inline: 20px;
@@ -205,6 +205,30 @@ p, h3, h4, h5, h6 {  /* .content-text previously instead of p */
 img {
   max-width: 600px;
   transition: 0.2s;
+}
+
+.contact-img {
+  display: inline-block;
+  max-height: 40px;
+  max-width: 40px;
+  margin: 15px;
+  filter: invert(1);
+  transition: 0.2s;
+  border-radius: 10px;
+}
+
+.contact-img:hover {
+  box-shadow: 0 0 44px 4px grey, inset 0 0 4px 4px grey;
+  color: white;
+}
+
+.e-mail {
+  text-align: center;
+  margin: 3px;
+}
+
+.link-display {
+  display: inline-block;
 }
 
 @media (max-width: 768px) {  /* Low res iPad/tablet */

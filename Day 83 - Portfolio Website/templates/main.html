@@ -18,7 +18,7 @@
                   <h4>{{ subsection['subtechnologies_used'] }}</h4>
                   <p>{{ subsection['translations']['text'] }}</p>
                 </div>
-                <img src="{{subsection['image_path']}}">
+                <img src="{{subsection['image_path']}}" class="img-project">
                 <br>
                 <a href="{{ subsection['link'] }}" class="glowing-button">Github link</a>
               {% endif %}
@@ -65,6 +65,22 @@
                 <p class="indent-other">{{ subsection['translations']['text'] }}</p>
               {% endif %}
 
+              {% if 'contact' in subsection %}
+                <h4 class="e-mail">yakub.szatkowski@gmail.com</h4>
+
+                <div class="contact-icons">
+                  <a href="https://github.com/yakubszatkowski" class="link-display">
+                    <img src="{{ url_for('static', filename='img/contact_icons/github.png')}}" class="contact-img" alt="Github">
+                  </a>
+                  <a href="https://www.linkedin.com/in/jakub-szatkowski-77b719237/" class="link-display">
+                    <img src="{{ url_for('static', filename='img/contact_icons/linkedin.png')}}" class="contact-img" alt="Linkedin">
+                  </a>
+                  <a href="mailto: yakub.szatkowski@gmail.com" class="link-display">
+                    <img src="{{ url_for('static', filename='img/contact_icons/mail.png')}}" class="contact-img" alt="Mail">
+                  </a>
+                </div>
+              {% endif %}
+
 
 
             </div>
@@ -73,6 +89,4 @@
       </div>
     </label>
   {% endfor %}
-</div>
-
 {% endblock %}

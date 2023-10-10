@@ -529,6 +529,7 @@ website_contents = {
 
 
 def content_by_language(contents, language):  # sorts by language
+    contents['Contact'] = [{'contact': None}]
     titles_translation = {
         'About me': 'O mnie',
         'My projects': 'Moje projekty',
@@ -538,6 +539,7 @@ def content_by_language(contents, language):  # sorts by language
         'Languages': 'Języki',
         'Soft skills': 'Umiejętności miękkie',
         'Interest': 'Zainteresowania',
+        'Contact': 'Kontakt'
     }
 
     if language == 'pl':
@@ -563,8 +565,11 @@ def content_by_language(contents, language):  # sorts by language
                 #     subtechnology_dict['translations'] = translations
                 #     subtechnologies_list.append(dict(subtechnology_dict))
                 # subsection['subtechnologies'] = subtechnologies_list
+
     return contents
 
 
 website = content_by_language(website_contents, 'en')
 print(website)
+
+
