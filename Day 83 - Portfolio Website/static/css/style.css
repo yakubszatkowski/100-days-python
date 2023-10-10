@@ -106,6 +106,10 @@ body {
   transition: 0.2s;
 }
 
+.choose-lang-text {
+  text-align: center;
+}
+
 .page-transition {
   animation: page-transition-in 1s;
 }
@@ -120,7 +124,7 @@ body {
   }
 }
 
-.language-button {
+.glowing-button {
   display: inline-block;  /* fixes margin clickable area */
   margin: 30px;
   text-decoration: none;
@@ -136,27 +140,14 @@ body {
   height: 20px;
 }
 
-.language-button:hover {
+.glowing-button:hover {
   box-shadow: 0 0 6px 4px #9fbce9;
   color: white;
 }
 
-@media (max-width: 1200px) {  /* High res iPad/tablet */
-  .card {
-    width: 75%;
-  }
-}
 
-@media (max-width: 768px) {  /* Low res iPad/tablet */
-  .card {
-    width: 99%;
-  }
-  .main-title {
-    letter-spacing: 5px;
-  }
-}
 
-.content-text, h3 {
+p, h3, h4, h5, h6 {  /* .content-text previously instead of p */
   margin-inline: 20px;
   text-align: justify;
   text-justify: inter-word;
@@ -181,3 +172,67 @@ body {
   grid-template-rows: 1fr;  /* height 0 -> auto hack */
   opacity: 1;
 }
+
+.one-line-text {
+  margin-inline 20px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.one-line-text h4, .one-line-text p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 0px;
+}
+
+.indent {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.indent-other {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+@media (max-width: 1200px) {  /* High res iPad/tablet */
+  .card {
+    width: 85%;
+  }
+}
+
+img {
+  max-width: 600px;
+  transition: 0.2s;
+}
+
+@media (max-width: 768px) {  /* Low res iPad/tablet */
+  .card {
+    width: 99%;
+  }
+  .main-title {
+    letter-spacing: 5px;
+  }
+  .one-line-text {
+    display: block
+  }
+  .one-line-text h4, .one-line-text p {
+    text-align: left;
+  }
+  .one-line-text p {
+    margin-left: 30px
+  }
+  .one-line-text .time-range {
+    margin-left: 20px
+  }
+  .indent-other {
+    margin-left: 50px;
+  }
+  img {
+    max-width: 400px;
+  }
+}
+
+
+

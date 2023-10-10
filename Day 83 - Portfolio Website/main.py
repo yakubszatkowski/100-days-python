@@ -135,7 +135,7 @@ resource_fields = {
 }
 
 
-def content_by_language(contents, language):  # sorts by language
+def content_by_language(contents, language):  # sorts by language and formats OrderedDict
     titles_translation = {
         'About me': 'O mnie',
         'My projects': 'Moje projekty',
@@ -144,7 +144,7 @@ def content_by_language(contents, language):  # sorts by language
         'Education': 'Edukacja',
         'Languages': 'Języki',
         'Soft skills': 'Umiejętności miękkie',
-        'Interest': 'Zainteresowania',
+        'Interests': 'Zainteresowania',
     }
 
     if language == 'pl':
@@ -159,14 +159,11 @@ def content_by_language(contents, language):  # sorts by language
                 subsection['translations'] = dict(translations[0])
             elif 'subtechnologies' in subsection:
                 subtechnologies = subsection['subtechnologies']
-                subtechnologies_list = []
                 for subtechnology in subtechnologies:
                     translations = subtechnology['translations']
                     translations = [translation for translation in translations if translation['language'] == language]
-                    # subsection['translations'] = dict(translations[0])
-                    # print(subsection['translations'])
-                    subtechnologies_list.append(dict(translations[0]))
-                subsection['subtechnologies'] = subtechnologies_list
+                    subtechnology['translations'] = dict(translations[0])
+                subsection['subtechnologies'] = [dict(subtechnology) for subtechnology in subsection['subtechnologies']]
     return contents
 
 
@@ -261,9 +258,9 @@ class PutContent(Resource):
         else:
             return 'Wrong content key', 400
 
-        object_to_replate = globals().get(content_type).query.filter_by(id=content_id).first()
-        if object_to_replate:
-            db.session.delete(object_to_replate)
+        object_to_replace = globals().get(content_type).query.filter_by(id=content_id).first()
+        if object_to_replace:  # is it possible to update instead of deleting and creating new one?
+            db.session.delete(object_to_replace)
             db.session.commit()
             db.session.add(new_content)
             db.session.commit()
@@ -284,7 +281,7 @@ class GetAllContent(Resource):
             'Education': marshall_all(Experience, 'education'),
             'Languages': marshall_all(SoftSkill, 'language'),
             'Soft skills': marshall_all(SoftSkill, 'soft skill'),
-            'Interest': marshall_all(SoftSkill, 'interest')
+            'Interests': marshall_all(SoftSkill, 'interest')
         }
         return getall
 
@@ -317,7 +314,7 @@ class PutText(Resource):
         )
 
         translation_to_replace = Translation.query.filter_by(id=translation_id).first()
-        if translation_to_replace:
+        if translation_to_replace:  # is it possible to update instead of deleting and creating new one?
             db.session.delete(translation_to_replace)
             db.session.commit()
             db.session.add(new_text)
@@ -347,7 +344,6 @@ def main_page():  # TODO start returning content to the website
     language = request.args.get('language')
     if language == 'english':
         website_contents = content_by_language(GetAllContent().get(), language='en')
-        print(website_contents)
         return render_template('main.html', website_contents=website_contents)
     elif language == 'polish':
         website_contents = content_by_language(GetAllContent().get(), language='pl')
