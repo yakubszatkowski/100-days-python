@@ -197,13 +197,14 @@ def marshall_all(table, var=None):
 class GetContent(Resource):
     def get(self):
         args = request.args
-        content_type = args['content'].title()
+        content_type = args['content']
         content_id = args['id']
         got_content = globals().get(content_type).query.filter_by(id=content_id).first()
         if not got_content:
             abort(404, message='Couldn\'t find requested content')
         else:
             return marshal_wo_null(got_content), 200
+
 
 
 class PutContent(Resource):
@@ -250,15 +251,12 @@ class PutContent(Resource):
         else:
             return 'Wrong content key', 400
 
-        object_to_replace = globals().get(content_type).query.filter_by(id=content_id).first()
-        if object_to_replace:  # is it possible to update instead of deleting and creating new one?
-            db.session.delete(object_to_replace)
-            db.session.commit()
-            db.session.add(new_content)
-            db.session.commit()
-        else:
-            db.session.add(new_content)
-            db.session.commit()
+        object_to_update = globals().get(content_type).query.filter_by(id=content_id).first()
+        if object_to_update:
+            for column_name in object_to_update.__table__.columns.keys()[1:]:  # loop through columns except id and relations
+                new_value = getattr(new_content, column_name)  # get the new value from created new_content
+                setattr(object_to_update, column_name, new_value)  # update the new_value in old object
+                db.session.commit()
 
         return marshal_wo_null(new_content), 200
 
@@ -305,15 +303,12 @@ class PutText(Resource):
             title=args['title']
         )
 
-        translation_to_replace = Translation.query.filter_by(id=translation_id).first()
-        if translation_to_replace:  # is it possible to update instead of deleting and creating new one?
-            db.session.delete(translation_to_replace)
-            db.session.commit()
-            db.session.add(new_text)
-            db.session.commit()
-        else:
-            db.session.add(new_text)
-            db.session.commit()
+        translation_to_replace = Translation.query.filter_by(id=translation_id).first()  # this may be more specific
+        if translation_to_replace:
+            for column_name in translation_to_replace.__table__.columns.keys()[1:]:
+                new_value = getattr(new_text, column_name)
+                setattr(translation_to_replace, column_name, new_value)
+                db.session.commit()
 
         return marshal_wo_null(new_text)
 
