@@ -1,14 +1,18 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api, Resource, fields, marshal, abort
 from sqlalchemy.dialects.postgresql import ENUM
-from datetime import datetime
+import os
+from datetime import datetime, timedelta
 from dateutil import relativedelta
+# from functools import wraps
+# import jwt
 
 app = Flask(__name__)
 api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = os.environ.get('admin_password')
 db = SQLAlchemy(app)
 
 
@@ -194,6 +198,7 @@ def marshall_all(table, var=None):
     return list_of_contents
 
 
+
 class GetContent(Resource):
     def get(self):
         args = request.args
@@ -257,6 +262,9 @@ class PutContent(Resource):
                 new_value = getattr(new_content, column_name)  # get the new value from created new_content
                 setattr(object_to_update, column_name, new_value)  # update the new_value in old object
                 db.session.commit()
+        else:
+            db.session.add(new_content)
+            db.session.commit()
 
         return marshal_wo_null(new_content), 200
 
@@ -303,12 +311,15 @@ class PutText(Resource):
             title=args['title']
         )
 
-        translation_to_replace = Translation.query.filter_by(id=translation_id).first()  # this may be more specific
+        translation_to_replace = Translation.query.filter_by(id=translation_id).first()
         if translation_to_replace:
             for column_name in translation_to_replace.__table__.columns.keys()[1:]:
                 new_value = getattr(new_text, column_name)
                 setattr(translation_to_replace, column_name, new_value)
                 db.session.commit()
+        else:
+            db.session.add(new_text)
+            db.session.commit()
 
         return marshal_wo_null(new_text)
 
