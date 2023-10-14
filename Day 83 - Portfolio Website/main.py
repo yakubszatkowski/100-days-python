@@ -1,12 +1,12 @@
-from flask import Flask, render_template, request, make_response, jsonify
+from flask import Flask, render_template, request, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api, Resource, fields, marshal, abort
 from sqlalchemy.dialects.postgresql import ENUM
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 import os
 from datetime import datetime, timedelta
 from dateutil import relativedelta
-# from functools import wraps
-# import jwt
+
 
 app = Flask(__name__)
 api = Api(app)
@@ -14,6 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.environ.get('admin_password')
 db = SQLAlchemy(app)
+jwt = JWTManager(app)
 
 
 class Translation(db.Model):
@@ -198,7 +199,6 @@ def marshall_all(table, var=None):
     return list_of_contents
 
 
-
 class GetContent(Resource):
     def get(self):
         args = request.args
@@ -211,8 +211,23 @@ class GetContent(Resource):
             return marshal_wo_null(got_content), 200
 
 
+class GetAllContent(Resource):
+    def get(self):
+        getall = {
+            'About me': marshall_all(SoftSkill, 'aboutme'),
+            'My projects': marshall_all(MyProject),
+            'Technical skills': marshall_all(Technology),
+            'Work experience': marshall_all(Experience, 'work'),
+            'Education': marshall_all(Experience, 'education'),
+            'Languages': marshall_all(SoftSkill, 'language'),
+            'Soft skills': marshall_all(SoftSkill, 'soft skill'),
+            'Interests': marshall_all(SoftSkill, 'interest')
+        }
+        return getall
+
 
 class PutContent(Resource):
+    @jwt_required()
     def put(self):
         args = request.form
         content_type = args['content']
@@ -269,36 +284,8 @@ class PutContent(Resource):
         return marshal_wo_null(new_content), 200
 
 
-class GetAllContent(Resource):
-    def get(self):
-        getall = {
-            'About me': marshall_all(SoftSkill, 'aboutme'),
-            'My projects': marshall_all(MyProject),
-            'Technical skills': marshall_all(Technology),
-            'Work experience': marshall_all(Experience, 'work'),
-            'Education': marshall_all(Experience, 'education'),
-            'Languages': marshall_all(SoftSkill, 'language'),
-            'Soft skills': marshall_all(SoftSkill, 'soft skill'),
-            'Interests': marshall_all(SoftSkill, 'interest')
-        }
-        return getall
-
-
-class DeleteContent(Resource):
-    def delete(self):
-        args = request.args
-        content_type = args['content']
-        content_id = args['id']
-        got_content = globals().get(content_type).query.filter_by(id=content_id).first()
-        if not got_content:
-            abort(404, message='Couldn\'t find requested content')
-        else:
-            db.session.delete(got_content)
-            db.session.commit()
-            return {'message': f'Content from {content_type} with id {content_id} has been deleted'}, 200
-
-
 class PutText(Resource):
+    @jwt_required()
     def put(self):
         args = request.form
         translation_id=args['id']
@@ -324,11 +311,37 @@ class PutText(Resource):
         return marshal_wo_null(new_text)
 
 
+class DeleteContent(Resource):
+    @jwt_required()
+    def delete(self):
+        args = request.args
+        content_type = args['content']
+        content_id = args['id']
+        got_content = globals().get(content_type).query.filter_by(id=content_id).first()
+        if not got_content:
+            abort(404, message='Couldn\'t find requested content')
+        else:
+            db.session.delete(got_content)
+            db.session.commit()
+            return {'message': f'Content from {content_type} with id {content_id} has been deleted'}, 200
+
+
+class GetToken(Resource):
+    def post(self):
+        auth = request.authorization
+        print(os.environ.get('admin_password'))
+        if not auth and auth.username == 'admin' and auth.password == os.environ.get('admin_password'):
+            return make_response('Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!:'})
+
+        token = create_access_token(identity='admin', expires_delta=timedelta(hours=8))
+        return token
+
 api.add_resource(GetContent, '/get/')
 api.add_resource(GetAllContent, '/get-all/')
 api.add_resource(PutContent, '/put/')
 api.add_resource(PutText, '/put-text/')
 api.add_resource(DeleteContent, '/delete/')
+api.add_resource(GetToken, '/get-token/')
 
 
 @app.route('/index')
