@@ -11,7 +11,6 @@ from dateutil import relativedelta
 app = Flask(__name__)
 api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://yakub:j0vTrz6jeAUJRhzBK5sGN2qLkXu8WjAG@dpg-cklb6liv7m0s7384ul10-a.oregon-postgres.render.com/portfolio_website_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.environ.get('admin_password')
 db = SQLAlchemy(app)
