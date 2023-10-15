@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api, Resource, fields, marshal, abort
 from sqlalchemy.dialects.postgresql import ENUM
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 import os
 from datetime import datetime, timedelta
 from dateutil import relativedelta
@@ -11,8 +11,9 @@ from dateutil import relativedelta
 app = Flask(__name__)
 api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://yakub:j0vTrz6jeAUJRhzBK5sGN2qLkXu8WjAG@dpg-cklb6liv7m0s7384ul10-a.oregon-postgres.render.com/portfolio_website_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = os.environ.get('admin_password')
+app.config['JWT_SECRET_KEY'] = os.environ.get('admin_password')
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
 
@@ -58,7 +59,7 @@ class Technology(db.Model):
     __tablename__ = 'Technologies'
     id = db.Column(db.Integer, primary_key=True)
     subtechnologies = db.relationship('Subtechnology', backref='technology')
-    technology_name = db.Column(db.String(50), nullable=False) # doesn't require translation
+    technology_name = db.Column(db.String(50), nullable=False, unique=True) # doesn't require translation
     translations = db.relationship(
         'Translation',
         primaryjoin="and_(Translation.object_type == 'technology', foreign(Translation.object_id) == Technology.id)",
@@ -93,9 +94,6 @@ class Experience(db.Model):
         overlaps="translations"
     )
 
-
-with app.app_context():
-    db.create_all()
 
 resource_fields = {
     'id': fields.Integer,
@@ -328,8 +326,7 @@ class DeleteContent(Resource):
 
 class GetToken(Resource):
     def post(self):
-        auth = request.authorization
-        print(os.environ.get('admin_password'))
+        auth = request.authorization  # add max logon attempts?
         if not auth and auth.username == 'admin' and auth.password == os.environ.get('admin_password'):
             return make_response('Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!:'})
 
@@ -351,7 +348,7 @@ def index():
 
 
 @app.route('/main')
-def main_page():  # TODO start returning content to the website
+def main_page():
     language = request.args.get('language')
     if language == 'english':
         website_contents = content_by_language(GetAllContent().get(), language='en')
@@ -362,4 +359,6 @@ def main_page():  # TODO start returning content to the website
 
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
