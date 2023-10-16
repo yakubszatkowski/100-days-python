@@ -1,0 +1,27 @@
+WindowManager:
+
+    MainWindow:
+    PvPWindow:
+
+<MainWindow>:
+    name: "Main Window"
+
+    FloatLayout:
+
+        Label:
+            pos_hint: {"center_x": .5, "center_y": .8}
+            text: "Tic Tac Toe"
+            size_hint: (.4, .1)
+            font_name: "Montserrat"
+            font_size: 40
+            size_hint_x: None
+
+        Button:
+            pos_hint: {"center_x": .5, "center_y": .6}
+            text: "Player vs Player"
+            size_hint: (.4, .1)
+            font_name: "Montserrat"
+            font_size: 20
+
+<PvPWindow>:
+    name: "PvP Window"

@@ -1,19 +1,28 @@
 from kivy.app import App
-from kivy.uix.label import Label
-from kivy.core.window import Window
+from kivy.lang import Builder
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.core.text import LabelBase
+
+LabelBase.register(name='Montserrat',
+                   fn_regular='styling/Montserrat-Light.ttf')
+
+
+class MainWindow(Screen):
+    pass
+
+
+class PvPWindow(Screen):
+    pass
+
+
+class WindowManager(ScreenManager):
+    pass
 
 
 class TicTacToe(App):
-    def __init__(self):
-        super().__init__()
-        Window.minimum_width = 400
-        Window.minimum_height = 600
-
     def build(self):
-        title_label = Label(text='Tic Tac Toe')
-        return title_label
+        return Builder.load_file('tictactoe.kv')
 
 
 if __name__ == '__main__':
-    app = TicTacToe()
-    app.run()
+    TicTacToe().run()
