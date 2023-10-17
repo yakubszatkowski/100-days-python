@@ -1,7 +1,7 @@
 WindowManager:
 
     MainWindow:
-    PvPWindow:
+    GameWindow:
 
 <Label>:
     font_name: "Montserrat"
@@ -29,7 +29,7 @@ WindowManager:
                 app.root.current = "PvP Window"
                 root.manager.transition.direction = "left"
 
-<PvPWindow>:
+<GameWindow>:
     name: "PvP Window"
 
     FloatLayout:
@@ -42,25 +42,23 @@ WindowManager:
             size_hint_x: None
 
         Label:
-            id: player_a
             pos_hint: {"center_x": .2, "center_y": .85}
-            text: "Player A:"
+            text: "Player O:"
             font_size: 15
 
         Label:
-            id: player_b
             pos_hint: {"center_x": .8, "center_y": .85}
-            text: "Player B:"
+            text: "Player X:"
             font_size: 15
 
         Label:
-            id: score_a
+            id: score_O
             pos_hint: {"center_x": .2, "center_y": .8}
             text: "0"
             font_size: 15
 
         Label:
-            id: score_b
+            id: score_X
             pos_hint: {"center_x": .8, "center_y": .8}
             text: "0"
             font_size: 15

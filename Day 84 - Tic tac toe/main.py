@@ -13,20 +13,32 @@ class MainWindow(Screen):
     pass
 
 
-class PvPWindow(Screen):
-    alternate_xo = itertools.cycle(['O', 'X'])
+class GameWindow(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.game_board = None
+        self.alternate_xo = None
 
     def on_enter(self):
-        game_board = self.ids.game_board
-        game_board.clear_widgets()
-
+        self.alternate_xo = itertools.cycle(['O', 'X'])  # consider different colors?
+        self.game_board = self.ids.game_board
+        self.game_board.clear_widgets()
 
         for n in range(9):
-            button = Button(text="", on_press=self.clicked)
-            game_board.add_widget(button)
+            button = Button(text="", font_size=80, on_press=self.clicked)
+            self.game_board.add_widget(button)
+
+    def on_leave(self):
+        for element in self.game_board.children[::-1]:  # this iterates backwards
+            element.text = ''
+            # print(element.text)
 
     def clicked(self, button):
-        button.text = next(self.alternate_xo)
+        if button.text:
+            pass
+        else:
+            button.text = next(self.alternate_xo)
+
 
 class WindowManager(ScreenManager):
     pass
