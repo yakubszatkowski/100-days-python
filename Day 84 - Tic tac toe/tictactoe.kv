@@ -3,6 +3,10 @@ WindowManager:
     MainWindow:
     PvPWindow:
 
+<Label>:
+    font_name: "Montserrat"
+
+
 <MainWindow>:
     name: "Main Window"
 
@@ -12,16 +16,70 @@ WindowManager:
             pos_hint: {"center_x": .5, "center_y": .8}
             text: "Tic Tac Toe"
             size_hint: (.4, .1)
-            font_name: "Montserrat"
             font_size: 40
             size_hint_x: None
+
 
         Button:
             pos_hint: {"center_x": .5, "center_y": .6}
             text: "Player vs Player"
             size_hint: (.4, .1)
-            font_name: "Montserrat"
             font_size: 20
+            on_release:
+                app.root.current = "PvP Window"
+                root.manager.transition.direction = "left"
 
 <PvPWindow>:
     name: "PvP Window"
+
+    FloatLayout:
+
+        Label:
+            pos_hint: {"center_x": .5, "center_y": .9}
+            text: "Player vs Player"
+            size_hint: (.4, .1)
+            font_size: 20
+            size_hint_x: None
+
+        Label:
+            id: player_a
+            pos_hint: {"center_x": .2, "center_y": .85}
+            text: "Player A:"
+            font_size: 15
+
+        Label:
+            id: player_b
+            pos_hint: {"center_x": .8, "center_y": .85}
+            text: "Player B:"
+            font_size: 15
+
+        Label:
+            id: score_a
+            pos_hint: {"center_x": .2, "center_y": .8}
+            text: "0"
+            font_size: 15
+
+        Label:
+            id: score_b
+            pos_hint: {"center_x": .8, "center_y": .8}
+            text: "0"
+            font_size: 15
+
+        Button:
+            pos_hint: {"center_x": .5, "center_y": .1}
+            size_hint: (.2, .1)
+            text: "Menu"
+            on_release:
+                app.root.current = "Main Window"
+                root.manager.transition.direction = "right"
+
+        GridLayout:
+            id: game_board
+            size_hint: (.55, .55)
+            pos_hint: {"center_x": .5, "center_y": .45}
+            cols: 3
+
+
+
+
+
