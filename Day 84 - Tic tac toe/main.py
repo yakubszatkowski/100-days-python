@@ -6,19 +6,18 @@ from kivy.uix.button import Button
 from kivy.properties import *
 import itertools
 
-LabelBase.register(name='Montserrat',
-                   fn_regular='styling/Montserrat-Light.ttf')
+LabelBase.register(name='Montserrat', fn_regular='styling/Montserrat-Light.ttf')
 
-win_conditions = {  # this can be changed to list
-    1: (0, 1, 2),
-    2: (3, 4 ,5),
-    3: (6, 7, 8),
-    4: (0, 3, 6),
-    5: (1, 4, 7),
-    6: (2, 5, 8),
-    7: (2, 4, 6),
-    8: (0, 4, 8),
-}
+win_conditions = [
+    (0, 1, 2),
+    (3, 4 ,5),
+    (6, 7, 8),
+    (0, 3, 6),
+    (1, 4, 7),
+    (2, 5, 8),
+    (2, 4, 6),
+    (0, 4, 8),
+]
 
 
 class MainWindow(Screen):
@@ -53,27 +52,18 @@ class GameWindow(Screen):
         empty_board = self.game_board.children[::-1]
         board_state = [element.text for element in empty_board]
 
-        for win_condition in win_conditions.values():  # ↓ this can be done more efficiently with list comprehension
-            x_count = 0
-            o_count = 0
-            for position in win_condition:
-                if board_state[position] == 'X':
-                    x_count += True
-                    if x_count == 3:
-                        self.score_x += 1
-                        self.on_leave()
-                if board_state[position] == 'O':
-                    o_count += True
-                    if o_count == 3:
-                        self.score_o += 1
-                        self.on_leave()
+        for win_condition in win_conditions:
+            x_count = sum(True for position in win_condition if board_state[position] == 'X')
+            o_count = sum(True for position in win_condition if board_state[position] == 'O')
 
-        # after match is over (when point is being assigned) buttons should get disabled for 1 second and a
-        # label should appear telling who was the winner of the match
-
-        # print('X won!')
-        # print('O won!')
-        # print(f'{board_state[:3]}\n{board_state[3:6]}\n{board_state[6:9]}\n')  # testing
+            if x_count == 3:
+                print('X won!')
+                self.score_x += 1
+                self.on_leave()
+            elif o_count == 3:
+                print('O won!')
+                self.score_o += 1
+                self.on_leave()
 
 
     def on_leave(self):
