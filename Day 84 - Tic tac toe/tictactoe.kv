@@ -33,7 +33,6 @@ WindowManager:
     name: "PvP Window"
 
     FloatLayout:
-
         Label:
             pos_hint: {"center_x": .5, "center_y": .9}
             text: "Player vs Player"
@@ -52,16 +51,18 @@ WindowManager:
             font_size: 15
 
         Label:
-            id: score_O
+            id: score_o
             pos_hint: {"center_x": .2, "center_y": .8}
-            text: "0"
+            text: str(root.score_o)
             font_size: 15
 
         Label:
-            id: score_X
+            id: score_x
             pos_hint: {"center_x": .8, "center_y": .8}
-            text: "0"
+            text: str(root.score_x)
             font_size: 15
+
+
 
         Button:
             pos_hint: {"center_x": .5, "center_y": .1}
