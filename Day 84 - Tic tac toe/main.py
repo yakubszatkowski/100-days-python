@@ -4,7 +4,9 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.text import LabelBase
 from kivy.uix.button import Button
 from kivy.properties import *
+from kivy.clock import Clock
 import itertools
+
 
 LabelBase.register(name='Montserrat', fn_regular='styling/Montserrat-Light.ttf')
 
@@ -20,6 +22,10 @@ win_conditions = [
 ]
 
 
+def sleep(dt):
+    pass
+
+
 class MainWindow(Screen):
     pass
 
@@ -27,6 +33,7 @@ class MainWindow(Screen):
 class GameWindow(Screen):
     score_x = NumericProperty()
     score_o = NumericProperty()
+    winner = StringProperty()
 
     def on_enter(self):
         self.alternate_xo = itertools.cycle(['O', 'X'])  # consider different colors?
@@ -34,6 +41,7 @@ class GameWindow(Screen):
         self.game_board.clear_widgets()
         self.score_x = 0
         self.score_o = 0
+
 
         for n in range(9):
             button = Button(text="", font_size=80, on_press=self.clicked)
@@ -49,6 +57,13 @@ class GameWindow(Screen):
 
 
     def check_if_win(self):
+
+        def win(winner):
+            for button in self.game_board.children:
+                button.disabled=True
+            self.winner = f'{winner} won!'
+            Clock.schedule_once(self.on_leave, 1)
+
         empty_board = self.game_board.children[::-1]
         board_state = [element.text for element in empty_board]
 
@@ -57,16 +72,17 @@ class GameWindow(Screen):
             o_count = sum(True for position in win_condition if board_state[position] == 'O')
 
             if x_count == 3:
-                print('X won!')
                 self.score_x += 1
-                self.on_leave()
+                win('X')
             elif o_count == 3:
-                print('O won!')
                 self.score_o += 1
-                self.on_leave()
+                win('O')
 
 
-    def on_leave(self):
+    def on_leave(self, dt=None):
+        self.winner = ""
+        for button in self.game_board.children:
+            button.disabled = False
         for element in self.game_board.children[::-1]:  # this is supposed to iterate backwards
             element.text = ''
 

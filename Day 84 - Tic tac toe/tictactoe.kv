@@ -62,7 +62,12 @@ WindowManager:
             text: str(root.score_x)
             font_size: 15
 
-
+        Label:
+            id: winner
+            pos_hint: {"center_x": .5, "center_y": .8}
+            text: str(root.winner)
+            font_size: 25
+            color: 1/255, 150/255, 32/255, 1
 
         Button:
             pos_hint: {"center_x": .5, "center_y": .1}
