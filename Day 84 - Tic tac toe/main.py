@@ -22,15 +22,11 @@ win_conditions = [
 ]
 
 
-def sleep(dt):
-    pass
-
-
 class MainWindow(Screen):
     pass
 
 
-class GameWindow(Screen):
+class Game(Screen):
     score_x = NumericProperty()
     score_o = NumericProperty()
     winner = StringProperty()
@@ -41,7 +37,6 @@ class GameWindow(Screen):
         self.game_board.clear_widgets()
         self.score_x = 0
         self.score_o = 0
-
 
         for n in range(9):
             button = Button(text="", font_size=80, on_press=self.clicked)
@@ -85,6 +80,22 @@ class GameWindow(Screen):
             button.disabled = False
         for element in self.game_board.children[::-1]:  # this is supposed to iterate backwards
             element.text = ''
+
+
+class PvP(Game):
+    pass
+
+
+class VsComputerOption(Screen):
+    pass
+
+
+class VsComputerEasy(Game):
+    pass
+
+
+class VsComputerHard(Game):
+    pass
 
 
 class WindowManager(ScreenManager):

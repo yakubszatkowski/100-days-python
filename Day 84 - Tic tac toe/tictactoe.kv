@@ -1,7 +1,10 @@
 WindowManager:
 
     MainWindow:
-    GameWindow:
+    PvP:
+    VsComputerOption:
+    VsComputerEasy:
+    VsComputerHard:
 
 <Label>:
     font_name: "Montserrat"
@@ -26,11 +29,20 @@ WindowManager:
             size_hint: (.4, .1)
             font_size: 20
             on_release:
-                app.root.current = "PvP Window"
+                app.root.current = "PvP"
                 root.manager.transition.direction = "left"
 
-<GameWindow>:
-    name: "PvP Window"
+        Button:
+            pos_hint: {"center_x": .5, "center_y": .4}
+            text: "Vs Computer"
+            size_hint: (.4, .1)
+            font_size: 20
+            on_release:
+                app.root.current = "VsComputerOption"
+                root.manager.transition.direction = "left"
+
+<Game>:
+    name: "Game"
 
     FloatLayout:
         Label:
@@ -83,7 +95,53 @@ WindowManager:
             pos_hint: {"center_x": .5, "center_y": .47}
             cols: 3
 
+<PvP>:
+    name: "PvP"
+
+<VsComputerOption>
+    name: "VsComputerOption"
+
+    FloatLayout:
+        Label:
+            pos_hint: {"center_x": .5, "center_y": .8}
+            text: "Choose difficulty:"
+            size_hint: (.4, .1)
+            font_size: 20
+            size_hint_x: None
+
+        Button:
+            pos_hint: {"center_x": .5, "center_y": .65}
+            text: "Easy"
+            size_hint: (.4, .1)
+            font_size: 20
+            on_release:
+                app.root.current = "VsComputerEasy"
+                root.manager.transition.direction = "left"
 
 
+        Button:
+            pos_hint: {"center_x": .5, "center_y": .5}
+            text: "Hard"
+            size_hint: (.4, .1)
+            font_size: 20
+            on_release:
+                app.root.current = "VsComputerHard"
+                root.manager.transition.direction = "left"
 
+
+        Button:
+            pos_hint: {"center_x": .5, "center_y": .1}
+            size_hint: (.2, .1)
+            text: "Menu"
+            on_release:
+                app.root.current = "Main Window"
+                root.manager.transition.direction = "right"
+
+
+<VsComputerEasy>
+    name: "VsComputerEasy"
+
+
+<VsComputerHard>
+    name: "VsComputerHard"
 
