@@ -44,7 +44,6 @@ class Game(Screen):
         self.score_1 = 0
         self.score_2 = 0
         self.turn = 'player_1'
-
         self.players = { 'Player 1': 'O', 'Player 2': 'X' }
         self.player_1_current_figure = self.players['Player 1']
         self.player_2_current_figure = self.players['Player 2']
@@ -83,13 +82,15 @@ class Game(Screen):
             if count == 3:
                 for player, player_figure in self.players.items():
                     if player_figure == figure:
-                        print(player, player_figure)
                         win(player)
                 return True
         return False
 
-
-class PvP(Game):
+    def player_moves(self, button):
+        if self.turn == 'player_1':
+            self.player1_move(button)
+        elif self.turn == 'player_2':
+            self.player2_move(button)
 
     def player1_move(self, button):
         if button.text:
@@ -99,6 +100,9 @@ class PvP(Game):
             self.turn = 'player_2'
             self.is_win(self.players['Player 1'])
 
+
+class PvP(Game):
+
     def player2_move(self, button):
         if button.text:
             pass
@@ -106,12 +110,6 @@ class PvP(Game):
             button.text = self.players['Player 2']
             self.turn = 'player_1'
             self.is_win(self.players['Player 2'])
-
-    def player_moves(self, button):
-        if self.turn == 'player_1':
-            self.player1_move(button)
-        elif self.turn == 'player_2':
-            self.player2_move(button)
 
 
 class VsComputerHard(Game):
