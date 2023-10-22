@@ -6,6 +6,7 @@ WindowManager:
     VsComputerEasy:
     VsComputerHard:
 
+
 <Label>:
     font_name: "Montserrat"
 
@@ -41,6 +42,7 @@ WindowManager:
                 app.root.current = "VsComputerOption"
                 root.manager.transition.direction = "left"
 
+
 <Game>:
     name: "Game"
 
@@ -54,24 +56,24 @@ WindowManager:
 
         Label:
             pos_hint: {"center_x": .2, "center_y": .85}
-            text: "Player O:"
+            text: "Player 1:"
             font_size: 15
 
         Label:
             pos_hint: {"center_x": .8, "center_y": .85}
-            text: "Player X:"
+            text: "Player 2:"
             font_size: 15
 
         Label:
-            id: score_o
+            id: score_1
             pos_hint: {"center_x": .2, "center_y": .8}
-            text: str(root.score_o)
+            text: str(root.score_1)
             font_size: 15
 
         Label:
-            id: score_x
+            id: score_2
             pos_hint: {"center_x": .8, "center_y": .8}
-            text: str(root.score_x)
+            text: str(root.score_2)
             font_size: 15
 
         Label:
@@ -95,8 +97,10 @@ WindowManager:
             pos_hint: {"center_x": .5, "center_y": .47}
             cols: 3
 
+
 <PvP>:
     name: "PvP"
+
 
 <VsComputerOption>
     name: "VsComputerOption"
@@ -117,7 +121,6 @@ WindowManager:
             on_release:
                 app.root.current = "VsComputerEasy"
                 root.manager.transition.direction = "left"
-
 
         Button:
             pos_hint: {"center_x": .5, "center_y": .5}
