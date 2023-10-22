@@ -15,14 +15,12 @@ WindowManager:
     name: "Main Window"
 
     FloatLayout:
-
         Label:
             pos_hint: {"center_x": .5, "center_y": .8}
             text: "Tic Tac Toe"
             size_hint: (.4, .1)
             font_size: 40
             size_hint_x: None
-
 
         Button:
             pos_hint: {"center_x": .5, "center_y": .6}
@@ -56,12 +54,12 @@ WindowManager:
 
         Label:
             pos_hint: {"center_x": .2, "center_y": .85}
-            text: "Player 1:"
+            text: "Player 1 - " + str(root.player_1_current_figure)
             font_size: 15
 
         Label:
             pos_hint: {"center_x": .8, "center_y": .85}
-            text: "Player 2:"
+            text: "Player 2 - " + str(root.player_2_current_figure)
             font_size: 15
 
         Label:

@@ -34,6 +34,8 @@ class Game(Screen):
 
     score_1 = NumericProperty()
     score_2 = NumericProperty()
+    player_1_current_figure = StringProperty()
+    player_2_current_figure = StringProperty()
     winner = StringProperty()
 
     def on_enter(self):
@@ -42,6 +44,10 @@ class Game(Screen):
         self.score_1 = 0
         self.score_2 = 0
         self.turn = 'player_1'
+
+        self.players = { 'Player 1': 'O', 'Player 2': 'X' }
+        self.player_1_current_figure = self.players['Player 1']
+        self.player_2_current_figure = self.players['Player 2']
 
         for n in range(9):
             self.button = Button(text="", font_size=80, on_press=self.player_moves)
@@ -53,14 +59,32 @@ class Game(Screen):
             button.disabled = False
         for element in self.game_board.children[::-1]:
             element.text = ''
+        self.players['Player 1'], self.players['Player 2'] = self.players['Player 2'], self.players[
+            'Player 1']
+        self.player_1_current_figure = self.players['Player 1']
+        self.player_2_current_figure = self.players['Player 2']
 
     def is_win(self, figure):
+
+        def win(winner):
+            for button in self.game_board.children:
+                button.disabled=True
+            if winner == 'Player 1':
+                self.score_1 += 1
+            else:
+                self.score_2 += 1
+            self.winner = f'{winner} won!'
+            Clock.schedule_once(self.on_leave, 1)
+
         board_objects = self.game_board.children[::-1]
         board = [element.text for element in board_objects]
         for win_condition in win_conditions:
             count = sum(True for position in win_condition if board[position] == figure)
             if count == 3:
-                print(f'{figure} win')
+                for player, player_figure in self.players.items():
+                    if player_figure == figure:
+                        print(player, player_figure)
+                        win(player)
                 return True
         return False
 
@@ -71,23 +95,23 @@ class PvP(Game):
         if button.text:
             pass
         else:
-            button.text = 'O'
-            self.is_win('O')
+            button.text = self.players['Player 1']
+            self.turn = 'player_2'
+            self.is_win(self.players['Player 1'])
 
     def player2_move(self, button):
         if button.text:
             pass
         else:
-            button.text = 'X'
-            self.is_win('X')
+            button.text = self.players['Player 2']
+            self.turn = 'player_1'
+            self.is_win(self.players['Player 2'])
 
     def player_moves(self, button):
         if self.turn == 'player_1':
             self.player1_move(button)
-            self.turn = 'player_2'
         elif self.turn == 'player_2':
             self.player2_move(button)
-            self.turn = 'player_1'
 
 
 class VsComputerHard(Game):
