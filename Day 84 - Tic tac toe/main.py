@@ -5,7 +5,6 @@ from kivy.core.text import LabelBase
 from kivy.uix.button import Button
 from kivy.properties import *
 from kivy.clock import Clock
-import itertools
 
 
 LabelBase.register(name='Montserrat', fn_regular='styling/Montserrat-Light.ttf')
@@ -48,6 +47,7 @@ class Game(Screen):
         self.player_1_current_figure = self.players['Player 1']
         self.player_2_current_figure = self.players['Player 2']
 
+
         for n in range(9):
             self.button = Button(text="", font_size=80, on_press=self.player_moves)
             self.game_board.add_widget(self.button)
@@ -64,7 +64,6 @@ class Game(Screen):
         self.player_2_current_figure = self.players['Player 2']
 
     def is_win(self, figure):
-
         def win(winner):
             for button in self.game_board.children:
                 button.disabled=True
@@ -77,14 +76,30 @@ class Game(Screen):
 
         board_objects = self.game_board.children[::-1]
         board = [element.text for element in board_objects]
+
         for win_condition in win_conditions:
             count = sum(True for position in win_condition if board[position] == figure)
             if count == 3:
                 for player, player_figure in self.players.items():
                     if player_figure == figure:
                         win(player)
-                return True
+                        return True
         return False
+
+    def is_draw(self):
+        def draw():
+            for button in self.game_board.children:
+                button.disabled = True
+            self.winner = f'Draw!'
+            Clock.schedule_once(self.on_leave, 1)
+
+        board_objects = self.game_board.children[::-1]
+        board = [element.text for element in board_objects]
+        if '' in board:
+            return False
+        else:
+            draw()
+            return True
 
     def player_moves(self, button):
         if self.turn == 'player_1':
@@ -98,6 +113,7 @@ class Game(Screen):
         else:
             button.text = self.players['Player 1']
             self.turn = 'player_2'
+            self.is_draw()
             self.is_win(self.players['Player 1'])
 
 
@@ -109,11 +125,13 @@ class PvP(Game):
         else:
             button.text = self.players['Player 2']
             self.turn = 'player_1'
+            self.is_draw()
             self.is_win(self.players['Player 2'])
 
 
 class VsComputerHard(Game):
-    pass
+    def player2_move(self, button):
+        pass
 
 
 class VsComputerEasy(Game):
