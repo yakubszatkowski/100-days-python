@@ -35,35 +35,42 @@ class Game(Screen):
     player_2_current_figure = StringProperty()
     winner = StringProperty()
 
+    def disable_buttons(self, disable):
+        if not disable:
+            for button in self.game_board.children:
+                button.disabled = False
+        else:
+            for button in self.game_board.children:
+                button.disabled = True
+
+    def buttons(self):
+        return self.game_board.children[::-1]
+
     def on_enter(self):
         self.game_board = self.ids.game_board
         self.game_board.clear_widgets()
         self.score_1 = 0
         self.score_2 = 0
-        self.turn = 'player_1'
+        self.turn = 'Player_1'
         self.players = { 'Player 1': 'X', 'Player 2': 'O' }
         self.player_1_current_figure = self.players['Player 1']
         self.player_2_current_figure = self.players['Player 2']
-
         for n in range(9):
             self.button = Button(text="", font_size=80, on_press=self.player_moves)
             self.game_board.add_widget(self.button)
 
     def on_leave(self, dt=None):
         self.winner = ''
-        for button in self.game_board.children:
-            button.disabled = False
-        for element in self.game_board.children[::-1]:
-            element.text = ''
+        self.disable_buttons(False)
+        for button in self.buttons():
+            button.text = ''
         self.players['Player 1'], self.players['Player 2'] = self.players['Player 2'], self.players[
             'Player 1']
         self.player_1_current_figure = self.players['Player 1']
         self.player_2_current_figure = self.players['Player 2']
 
-
     def is_win(self, figure):
-        board_objects = self.game_board.children[::-1]
-        board = [element.text for element in board_objects]
+        board = [button.text for button in self.buttons()]
 
         for win_condition in win_conditions:
             count = sum(True for position in win_condition if board[position] == figure)
@@ -74,17 +81,14 @@ class Game(Screen):
         return False
 
     def is_draw(self):
-        board_objects = self.game_board.children[::-1]
-        board = [element.text for element in board_objects]
+        board = [button.text for button in self.buttons()]
         if '' in board:
             return False
         else:
             return True
 
-
     def win(self, player):
-        for button in self.game_board.children:
-            button.disabled = True
+        self.disable_buttons(True)
         if player == 'Player 1':
             self.score_1 += 1
         else:
@@ -93,12 +97,11 @@ class Game(Screen):
         Clock.schedule_once(self.on_leave, 1)
 
     def draw(self):
-        for button in self.game_board.children:
-            button.disabled = True
+        self.disable_buttons(True)
         self.winner = f'Draw!'
         Clock.schedule_once(self.on_leave, 1)
 
-
+    # if figure that wins starts next turn
     def player_moves(self, button):
         if self.turn == 'Player_1':
             self.player1_move(button)
@@ -110,55 +113,72 @@ class Game(Screen):
             pass
         else:
             button.text = self.players['Player 1']
-            self.turn = 'Player_2'
             if self.is_draw():
                 self.draw()
-            if self.is_win(self.players['Player 1']):
+            elif self.is_win(self.players['Player 1']):
                 self.win('Player 1')
+            self.turn = 'Player_2'
 
 
 class PvP(Game):
+
     def player2_move(self, button):
         if button.text:
             pass
         else:
             button.text = self.players['Player 2']
-            self.turn = 'Player_1'
             if self.is_draw():
                 self.draw()
-            if self.is_win(self.players['Player 2']):
+            elif self.is_win(self.players['Player 2']):
                 self.win('Player 2')
+            self.turn = 'Player_1'
 
 
 class VsComputerHard(Game):
 
     def player_moves(self, button):
-        self.player1_move(button)
-        self.npc_move()
+        if self.turn == 'Player_1':
+            self.player1_move(button)
+        if self.turn == 'Player_2':
+            self.disable_buttons(True)
+            Clock.schedule_once(self.npc_move, 0.1)
 
-    def npc_move(self):
+
+    def npc_move(self, dt):
         best_score = -800
         best_move = None
+        board_copy = self.buttons()[:]
 
-        board_objects = self.game_board.children[::-1]
-        board_copy = board_objects[:]
         for position, cell in enumerate(board_copy):
             if cell.text == '':
                 cell.text = self.players['Player 2']
+                if self.is_win(self.players['Player 2']):
+                    best_move = position
+                    break
                 score = self.minimax(board_copy, False)
                 cell.text = ''
                 if score > best_score:
                     best_score = score
                     best_move = position
-        board_objects[best_move].text = self.players['Player 2']
+        try:
+            self.buttons()[best_move].text = self.players['Player 2']
+        except TypeError:
+            pass
+        self.disable_buttons(False)
+
+        if self.is_draw():
+            self.draw()
+        elif self.is_win(self.players['Player 2']):
+            self.win('Player 2')
+        self.turn = 'Player_1'
 
 
     def minimax(self, board, is_maxing):
         if self.is_win(self.players['Player 2']):
             return 1
-        if self.is_win(self.players['Player 1']):
+        elif self.is_win(self.players['Player 1']):
             return -1
-        if self.is_draw():
+        elif self.is_draw():
             return 0
 
         if is_maxing:
@@ -176,7 +196,6 @@ class VsComputerHard(Game):
                 if cell.text == '':
                     cell.text = self.players['Player 1']
                     value = self.minimax(board, not is_maxing)
-                    print(value)
                     cell.text = ''
                     best_val = min(best_val, value)
             return best_val
