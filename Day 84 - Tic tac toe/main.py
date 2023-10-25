@@ -5,6 +5,7 @@ from kivy.core.text import LabelBase
 from kivy.uix.button import Button
 from kivy.properties import *
 from kivy.clock import Clock
+from random import choice
 
 LabelBase.register(name='Montserrat', fn_regular='styling/Montserrat-Light.ttf')
 
@@ -101,36 +102,35 @@ class Game(Screen):
         self.winner = f'Draw!'
         Clock.schedule_once(self.on_leave, 1)
 
-    # if figure that wins starts next turn
+    def player1_move(self, button):
+        if button.text:
+            pass
+        else:
+            button.text = self.players['Player 1']
+            if self.is_win(self.players['Player 1']):
+                self.win('Player 1')
+            elif self.is_draw():
+                self.draw()
+            self.turn = 'Player_2'
+
+
+class PvP(Game):
+
     def player_moves(self, button):
         if self.turn == 'Player_1':
             self.player1_move(button)
         elif self.turn == 'Player_2':
             self.player2_move(button)
 
-    def player1_move(self, button):
-        if button.text:
-            pass
-        else:
-            button.text = self.players['Player 1']
-            if self.is_draw():
-                self.draw()
-            elif self.is_win(self.players['Player 1']):
-                self.win('Player 1')
-            self.turn = 'Player_2'
-
-
-class PvP(Game):
-
     def player2_move(self, button):
         if button.text:
             pass
         else:
             button.text = self.players['Player 2']
-            if self.is_draw():
-                self.draw()
-            elif self.is_win(self.players['Player 2']):
+            if self.is_win(self.players['Player 2']):
                 self.win('Player 2')
+            elif self.is_draw():
+                self.draw()
             self.turn = 'Player_1'
 
 
@@ -166,10 +166,10 @@ class VsComputerHard(Game):
             pass
         self.disable_buttons(False)
 
-        if self.is_draw():
-            self.draw()
-        elif self.is_win(self.players['Player 2']):
+        if self.is_win(self.players['Player 2']):
             self.win('Player 2')
+        elif self.is_draw():
+            self.draw()
         self.turn = 'Player_1'
 
 
@@ -202,7 +202,37 @@ class VsComputerHard(Game):
 
 
 class VsComputerEasy(Game):
-    pass
+
+    def player_moves(self, button):
+        if self.turn == 'Player_1':
+            self.player1_move(button)
+        if self.turn == 'Player_2' and not self.is_win(self.players['Player 1']):
+            self.disable_buttons(True)
+            Clock.schedule_once(self.npc_move, 0.1)
+
+        if self.is_win(self.players['Player 1']):
+            Clock.schedule_once(self.npc_move, 1)
+
+    def npc_move(self, dt=None):
+        board_copy = self.buttons()[:]
+        available_positions = []
+        for position, cell in enumerate(board_copy):
+            if cell.text == '':
+                available_positions.append(position)
+
+        try:
+            random_move = choice(available_positions)
+            self.buttons()[random_move].text = self.players['Player 2']
+        except IndexError:
+            pass
+
+        if self.is_win(self.players['Player 2']):
+            self.win('Player 2')
+        elif self.is_draw():
+            self.draw()
+        self.turn = 'Player_1'
+
+        self.disable_buttons(False)
 
 
 class WindowManager(ScreenManager):
