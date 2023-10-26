@@ -7,7 +7,7 @@ from kivy.properties import *
 from kivy.clock import Clock
 from random import choice
 
-LabelBase.register(name='Montserrat', fn_regular='styling/Montserrat-Light.ttf')
+LabelBase.register(name='Montserrat', fn_regular='Montserrat-Light.ttf')
 
 win_conditions = [
     (0, 1, 2),
