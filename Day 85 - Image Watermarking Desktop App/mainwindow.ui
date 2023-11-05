@@ -6,63 +6,206 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>691</width>
-    <height>492</height>
+    <width>670</width>
+    <height>572</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Segoe MDL2 Assets</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
-    <item>
-     <widget class="QLabel" name="title_label">
-      <property name="styleSheet">
-       <string notr="true">QLabel {
-	qproperty-alignment: AlignCenter;
+  <property name="styleSheet">
+   <string notr="true">* {
+	color: white;
+}
+
+#MainWindow {	
+	background-color: qradialgradient(spread:pad, cx:0.511, cy:0.505682, radius:0.79, fx:0.284091, fy:0.25, stop:0 rgba(95, 95, 95, 255), stop:1 rgba(0, 0, 0, 255))
+}
+
+QMenuBar, QMenu {
+	background-color: rgb(49,49,49);
+	border-bottom: 0.5px solid white;
+}
+
+#graphic_window {
+	background-color: rgba(255, 255, 255, 100);
+	border-radius: 20px;
+}
+
+#instruction_label {
+	color: rgba(200, 200, 200, 100);
+}
+
+#watermark_input_text, #spin_box {
+	background-color: rgba(255, 255, 255, 0);
+	border: 0px;
+	border-bottom: 0.5px solid white;
+}
+
+#save_button {
+	border-radius: 10px;
+	background: grey;
 }</string>
-      </property>
-      <property name="text">
-       <string>Watermarker</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QGraphicsView" name="graphic_window"/>
-    </item>
-    <item>
-     <widget class="QLineEdit" name="watermark_input_text">
-      <property name="styleSheet">
-       <string notr="true">QLabel {
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="font">
+    <font>
+     <family>Segoe Script</family>
+    </font>
+   </property>
+   <widget class="QLabel" name="title_label">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>10</y>
+      <width>187</width>
+      <height>39</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>24</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>Watermarker</string>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="graphic_window">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>60</y>
+      <width>601</width>
+      <height>381</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>calibri 53</family>
+     </font>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="save_button">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>490</y>
+      <width>186</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>calibri 53</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>Save</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>450</y>
+      <width>441</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="options_layout">
+     <item>
+      <widget class="QLineEdit" name="watermark_input_text">
+       <property name="font">
+        <font>
+         <family>calibri 53</family>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
 qproperty-alignment: AlignCenter;
 }</string>
-      </property>
-      <property name="text">
-       <string>Enter Text here</string>
-      </property>
-      <property name="dragEnabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="save_button">
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="text">
-       <string>Save</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="dragEnabled">
+        <bool>false</bool>
+       </property>
+       <property name="placeholderText">
+        <string>Enter watermark text</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="font_size_label">
+       <property name="font">
+        <font>
+         <family>calibri 53</family>
+        </font>
+       </property>
+       <property name="text">
+        <string>Font Size</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spin_box">
+       <property name="font">
+        <font>
+         <family>calibri 53</family>
+        </font>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="instruction_label">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>180</y>
+      <width>481</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>36</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Drag your image here</string>
+    </property>
+   </widget>
+   <zorder>graphic_window</zorder>
+   <zorder>instruction_label</zorder>
+   <zorder>title_label</zorder>
+   <zorder>save_button</zorder>
+   <zorder>layoutWidget</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>691</width>
+     <width>670</width>
      <height>21</height>
     </rect>
    </property>
@@ -73,6 +216,7 @@ qproperty-alignment: AlignCenter;
     <addaction name="actionLoad"/>
     <addaction name="actionSave"/>
     <addaction name="separator"/>
+    <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -105,7 +249,14 @@ qproperty-alignment: AlignCenter;
     <string>AboutQt</string>
    </property>
   </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>
