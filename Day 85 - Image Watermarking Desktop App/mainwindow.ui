@@ -47,9 +47,17 @@ QMenuBar, QMenu {
 	border-bottom: 0.5px solid white;
 }
 
+#watermark_input_text::hover, #spin_box::hover {
+	border-bottom: 1.5px solid white;
+}
+
 #save_button {
 	border-radius: 10px;
 	background: grey;
+}
+
+#save_button::hover {
+	border: 1px solid white;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -194,8 +202,8 @@ qproperty-alignment: AlignCenter;
      <string>Drag your image here</string>
     </property>
    </widget>
-   <zorder>graphic_window</zorder>
    <zorder>instruction_label</zorder>
+   <zorder>graphic_window</zorder>
    <zorder>title_label</zorder>
    <zorder>save_button</zorder>
    <zorder>layoutWidget</zorder>

@@ -58,9 +58,17 @@ class Ui_MainWindow(object):
 "	border-bottom: 0.5px solid white;\n"
 "}\n"
 "\n"
+"#watermark_input_text::hover, #spin_box::hover {\n"
+"	border-bottom: 1.5px solid white;\n"
+"}\n"
+"\n"
 "#save_button {\n"
 "	border-radius: 10px;\n"
 "	background: grey;\n"
+"}\n"
+"\n"
+"#save_button::hover {\n"
+"	border: 1px solid white;\n"
 "}")
         self.actionLoad = QAction(MainWindow)
         self.actionLoad.setObjectName(u"actionLoad")
@@ -135,8 +143,8 @@ class Ui_MainWindow(object):
         font5.setPointSize(36)
         self.instruction_label.setFont(font5)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.graphic_window.raise_()
         self.instruction_label.raise_()
+        self.graphic_window.raise_()
         self.title_label.raise_()
         self.save_button.raise_()
         self.layoutWidget.raise_()
