@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>670</width>
-    <height>572</height>
+    <width>681</width>
+    <height>562</height>
    </rect>
   </property>
   <property name="font">
@@ -88,21 +88,6 @@ QMenuBar, QMenu {
     </property>
     <property name="text">
      <string>Watermarker</string>
-    </property>
-   </widget>
-   <widget class="QGraphicsView" name="graphic_window">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>60</y>
-      <width>601</width>
-      <height>381</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>calibri 53</family>
-     </font>
     </property>
    </widget>
    <widget class="QPushButton" name="save_button">
@@ -187,7 +172,7 @@ qproperty-alignment: AlignCenter;
    <widget class="QLabel" name="instruction_label">
     <property name="geometry">
      <rect>
-      <x>90</x>
+      <x>100</x>
       <y>180</y>
       <width>481</width>
       <height>131</height>
@@ -202,18 +187,34 @@ qproperty-alignment: AlignCenter;
      <string>Drag your image here</string>
     </property>
    </widget>
+   <widget class="QLabel" name="graphic_window">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>50</y>
+      <width>621</width>
+      <height>381</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="scaledContents">
+     <bool>false</bool>
+    </property>
+   </widget>
    <zorder>instruction_label</zorder>
-   <zorder>graphic_window</zorder>
    <zorder>title_label</zorder>
    <zorder>save_button</zorder>
    <zorder>layoutWidget</zorder>
+   <zorder>graphic_window</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>670</width>
+     <width>681</width>
      <height>21</height>
     </rect>
    </property>

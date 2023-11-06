@@ -16,17 +16,16 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QGraphicsView, QHBoxLayout, QLabel,
-    QLineEdit, QMainWindow, QMenu, QMenuBar,
-    QPushButton, QSizePolicy, QSpinBox, QStatusBar,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QLineEdit,
+    QMainWindow, QMenu, QMenuBar, QPushButton,
+    QSizePolicy, QSpinBox, QStatusBar, QWidget)
 import resource_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(670, 572)
+        MainWindow.resize(681, 562)
         font = QFont()
         font.setFamilies([u"Segoe MDL2 Assets"])
         MainWindow.setFont(font)
@@ -94,19 +93,13 @@ class Ui_MainWindow(object):
         font2.setBold(False)
         self.title_label.setFont(font2)
         self.title_label.setStyleSheet(u"")
-        self.graphic_window = QGraphicsView(self.centralwidget)
-        self.graphic_window.setObjectName(u"graphic_window")
-        self.graphic_window.setGeometry(QRect(30, 60, 601, 381))
-        font3 = QFont()
-        font3.setFamilies([u"calibri 53"])
-        self.graphic_window.setFont(font3)
         self.save_button = QPushButton(self.centralwidget)
         self.save_button.setObjectName(u"save_button")
         self.save_button.setGeometry(QRect(240, 490, 186, 27))
-        font4 = QFont()
-        font4.setFamilies([u"calibri 53"])
-        font4.setBold(True)
-        self.save_button.setFont(font4)
+        font3 = QFont()
+        font3.setFamilies([u"calibri 53"])
+        font3.setBold(True)
+        self.save_button.setFont(font3)
         self.save_button.setStyleSheet(u"")
         self.layoutWidget = QWidget(self.centralwidget)
         self.layoutWidget.setObjectName(u"layoutWidget")
@@ -116,7 +109,9 @@ class Ui_MainWindow(object):
         self.options_layout.setContentsMargins(0, 0, 0, 0)
         self.watermark_input_text = QLineEdit(self.layoutWidget)
         self.watermark_input_text.setObjectName(u"watermark_input_text")
-        self.watermark_input_text.setFont(font3)
+        font4 = QFont()
+        font4.setFamilies([u"calibri 53"])
+        self.watermark_input_text.setFont(font4)
         self.watermark_input_text.setStyleSheet(u"QLabel {\n"
 "qproperty-alignment: AlignCenter;\n"
 "}")
@@ -126,31 +121,35 @@ class Ui_MainWindow(object):
 
         self.font_size_label = QLabel(self.layoutWidget)
         self.font_size_label.setObjectName(u"font_size_label")
-        self.font_size_label.setFont(font3)
+        self.font_size_label.setFont(font4)
 
         self.options_layout.addWidget(self.font_size_label)
 
         self.spin_box = QSpinBox(self.layoutWidget)
         self.spin_box.setObjectName(u"spin_box")
-        self.spin_box.setFont(font3)
+        self.spin_box.setFont(font4)
 
         self.options_layout.addWidget(self.spin_box)
 
         self.instruction_label = QLabel(self.centralwidget)
         self.instruction_label.setObjectName(u"instruction_label")
-        self.instruction_label.setGeometry(QRect(90, 180, 481, 131))
+        self.instruction_label.setGeometry(QRect(100, 180, 481, 131))
         font5 = QFont()
         font5.setPointSize(36)
         self.instruction_label.setFont(font5)
+        self.graphic_window = QLabel(self.centralwidget)
+        self.graphic_window.setObjectName(u"graphic_window")
+        self.graphic_window.setGeometry(QRect(30, 50, 621, 381))
+        self.graphic_window.setScaledContents(False)
         MainWindow.setCentralWidget(self.centralwidget)
         self.instruction_label.raise_()
-        self.graphic_window.raise_()
         self.title_label.raise_()
         self.save_button.raise_()
         self.layoutWidget.raise_()
+        self.graphic_window.raise_()
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 670, 21))
+        self.menubar.setGeometry(QRect(0, 0, 681, 21))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuAbout = QMenu(self.menubar)
@@ -187,6 +186,7 @@ class Ui_MainWindow(object):
         self.watermark_input_text.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Enter watermark text", None))
         self.font_size_label.setText(QCoreApplication.translate("MainWindow", u"Font Size", None))
         self.instruction_label.setText(QCoreApplication.translate("MainWindow", u"Drag your image here", None))
+        self.graphic_window.setText("")
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
     # retranslateUi
