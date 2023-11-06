@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow, QLabel
+from PySide6.QtWidgets import QMainWindow
 from PySide6.QtGui import QPixmap
 from ui_mainwindow import Ui_MainWindow
 
@@ -10,7 +10,10 @@ class MainWindow(QMainWindow,Ui_MainWindow):
         self.setAcceptDrops(True)
         self.graphic_window.setPixmap(QPixmap('pics/cat2.jpeg'))
 
+
 #TODO
+# Qpixmap center
+# text input wider
 # drag and drop
 # animations/transitions
-# resizing widgets when window gets resized
+
