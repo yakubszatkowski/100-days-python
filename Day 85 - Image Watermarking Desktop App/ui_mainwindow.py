@@ -122,7 +122,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.graphic_window.sizePolicy().hasHeightForWidth())
         self.graphic_window.setSizePolicy(sizePolicy1)
-        self.graphic_window.setScaledContents(True)
+        # self.graphic_window.setScaledContents(True)
 
         self.verticalLayout.addWidget(self.graphic_window)
 
