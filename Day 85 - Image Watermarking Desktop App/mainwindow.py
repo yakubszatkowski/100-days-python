@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QMainWindow
 from PySide6.QtGui import QPixmap
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer
 from ui_mainwindow import Ui_MainWindow
 
 class MainWindow(QMainWindow,Ui_MainWindow):
@@ -34,15 +34,12 @@ class MainWindow(QMainWindow,Ui_MainWindow):
     def set_image(self, file_path):
         final_image = QPixmap(file_path)
         image_w, image_h = (final_image.width(), final_image.height())
-        print(image_w)
-        print(image_h)
-        self.graphic_window.setPixmap(final_image)
         self.graphic_window.setFixedSize(image_w, image_h)
-        self.adjustSize()  # the gui window dont get adjusted
+        self.graphic_window.setPixmap(final_image)
+        QTimer.singleShot(0, self.adjustSize)
 
 
 #TODO
-# drag and drop picture - gui window adjustments
 # loading the picture from toolbar
 # placing input label on the picture
 # draging placement of the input label around the frame
