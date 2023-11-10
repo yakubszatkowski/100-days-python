@@ -33,10 +33,12 @@ class MainWindow(QMainWindow,Ui_MainWindow):
         else:
             event.ignore()
 
+
     def sizing_n_upload(self, final_image):
-        image_w, image_h = (final_image.width(), final_image.height())
-        self.graphic_window.setFixedSize(image_w, image_h)
-        self.graphic_window.setPixmap(final_image)
+        image = final_image.scaled(1000, 1000, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        print(image.width())
+        print(image.height())
+        self.graphic_window.setPixmap(image)
         QTimer.singleShot(0, self.adjustSize)
 
     def set_image(self, file_path):
