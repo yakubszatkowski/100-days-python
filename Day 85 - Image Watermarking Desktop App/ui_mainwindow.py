@@ -47,9 +47,18 @@ class Ui_MainWindow(object):
 "	background-color: qradialgradient(spread:pad, cx:0.511, cy:0.505682, radius:0.79, fx:0.284091, fy:0.25, stop:0 rgba(95, 95, 95, 255), stop:1 rgba(0, 0, 0, 255))\n"
 "}\n"
 "\n"
-"QMenuBar, QMenu {\n"
+"QMenuBar {\n"
 "	background-color: rgb(49,49,49);\n"
 "	border-bottom: 0.5px solid white;\n"
+"}\n"
+"\n"
+"QMenu {\n"
+"	background-color: rgb(49,49,49);\n"
+"}\n"
+"\n"
+"QMenu::item:selected {\n"
+"	background-color: rgb(49,49,49);\n"
+"	border-bottom: 1px solid white;	\n"
 "}\n"
 "\n"
 "#graphic_window {\n"
@@ -64,15 +73,16 @@ class Ui_MainWindow(object):
 "#watermark_input_text, #spin_box {\n"
 "	background-color: rgba(255, 255, 255, 0);\n"
 "	border: 0px;\n"
-"	border-bottom: 0.5px solid white;\n"
+"	border-bottom: 0.5px solid grey;\n"
 "}\n"
 "\n"
 "#watermark_input_text::hover, #spin_box::hover {\n"
-"	border-bottom: 1.5px solid white;\n"
+"	border-bottom: 1px solid white;\n"
 "}\n"
 "\n"
 "#save_button {\n"
-"	border-radius: 10px;\n"
+"	b"
+                        "order-radius: 10px;\n"
 "	background: grey;\n"
 "	width: 200px;\n"
 "}\n"
@@ -122,7 +132,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.graphic_window.sizePolicy().hasHeightForWidth())
         self.graphic_window.setSizePolicy(sizePolicy1)
-        # self.graphic_window.setScaledContents(True)
+        self.graphic_window.setScaledContents(True)
 
         self.verticalLayout.addWidget(self.graphic_window)
 
@@ -180,7 +190,7 @@ class Ui_MainWindow(object):
         self.title_label.raise_()
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 400, 21))
+        self.menubar.setGeometry(QRect(0, 0, 400, 22))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuAbout = QMenu(self.menubar)
