@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QFileDialog, QLabel
-from PySide6.QtGui import QPixmap, QDrag
-from PySide6.QtCore import Qt, QTimer, QMimeData
+from PySide6.QtGui import QPixmap, QFont
+from PySide6.QtCore import Qt, QTimer
 from ui_mainwindow import Ui_MainWindow
 
 class DraggableLabel(QLabel):
@@ -9,11 +9,11 @@ class DraggableLabel(QLabel):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
-            self.drag_start_position = event.pos()
+            self.start_position = event.pos()
 
     def mouseMoveEvent(self, event):
-        if Qt.LeftButton:
-            self.move(self.mapToParent(event.pos() - self.drag_start_position))
+        if event.buttons() == Qt.LeftButton:
+            self.move(self.mapToParent(event.pos() - self.start_position))
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -23,11 +23,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setAcceptDrops(True)
         self.actionLoad.triggered.connect(self.load_image)
         self.graphic_window.setMaximumSize(1000, 1000)
-        self.watermark = DraggableLabel('Enter watermark', self.graphic_window)
+        self.watermark = DraggableLabel('Enter watermark text', self.graphic_window)
+        self.watermark.setFont(QFont('Calibri', 20))
         self.watermark_input_text.textChanged.connect(self.watermark_text_change)
+        self.spin_box.valueChanged.connect(self.watermark_text_change)
 
     def watermark_text_change(self):
-        self.watermark.setText(self.watermark_input_text.text())
+        if self.watermark_input_text.text() == '':
+            self.watermark.setText('Enter watermark text')
+        else:
+            self.watermark.setText(self.watermark_input_text.text())
+        self.watermark.setFont(QFont('Calibri', self.spin_box.value()))
+        self.watermark.adjustSize()
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasImage:
@@ -69,8 +76,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
 #TODO
-# placing input label on the picture
-# dragging placement of the input label around the frame
+# make input label draggable only across the qpixmap
 # rotating the input label
 # saving the picture with label on your system
 # exporting .exe
