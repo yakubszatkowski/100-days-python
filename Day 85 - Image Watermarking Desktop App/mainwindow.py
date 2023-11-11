@@ -3,13 +3,15 @@ from PySide6.QtGui import QPixmap, QFont
 from PySide6.QtCore import Qt, QTimer
 from ui_mainwindow import Ui_MainWindow
 
+
 class DraggableLabel(QLabel):
     def __init__(self, text, parent):
         super().__init__()
         self.setText(text)
         self.setParent(parent)
+        self.map = parent
         self.setFont(QFont('Calibri', 20))
-        self.setStyleSheet('''color: rgba(255, 255, 255, 30)''')
+        self.setStyleSheet('''color: rgba(255, 255, 255, 80)''')
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -17,7 +19,16 @@ class DraggableLabel(QLabel):
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.LeftButton:
-            self.move(self.mapToParent(event.pos() - self.start_position))
+            self.setStyleSheet('''color: rgba(255, 255, 255, 40)''')
+            new_position = self.mapToParent(event.pos() - self.start_position)
+            map_area = self.map.rect()
+            watermark_area = self.geometry()
+            if map_area.contains(watermark_area.translated(new_position-self.pos())):
+                self.move(new_position)
+
+    def mouseReleaseEvent(self, event):
+        if not event.buttons() == Qt.LeftButton:
+            self.setStyleSheet('''color: rgba(255, 255, 255, 80)''')
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -28,7 +39,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionLoad.triggered.connect(self.load_image)
         self.graphic_window.setMaximumSize(1000, 1000)
         self.watermark = DraggableLabel('Enter watermark text', self.graphic_window)
-
         self.watermark_input_text.textChanged.connect(self.watermark_text_change)
         self.spin_box.valueChanged.connect(self.watermark_text_change)
 
@@ -80,7 +90,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
 #TODO
-# make input label draggable only across the qpixmap
+# make input label draggable only across the graphic window
 # rotating the input label
-# saving the picture with label on your system
-# exporting .exe
+# saving the picture with label
+# exporting .exe of the whole program
