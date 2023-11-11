@@ -1,16 +1,33 @@
-from PySide6.QtWidgets import QMainWindow, QFileDialog
-from PySide6.QtGui import QPixmap
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtWidgets import QMainWindow, QFileDialog, QLabel
+from PySide6.QtGui import QPixmap, QDrag
+from PySide6.QtCore import Qt, QTimer, QMimeData
 from ui_mainwindow import Ui_MainWindow
 
-class MainWindow(QMainWindow,Ui_MainWindow):
+class DraggableLabel(QLabel):
+    def __int__(self):
+        super().__init__()
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.drag_start_position = event.pos()
+
+    def mouseMoveEvent(self, event):
+        if Qt.LeftButton:
+            self.move(self.mapToParent(event.pos() - self.drag_start_position))
+
+class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('Watermarker')
         self.setAcceptDrops(True)
         self.actionLoad.triggered.connect(self.load_image)
-        self.graphic_window.setMaximumSize(1000,1000)
+        self.graphic_window.setMaximumSize(1000, 1000)
+        self.watermark = DraggableLabel('Enter watermark', self.graphic_window)
+        self.watermark_input_text.textChanged.connect(self.watermark_text_change)
+
+    def watermark_text_change(self):
+        self.watermark.setText(self.watermark_input_text.text())
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasImage:
@@ -33,11 +50,11 @@ class MainWindow(QMainWindow,Ui_MainWindow):
         else:
             event.ignore()
 
-
     def sizing_n_upload(self, final_image):
-        image = final_image.scaled(1000, 1000, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        print(image.width())
-        print(image.height())
+        if final_image.height() > 1000 or final_image.width() > 1000:
+            image = final_image.scaled(1000, 1000, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        else:
+            image = final_image
         self.graphic_window.setPixmap(image)
         QTimer.singleShot(0, self.adjustSize)
 
@@ -52,11 +69,6 @@ class MainWindow(QMainWindow,Ui_MainWindow):
 
 
 #TODO
-# what if image is too big?
-# loading the picture from toolbar
-# similar resizing? try different resizing?
-# hover over QMenu options
-
 # placing input label on the picture
 # dragging placement of the input label around the frame
 # rotating the input label

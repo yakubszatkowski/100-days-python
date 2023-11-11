@@ -52,6 +52,10 @@ class Ui_MainWindow(object):
 "	border-bottom: 0.5px solid white;\n"
 "}\n"
 "\n"
+"QMenuBar::item:selected {\n"
+"	background-color: grey;\n"
+"}\n"
+"\n"
 "QMenu {\n"
 "	background-color: rgb(49,49,49);\n"
 "}\n"
@@ -77,12 +81,12 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "#watermark_input_text::hover, #spin_box::hover {\n"
-"	border-bottom: 1px solid white;\n"
+""
+                        "	border-bottom: 1px solid white;\n"
 "}\n"
 "\n"
 "#save_button {\n"
-"	b"
-                        "order-radius: 10px;\n"
+"	border-radius: 10px;\n"
 "	background: grey;\n"
 "	width: 200px;\n"
 "}\n"
@@ -164,6 +168,7 @@ class Ui_MainWindow(object):
         self.spin_box = QSpinBox(self.main_layout)
         self.spin_box.setObjectName(u"spin_box")
         self.spin_box.setFont(font3)
+        self.spin_box.setValue(20)
 
         self.options_layout.addWidget(self.spin_box)
 
