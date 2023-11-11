@@ -4,8 +4,12 @@ from PySide6.QtCore import Qt, QTimer
 from ui_mainwindow import Ui_MainWindow
 
 class DraggableLabel(QLabel):
-    def __int__(self):
+    def __init__(self, text, parent):
         super().__init__()
+        self.setText(text)
+        self.setParent(parent)
+        self.setFont(QFont('Calibri', 20))
+        self.setStyleSheet('''color: rgba(255, 255, 255, 30)''')
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -24,7 +28,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionLoad.triggered.connect(self.load_image)
         self.graphic_window.setMaximumSize(1000, 1000)
         self.watermark = DraggableLabel('Enter watermark text', self.graphic_window)
-        self.watermark.setFont(QFont('Calibri', 20))
+
         self.watermark_input_text.textChanged.connect(self.watermark_text_change)
         self.spin_box.valueChanged.connect(self.watermark_text_change)
 
