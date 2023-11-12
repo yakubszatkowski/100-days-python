@@ -223,7 +223,7 @@ class Ui_MainWindow(object):
         self.actionLoad.setText(QCoreApplication.translate("MainWindow", u"Load", None))
         self.actionSave.setText(QCoreApplication.translate("MainWindow", u"Save", None))
         self.actionAbout.setText(QCoreApplication.translate("MainWindow", u"Info", None))
-        self.actionAboutQt.setText(QCoreApplication.translate("MainWindow", u"AboutQt", None))
+        self.actionAboutQt.setText(QCoreApplication.translate("MainWindow", u"About Qt", None))
         self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.title_label.setText(QCoreApplication.translate("MainWindow", u"Watermarker", None))
         self.graphic_window.setText("")
@@ -232,6 +232,6 @@ class Ui_MainWindow(object):
         self.font_size_label.setText(QCoreApplication.translate("MainWindow", u"Font Size", None))
         self.save_button.setText(QCoreApplication.translate("MainWindow", u"Save", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
-        self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"Info", None))
+        self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
     # retranslateUi
 
