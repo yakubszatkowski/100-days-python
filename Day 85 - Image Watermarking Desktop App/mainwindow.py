@@ -12,23 +12,28 @@ class DraggableLabel(QLabel):
         self.map = parent
         self.setFont(QFont('Calibri', 20))
         self.setStyleSheet('''color: rgba(255, 255, 255, 80)''')
+        self.setGeometry(60, 120, 232, 33)
 
     def mousePressEvent(self, event):
+        print(self.geometry())
         if event.button() == Qt.LeftButton:
             self.start_position = event.pos()
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.LeftButton:
-            self.setStyleSheet('''color: rgba(255, 255, 255, 40)''')
+            self.setStyleSheet('''color: rgba(255, 255, 255, 40);''')
             new_position = self.mapToParent(event.pos() - self.start_position)
             map_area = self.map.rect()
             watermark_area = self.geometry()
             if map_area.contains(watermark_area.translated(new_position-self.pos())):
                 self.move(new_position)
+            else:
+                self.setStyleSheet('''color: rgba(255, 0, 0, 40);''')
 
     def mouseReleaseEvent(self, event):
         if not event.buttons() == Qt.LeftButton:
             self.setStyleSheet('''color: rgba(255, 255, 255, 80)''')
+
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -88,9 +93,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         image = QPixmap(file_path[0])
         self.sizing_n_upload(image)
 
+    def mouseDoubleClickEvent(self, event):
+        self.watermark.setText('Enter watermark text')
+        self.watermark.setFont(QFont('Calibri', 20))
+        self.watermark.setGeometry(60, 120, 232, 33)
 
 #TODO
-# make input label draggable only across the graphic window
 # rotating the input label
 # saving the picture with label
 # exporting .exe of the whole program

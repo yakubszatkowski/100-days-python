@@ -268,7 +268,7 @@ QMenu::item:selected {
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
-     <string>About</string>
+     <string>Info</string>
     </property>
     <addaction name="actionAbout"/>
     <addaction name="actionAboutQt"/>
@@ -289,7 +289,7 @@ QMenu::item:selected {
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>About</string>
+    <string>Info</string>
    </property>
   </action>
   <action name="actionAboutQt">
