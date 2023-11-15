@@ -1,17 +1,18 @@
-from PySide6.QtWidgets import QMainWindow, QFileDialog, QLabel, QWidget, QVBoxLayout
-from PySide6.QtGui import QPixmap, QFont, QCursor
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtWidgets import QMainWindow, QFileDialog, QLabel, QWidget, QGridLayout, QApplication, QSpacerItem
+from PySide6.QtGui import QPixmap, QFont
+from PySide6.QtCore import Qt, QTimer, QPoint
 from ui_mainwindow import Ui_MainWindow
 
 
-class RotationLabel(QLabel):
-    def __init__(self, input_parent):
+class RotationLabel(QLabel):  # set vertical arrows cursor
+    def __init__(self, widget):
         super().__init__()
-        self.watermark_label = input_parent
+        self.watermark_label = widget
         self.setParent(self.watermark_label)
         self.setText('⟳')
-        self.setStyleSheet(f'''color: rgba(255, 255, 255, 100)''') # border: 4px dashed #aaa
-        self.move(self.watermark_label.geometry().width()-10, -5)
+        self.setStyleSheet(f'''color: rgba(255, 255, 255, 100)''') #
+        self.setFont(QFont('Calibri', 12))
+        self.setMaximumSize(20,20)
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -28,26 +29,30 @@ class DraggableLabel(QLabel):
         self.setParent(parent)
         self.map = parent
         self.setFont(QFont('Calibri', 20))
-        self.setStyleSheet('''color: rgba(255, 255, 255, 100)''')
+        self.setStyleSheet('''color: rgba(255, 255, 255, 100);''')
+
         self.body = widget
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.start_position = event.pos()
+            print(self.start_position)
 
-    def mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, event):  # set grab cursor
         if event.buttons() == Qt.LeftButton:
-            self.setStyleSheet('''color: rgba(255, 255, 255, 40);''')
-            new_position = self.map.mapFromGlobal(event.globalPos() - self.start_position)
+            QApplication.setOverrideCursor(Qt.ClosedHandCursor)
+            self.setStyleSheet('''color: rgba(255, 255, 255, 40)''')
+            new_position = self.map.mapFromGlobal(event.globalPos() - self.start_position - QPoint(0,10))
             map_area = self.map.rect()
             watermark_area = self.geometry()
             if map_area.contains(watermark_area.translated(new_position)):
                 self.body.move(new_position)
             else:
-                self.setStyleSheet('''color: rgba(255, 0, 0, 40);''')
+                self.setStyleSheet('''color: rgba(255, 0, 0, 40)''')
 
     def mouseReleaseEvent(self, event):
         if not event.buttons() == Qt.LeftButton:
+            QApplication.setOverrideCursor(Qt.ArrowCursor)
             self.setStyleSheet('''color: rgba(255, 255, 255, 100)''')
 
 
@@ -56,11 +61,12 @@ class LabelWithRotator(QWidget):
         super().__init__()
         self.setParent(parent)
         self.watermark_text = DraggableLabel('Enter watermark text', parent, self)
-
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(self.watermark_text)
+        self.rotator = RotationLabel(self)
+        self.layout = QGridLayout()
+        self.layout.addWidget(self.watermark_text, 0, 0)
+        self.layout.addWidget(self.rotator, 0, 1, Qt.AlignTop)
+        self.layout.setSpacing(0)
         self.setLayout(self.layout)
-
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -72,7 +78,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.graphic_window.setMaximumSize(1000, 1000)
 
         self.watermark = LabelWithRotator(self.graphic_window)
-
         self.watermark_input_text.textChanged.connect(self.watermark_text_change)
         self.spin_box.valueChanged.connect(self.watermark_text_change)
 
@@ -125,7 +130,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def mouseDoubleClickEvent(self, event):
         self.watermark.watermark_text.setText('Enter watermark text')
         self.watermark.watermark_text.setFont(QFont('Calibri', 20))
-        self.watermark.setGeometry(60, 120, 250, 52)
+        self.watermark.watermark_text.setAlignment(Qt.AlignCenter)
+        self.watermark.move(0,0)
         self.watermark_input_text.setText('')
         self.spin_box.setValue(20)
 
