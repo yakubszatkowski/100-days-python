@@ -1,14 +1,15 @@
-from PySide6.QtWidgets import QMainWindow, QFileDialog, QLabel, QWidget, QGridLayout, QApplication, QSpacerItem
-from PySide6.QtGui import QPixmap, QFont
+from PySide6.QtWidgets import QMainWindow, QFileDialog, QLabel, QWidget, QGridLayout, QApplication, QGraphicsScene, \
+    QGraphicsPixmapItem
+from PySide6.QtGui import QFont, QImage, QPixmap
 from PySide6.QtCore import Qt, QTimer, QPoint
 from ui_mainwindow import Ui_MainWindow
 
 
-class RotationLabel(QLabel):  # set vertical arrows cursor
-    def __init__(self, widget):
+class RotationLabel(QLabel):
+    def __init__(self, parent, widget):
         super().__init__()
         self.watermark_label = widget
-        self.setParent(self.watermark_label)
+        self.map = parent
         self.setText('⟳')
         self.setStyleSheet(f'''color: rgba(255, 255, 255, 100)''') #
         self.setFont(QFont('Calibri', 12))
@@ -20,7 +21,15 @@ class RotationLabel(QLabel):  # set vertical arrows cursor
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.LeftButton:
-            self.setStyleSheet('''color: red;''')
+            self.setStyleSheet('''color: white;''')
+            QApplication.setOverrideCursor(Qt.SizeVerCursor)
+            rotation_angle = (self.map.mapFromGlobal(event.globalPos() - self.start_position - QPoint(0, 10))).y()
+            print(rotation_angle)
+
+    def mouseReleaseEvent(self, event):
+        self.setStyleSheet(f'''color: rgba(255, 255, 255, 100)''')
+        QApplication.setOverrideCursor(Qt.ArrowCursor)
+
 
 class DraggableLabel(QLabel):
     def __init__(self, text, parent, widget):
@@ -30,13 +39,11 @@ class DraggableLabel(QLabel):
         self.map = parent
         self.setFont(QFont('Calibri', 20))
         self.setStyleSheet('''color: rgba(255, 255, 255, 100);''')
-
         self.body = widget
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.start_position = event.pos()
-            print(self.start_position)
 
     def mouseMoveEvent(self, event):  # set grab cursor
         if event.buttons() == Qt.LeftButton:
@@ -60,13 +67,15 @@ class LabelWithRotator(QWidget):
     def __init__(self, parent):
         super().__init__()
         self.setParent(parent)
+        self.setStyleSheet("background:transparent;")
         self.watermark_text = DraggableLabel('Enter watermark text', parent, self)
-        self.rotator = RotationLabel(self)
+        self.rotator = RotationLabel(parent, self)
         self.layout = QGridLayout()
         self.layout.addWidget(self.watermark_text, 0, 0)
         self.layout.addWidget(self.rotator, 0, 1, Qt.AlignTop)
         self.layout.setSpacing(0)
         self.setLayout(self.layout)
+
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -75,7 +84,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle('Watermarker')
         self.setAcceptDrops(True)
         self.actionLoad.triggered.connect(self.load_image)
-        self.graphic_window.setMaximumSize(1000, 1000)
+
+
 
         self.watermark = LabelWithRotator(self.graphic_window)
         self.watermark_input_text.textChanged.connect(self.watermark_text_change)
@@ -115,8 +125,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             image = image.scaled(1000, 1000, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         else:
             pass
-        self.graphic_window.setPixmap(image)
-        QTimer.singleShot(0, self.adjustSize)
+        scene = QGraphicsScene()
+        scene.addPixmap(image)
+        self.graphic_window.setScene(scene)
 
     def set_image(self, file_path):
         image = QPixmap(file_path)
@@ -136,8 +147,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.spin_box.setValue(20)
 
 #TODO
-# make rotator size dynamic with label size, figure out where to put it (middle top or right top)
+# adjust size of graphical_window, and mainwindow
 # rotating the input label
-# cursor changing to grab/rotate icon
 # saving the picture with label
 # exporting .exe of the whole program

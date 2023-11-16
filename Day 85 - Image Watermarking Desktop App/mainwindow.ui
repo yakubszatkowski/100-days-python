@@ -139,18 +139,12 @@ QMenu::item:selected {
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="graphic_window">
+     <widget class="QGraphicsView" name="graphic_window">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
       </property>
      </widget>
     </item>

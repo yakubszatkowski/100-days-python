@@ -16,10 +16,10 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QLayout,
-    QLineEdit, QMainWindow, QMenu, QMenuBar,
-    QPushButton, QSizePolicy, QSpinBox, QStatusBar,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QGraphicsView, QHBoxLayout, QLabel,
+    QLayout, QLineEdit, QMainWindow, QMenu,
+    QMenuBar, QPushButton, QSizePolicy, QSpinBox,
+    QStatusBar, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -128,14 +128,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.title_label, 0, Qt.AlignHCenter)
 
-        self.graphic_window = QLabel(self.main_layout)
+        self.graphic_window = QGraphicsView(self.main_layout)
         self.graphic_window.setObjectName(u"graphic_window")
         sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.graphic_window.sizePolicy().hasHeightForWidth())
         self.graphic_window.setSizePolicy(sizePolicy1)
-        self.graphic_window.setScaledContents(True)
 
         self.verticalLayout.addWidget(self.graphic_window)
 
@@ -226,7 +225,6 @@ class Ui_MainWindow(object):
         self.actionAboutQt.setText(QCoreApplication.translate("MainWindow", u"About Qt", None))
         self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.title_label.setText(QCoreApplication.translate("MainWindow", u"Watermarker", None))
-        self.graphic_window.setText("")
         self.watermark_input_text.setText("")
         self.watermark_input_text.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Enter watermark text", None))
         self.font_size_label.setText(QCoreApplication.translate("MainWindow", u"Font Size", None))
