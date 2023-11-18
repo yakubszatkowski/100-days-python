@@ -1,7 +1,6 @@
-from PySide6.QtWidgets import QMainWindow, QFileDialog, QLabel, QWidget, QGridLayout, QApplication, QGraphicsScene, \
-    QGraphicsPixmapItem
-from PySide6.QtGui import QFont, QImage, QPixmap
-from PySide6.QtCore import Qt, QTimer, QPoint
+from PySide6.QtWidgets import QMainWindow, QFileDialog, QLabel, QWidget, QGridLayout, QApplication, QGraphicsScene
+from PySide6.QtGui import QFont, QPixmap
+from PySide6.QtCore import Qt, QPoint, QTimer
 from ui_mainwindow import Ui_MainWindow
 
 
@@ -76,28 +75,10 @@ class LabelWithRotator(QWidget):
         self.layout.setSpacing(0)
         self.setLayout(self.layout)
 
-
-class MainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self):
-        super(MainWindow, self).__init__()
-        self.setupUi(self)
-        self.setWindowTitle('Watermarker')
-        self.setAcceptDrops(True)
-        self.actionLoad.triggered.connect(self.load_image)
-
-
-
-        self.watermark = LabelWithRotator(self.graphic_window)
-        self.watermark_input_text.textChanged.connect(self.watermark_text_change)
-        self.spin_box.valueChanged.connect(self.watermark_text_change)
-
-    def watermark_text_change(self):
-        if self.watermark_input_text.text() == '':
-            self.watermark.watermark_text.setText('Enter watermark text')
-        else:
-            self.watermark.watermark_text.setText(self.watermark_input_text.text())
-        self.watermark.watermark_text.setFont(QFont('Calibri', self.spin_box.value()))
-        self.watermark.adjustSize()
+class CustomScene(QGraphicsScene):
+    def __init__(self, parent):
+        super().__init__()
+        self.parent = parent
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasImage:
@@ -115,19 +96,58 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if event.mimeData().hasImage:
             event.setDropAction(Qt.CopyAction)
             file_path = event.mimeData().urls()[0].toLocalFile()
-            self.set_image(file_path)
+            self.parent.set_image(file_path)
             event.accept()
         else:
             event.ignore()
 
+class MainWindow(QMainWindow, Ui_MainWindow):
+    def __init__(self):
+        super(MainWindow, self).__init__()
+        self.setupUi(self)
+        self.setWindowTitle('Watermarker')
+        self.setAcceptDrops(True)
+        self.graphic_window.setAcceptDrops(True)
+
+        self.watermark = LabelWithRotator(self.graphic_window)
+        self.scene = CustomScene(self)
+
+        self.actionLoad.triggered.connect(self.load_image)
+        self.watermark_input_text.textChanged.connect(self.watermark_text_change)
+        self.spin_box.valueChanged.connect(self.watermark_text_change)
+
+
+    def watermark_text_change(self):
+        if self.watermark_input_text.text() == '':
+            self.watermark.watermark_text.setText('Enter watermark text')
+        else:
+            self.watermark.watermark_text.setText(self.watermark_input_text.text())
+        self.watermark.watermark_text.setFont(QFont('Calibri', self.spin_box.value()))
+        self.watermark.adjustSize()
+
+    def dragEnterEvent(self, event):
+        self.scene.dragEnterEvent(event)
+
+    def dragMoveEvent(self, event):
+        self.scene.dragMoveEvent(event)
+
+    def dropEvent(self, event):
+        self.scene.dropEvent(event)
+
     def sizing_n_upload(self, image):
-        if image.height() > 1000 or image.width() > 1000:
-            image = image.scaled(1000, 1000, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        if image.height() > 800 or image.width() > 800:
+            image = image.scaled(800, 800, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         else:
             pass
-        scene = QGraphicsScene()
-        scene.addPixmap(image)
-        self.graphic_window.setScene(scene)
+
+        self.scene.clear()
+        self.scene.addPixmap(image)
+
+        self.graphic_window.setScene(self.scene)
+        self.graphic_window.setFixedSize(image.width(), image.height())
+        self.scene.setSceneRect(0, 0, image.width(), image.height())
+        self.setFixedSize(image.width() + 50, image.height() + 146)
+
 
     def set_image(self, file_path):
         image = QPixmap(file_path)
@@ -147,7 +167,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.spin_box.setValue(20)
 
 #TODO
-# adjust size of graphical_window, and mainwindow
 # rotating the input label
 # saving the picture with label
 # exporting .exe of the whole program
