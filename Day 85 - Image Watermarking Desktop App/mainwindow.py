@@ -1,10 +1,12 @@
-from PySide6.QtWidgets import QMainWindow, QFileDialog, QLabel, QWidget, QGridLayout, QApplication, QGraphicsScene
+from PySide6.QtWidgets import QMainWindow, QFileDialog, QLabel, QWidget, QGridLayout, QApplication, QGraphicsScene, QGraphicsProxyWidget
 from PySide6.QtGui import QFont, QPixmap
-from PySide6.QtCore import Qt, QPoint, QTimer
+from PySide6.QtCore import Qt, QPoint, Signal
 from ui_mainwindow import Ui_MainWindow
 
 
 class RotationLabel(QLabel):
+    rotation_change = Signal(int)
+
     def __init__(self, parent, widget):
         super().__init__()
         self.watermark_label = widget
@@ -18,12 +20,13 @@ class RotationLabel(QLabel):
         if event.button() == Qt.LeftButton:
             self.start_position = event.pos()
 
-    def mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, event):  # Shorter text
         if event.buttons() == Qt.LeftButton:
             self.setStyleSheet('''color: white;''')
             QApplication.setOverrideCursor(Qt.SizeVerCursor)
-            rotation_angle = (self.map.mapFromGlobal(event.globalPos() - self.start_position - QPoint(0, 10))).y()
-            print(rotation_angle)
+            rotation_position = self.map.mapFromGlobal(event.globalPos() - self.start_position - QPoint(0, 100))
+            rotation_angle = rotation_position.y()/5
+            self.rotation_change.emit(rotation_angle)
 
     def mouseReleaseEvent(self, event):
         self.setStyleSheet(f'''color: rgba(255, 255, 255, 100)''')
@@ -44,11 +47,11 @@ class DraggableLabel(QLabel):
         if event.button() == Qt.LeftButton:
             self.start_position = event.pos()
 
-    def mouseMoveEvent(self, event):  # set grab cursor
+    def mouseMoveEvent(self, event):
         if event.buttons() == Qt.LeftButton:
             QApplication.setOverrideCursor(Qt.ClosedHandCursor)
             self.setStyleSheet('''color: rgba(255, 255, 255, 40)''')
-            new_position = self.map.mapFromGlobal(event.globalPos() - self.start_position - QPoint(0,10))
+            new_position = self.map.mapFromGlobal(event.globalPos() - self.start_position)
             map_area = self.map.rect()
             watermark_area = self.geometry()
             if map_area.contains(watermark_area.translated(new_position)):
@@ -65,7 +68,7 @@ class DraggableLabel(QLabel):
 class LabelWithRotator(QWidget):
     def __init__(self, parent):
         super().__init__()
-        self.setParent(parent)
+        # self.setParent(parent)
         self.setStyleSheet("background:transparent;")
         self.watermark_text = DraggableLabel('Enter watermark text', parent, self)
         self.rotator = RotationLabel(parent, self)
@@ -74,6 +77,7 @@ class LabelWithRotator(QWidget):
         self.layout.addWidget(self.rotator, 0, 1, Qt.AlignTop)
         self.layout.setSpacing(0)
         self.setLayout(self.layout)
+
 
 class CustomScene(QGraphicsScene):
     def __init__(self, parent):
@@ -101,6 +105,7 @@ class CustomScene(QGraphicsScene):
         else:
             event.ignore()
 
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -111,11 +116,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.watermark = LabelWithRotator(self.graphic_window)
         self.scene = CustomScene(self)
+        self.graphic_window.setScene(self.scene)
+
+        self.proxy = QGraphicsProxyWidget()
+        self.proxy.setWidget(self.watermark)
+        self.scene.addItem(self.proxy)
+        self.proxy.setTransformOriginPoint(self.proxy.boundingRect().center())
+        self.watermark.rotator.rotation_change.connect(self.update_rotation)
 
         self.actionLoad.triggered.connect(self.load_image)
         self.watermark_input_text.textChanged.connect(self.watermark_text_change)
         self.spin_box.valueChanged.connect(self.watermark_text_change)
 
+    def update_rotation(self, rotation_angle):
+        self.proxy.setRotation(rotation_angle)
+        print(rotation_angle)
 
     def watermark_text_change(self):
         if self.watermark_input_text.text() == '':
@@ -139,15 +154,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             image = image.scaled(800, 800, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         else:
             pass
-
         self.scene.clear()
         self.scene.addPixmap(image)
 
-        self.graphic_window.setScene(self.scene)
         self.graphic_window.setFixedSize(image.width(), image.height())
         self.scene.setSceneRect(0, 0, image.width(), image.height())
         self.setFixedSize(image.width() + 50, image.height() + 146)
-
 
     def set_image(self, file_path):
         image = QPixmap(file_path)
@@ -167,6 +179,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.spin_box.setValue(20)
 
 #TODO
-# rotating the input label
+# address bug where scroll bar appears as the label moves
 # saving the picture with label
 # exporting .exe of the whole program
