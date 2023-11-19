@@ -20,12 +20,16 @@ class RotationLabel(QLabel):
         if event.button() == Qt.LeftButton:
             self.start_position = event.pos()
 
-    def mouseMoveEvent(self, event):  # Shorter text
+    def mouseMoveEvent(self, event):
         if event.buttons() == Qt.LeftButton:
             self.setStyleSheet('''color: white;''')
             QApplication.setOverrideCursor(Qt.SizeVerCursor)
-            rotation_position = self.map.mapFromGlobal(event.globalPos() - self.start_position - QPoint(0, 100))
-            rotation_angle = rotation_position.y()/5
+            delta = self.map.mapFromGlobal(event.globalPos() - self.start_position)
+            rotation_position = self.pos() + delta
+            rotation_angle = int(rotation_position.y() / 3) - 45
+
+            print(rotation_angle)
+
             self.rotation_change.emit(rotation_angle)
 
     def mouseReleaseEvent(self, event):
@@ -37,7 +41,7 @@ class DraggableLabel(QLabel):
     def __init__(self, text, parent, widget):
         super().__init__()
         self.setText(text)
-        self.setParent(parent)
+        # self.setParent(parent)
         self.map = parent
         self.setFont(QFont('Calibri', 20))
         self.setStyleSheet('''color: rgba(255, 255, 255, 100);''')
@@ -51,13 +55,17 @@ class DraggableLabel(QLabel):
         if event.buttons() == Qt.LeftButton:
             QApplication.setOverrideCursor(Qt.ClosedHandCursor)
             self.setStyleSheet('''color: rgba(255, 255, 255, 40)''')
-            new_position = self.map.mapFromGlobal(event.globalPos() - self.start_position)
-            map_area = self.map.rect()
-            watermark_area = self.geometry()
-            if map_area.contains(watermark_area.translated(new_position)):
-                self.body.move(new_position)
-            else:
-                self.setStyleSheet('''color: rgba(255, 0, 0, 40)''')
+            delta = event.pos() - self.start_position
+            new_position = self.body.pos() + delta
+
+            self.body.move(new_position)
+
+            print(event.pos(), self.body.x(), self.body.y())
+
+            #TODO
+            # fix malfunction when rotation gets above 60 the label starts circling around cursor
+            # set position within self.body borders
+
 
     def mouseReleaseEvent(self, event):
         if not event.buttons() == Qt.LeftButton:
@@ -69,7 +77,7 @@ class LabelWithRotator(QWidget):
     def __init__(self, parent):
         super().__init__()
         # self.setParent(parent)
-        self.setStyleSheet("background:transparent;")
+        self.setStyleSheet("background-color: rgba(255, 0, 0, 40)")  # background:transparent;
         self.watermark_text = DraggableLabel('Enter watermark text', parent, self)
         self.rotator = RotationLabel(parent, self)
         self.layout = QGridLayout()
@@ -117,6 +125,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.watermark = LabelWithRotator(self.graphic_window)
         self.scene = CustomScene(self)
         self.graphic_window.setScene(self.scene)
+        self.graphic_window.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.graphic_window.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
         self.proxy = QGraphicsProxyWidget()
         self.proxy.setWidget(self.watermark)
@@ -130,7 +140,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def update_rotation(self, rotation_angle):
         self.proxy.setRotation(rotation_angle)
-        print(rotation_angle)
 
     def watermark_text_change(self):
         if self.watermark_input_text.text() == '':
@@ -179,6 +188,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.spin_box.setValue(20)
 
 #TODO
-# address bug where scroll bar appears as the label moves
+# fix bug where a scrollbar appears when label gets close to the right and down corner of graphical interface - done
+# fix bug where the positioning of text and rotator is misplaced after it's grabbed -- rotator - done;
+# fix bug where shorter text rotates differently
+# fix bug where watermark disappears after putting on picture
 # saving the picture with label
 # exporting .exe of the whole program
