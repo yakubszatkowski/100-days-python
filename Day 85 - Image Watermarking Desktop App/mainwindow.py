@@ -1,18 +1,20 @@
-from PySide6.QtWidgets import (QMainWindow, QFileDialog, QLabel, QWidget, QGridLayout, QApplication, QGraphicsScene,
-                               QGraphicsProxyWidget, QGraphicsTextItem)
+from PySide6.QtWidgets import QMainWindow, QFileDialog, QGraphicsScene, QGraphicsTextItem, QGraphicsItem
 from PySide6.QtGui import QFont, QPixmap, QColor, QColorConstants
-from PySide6.QtCore import Qt, Signal, QPoint, QObject
+from PySide6.QtCore import Qt, Signal, QPointF
 from ui_mainwindow import Ui_MainWindow
+import math
 
-class RotationLabel(QLabel):
-    position_change = Signal(int)
-    def __init__(self, parent):
+class RotationLabel(QGraphicsTextItem):
+    position_change = Signal(QPointF)
+    def __init__(self):
         super().__init__()
-        # self.setParent(parent)
-        self.setText('⟳')
-        self.setStyleSheet(f'''color: rgba(255, 255, 255, 100)''') #
-        self.setFont(QFont('Calibri', 12))
-        self.setMaximumSize(20,20)
+        self.setPlainText('⟳')
+        self.setFont(QFont('Calibri', 20))
+        self.setOpacity(0.5)
+        self.setPos(10, 0)
+        self.setDefaultTextColor(QColor(QColorConstants.White))
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
+
 
 class DraggableLabel(QGraphicsTextItem):
     def __init__(self):
@@ -21,25 +23,7 @@ class DraggableLabel(QGraphicsTextItem):
         self.setFont(QFont('Calibri', 20))
         self.setOpacity(0.5)
         self.setDefaultTextColor(QColor(QColorConstants.White))
-        # self.rotator = RotationLabel()
-
-    def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            self.start_position = event.pos()
-
-    def mouseMoveEvent(self, event):
-        if event.buttons() == Qt.LeftButton:
-            QApplication.setOverrideCursor(Qt.ClosedHandCursor)
-            self.setOpacity(0.25)
-            delta = event.pos() - self.start_position
-            new_position = self.pos() + delta
-
-            self.setPos(new_position)
-
-    def mouseReleaseEvent(self, event):
-        if not event.buttons() == Qt.LeftButton:
-            QApplication.setOverrideCursor(Qt.ArrowCursor)
-            self.setOpacity(0.5)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
 
 class CustomScene(QGraphicsScene):
     def __init__(self, parent):
@@ -70,20 +54,18 @@ class CustomScene(QGraphicsScene):
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
+
         self.setupUi(self)
         self.setWindowTitle('Watermarker')
-        self.setAcceptDrops(True)
-        self.graphic_window.setAcceptDrops(True)
 
         self.scene = CustomScene(self)
         self.graphic_window.setScene(self.scene)
+        self.scene.setSceneRect(0, 0, 350, 304)
         self.graphic_window.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.graphic_window.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
         self.set_watermark()
-
         self.actionLoad.triggered.connect(self.load_image)
-
 
     def dragEnterEvent(self, event):
         self.scene.dragEnterEvent(event)
@@ -101,12 +83,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             pass
         self.scene.clear()
         self.scene.addPixmap(image)
-
         self.graphic_window.setFixedSize(image.width(), image.height())
         self.scene.setSceneRect(0, 0, image.width(), image.height())
         self.setFixedSize(image.width() + 50, image.height() + 146)
-
-        self.set_watermark()
+        self.set_watermark(image)
 
     def set_image(self, file_path):
         image = QPixmap(file_path)
@@ -117,14 +97,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         image = QPixmap(file_path[0])
         self.sizing_n_upload(image)
 
-    def set_watermark(self):
+    def set_watermark(self, image=None):
         self.watermark = DraggableLabel()
-        # self.rotator = RotationLabel(self.scene)
+        self.watermark.setTransformOriginPoint(self.watermark.boundingRect().center())
+        self.rotator = RotationLabel()
         self.scene.addItem(self.watermark)
-
+        self.scene.addItem(self.rotator)
+        if image:
+            self.watermark.setPos((image.width() - self.watermark.boundingRect().width()) / 2,
+                                  (image.height() - self.watermark.boundingRect().height()) / 2)
+        else:
+            self.watermark.setPos((350 - self.watermark.boundingRect().width()) / 2,
+                                  (304 - self.watermark.boundingRect().height()) / 2)
 
 #TODO
-# put watermark text - that stays whenever there is image or not - done
-# make watermark text movable with mouse movement (drag) - done
-# make watermark text possible to rotate with mouse movement (drag rotator object)
+# make watermark text possible to rotate with mouse movement
 # save the image with the watermark text
