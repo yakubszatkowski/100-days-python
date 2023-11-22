@@ -13,17 +13,68 @@ class RotationLabel(QGraphicsTextItem):
         self.setOpacity(0.5)
         self.setPos(10, 0)
         self.setDefaultTextColor(QColor(QColorConstants.White))
-        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable | QGraphicsItem.ItemSendsScenePositionChanges)
+        self.rotator_geo = self.boundingRect()
 
+
+    def itemChange(self, change, value):
+        if change == QGraphicsItem.ItemPositionChange:
+            self.scene_geo = self.scene().sceneRect()
+            w = self.rotator_geo.width()
+            h = self.rotator_geo.height()
+            top_left = value - QPointF(20,0)
+            bottom_right = value + QPointF(w, h)
+            if not self.scene_geo.contains(top_left) or not self.scene_geo.contains(bottom_right):
+                y = value.y()
+                x = value.x()
+                if y < self.scene_geo.top():
+                    y = self.scene_geo.top()
+                if y > self.scene_geo.bottom() - h:
+                    y = self.scene_geo.bottom() - h
+                if x < self.scene_geo.left():
+                    x = self.scene_geo.left()
+                if x > self.scene_geo.right() - w:
+                    x = self.scene_geo.right() - w
+                value.setX(x)
+                value.setY(y)
+                self.position_change.emit(value)
+                return value
+            self.position_change.emit(value)
+        return super().itemChange(change, value)
 
 class DraggableLabel(QGraphicsTextItem):
     def __init__(self):
         super().__init__()
-        self.setPlainText('Example text')
+        self.setPlainText('Enter watermark')
         self.setFont(QFont('Calibri', 20))
         self.setOpacity(0.5)
         self.setDefaultTextColor(QColor(QColorConstants.White))
-        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable | QGraphicsItem.ItemSendsScenePositionChanges)
+        self.label_geo = self.boundingRect()
+
+    def itemChange(self, change, value):
+        if change == QGraphicsItem.ItemPositionChange:
+            self.scene_geo = self.scene().sceneRect()
+            w = self.label_geo.width()
+            h = self.label_geo.height()
+            top_left = value - QPointF(20, 0)
+            bottom_right = value + QPointF(w, h)
+            if not self.scene_geo.contains(top_left) or not self.scene_geo.contains(bottom_right):
+                y = value.y()
+                x = value.x()
+                if y < self.scene_geo.top():
+                    y = self.scene_geo.top()
+                if y > self.scene_geo.bottom() - h:
+                    y = self.scene_geo.bottom() - h
+                if x < self.scene_geo.left():
+                    x = self.scene_geo.left()
+                if x > self.scene_geo.right() - w:
+                    x = self.scene_geo.right() - w
+                value.setX(x)
+                value.setY(y)
+                return value
+        return super().itemChange(change, value)
+
 
 class CustomScene(QGraphicsScene):
     def __init__(self, parent):
@@ -54,7 +105,6 @@ class CustomScene(QGraphicsScene):
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-
         self.setupUi(self)
         self.setWindowTitle('Watermarker')
 
@@ -66,6 +116,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.set_watermark()
         self.actionLoad.triggered.connect(self.load_image)
+        self.rotator.position_change.connect(self.rotate_watermark)
+
+    def rotate_watermark(self, position):  #TODO rotation is not that smooth - it works smooth when the rotator is far
+        item_position = self.watermark.transformOriginPoint()
+        angle = math.atan2(item_position.y() - position.y(), item_position.x() - position.x()) / math.pi * 180 + 31
+        self.watermark.setRotation(angle)
+        self.rotator.setRotation(-angle)
 
     def dragEnterEvent(self, event):
         self.scene.dragEnterEvent(event)
@@ -101,6 +158,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.watermark = DraggableLabel()
         self.watermark.setTransformOriginPoint(self.watermark.boundingRect().center())
         self.rotator = RotationLabel()
+        self.rotator.setTransformOriginPoint(self.rotator.boundingRect().center())
         self.scene.addItem(self.watermark)
         self.scene.addItem(self.rotator)
         if image:
@@ -110,6 +168,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.watermark.setPos((350 - self.watermark.boundingRect().width()) / 2,
                                   (304 - self.watermark.boundingRect().height()) / 2)
 
+
 #TODO
-# make watermark text possible to rotate with mouse movement
-# save the image with the watermark text
+# change watermark
+# doubleclick
+# save pic
+# get .exe
