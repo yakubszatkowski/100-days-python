@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QMainWindow, QFileDialog, QGraphicsScene, QGraphicsTextItem, QGraphicsItem
-from PySide6.QtGui import QFont, QPixmap, QColor, QColorConstants
+from PySide6.QtGui import QFont, QPixmap, QColor, QColorConstants, QImage, QPainter
 from PySide6.QtCore import Qt, Signal, QPointF
 from ui_mainwindow import Ui_MainWindow
 import math
@@ -114,9 +114,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.set_watermark()
         self.actionLoad.triggered.connect(self.load_image)
+        self.actionSave.triggered.connect(self.save_image)
+        self.save_button.clicked.connect(self.save_image)
         self.rotator.position_change.connect(self.rotate_watermark)
-
-        # self.watermark.textChanged.connect(self.watermark_text_change)
         self.spin_box.valueChanged.connect(self.watermark_text_change)
         self.watermark_input_text.textChanged.connect(self.watermark_text_change)
 
@@ -167,6 +167,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         image = QPixmap(file_path[0])
         self.sizing_n_upload(image)
 
+    def save_image(self):
+        self.scene.clearSelection()
+        self.scene.setSceneRect(self.scene.itemsBoundingRect())
+        image = QImage(self.scene.sceneRect().size().toSize(), QImage.Format_ARGB32)
+        image.fill(Qt.transparent)
+        painter = QPainter(image)
+        self.scene.render(painter)
+        image.save('file_name.jpg')
+
+
+
     def set_watermark(self, image=None):
         self.watermark = DraggableLabel()
         self.watermark.setTransformOriginPoint(self.watermark.boundingRect().center())
@@ -180,7 +191,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.watermark.setPos((350 - self.watermark.boundingRect().width()) / 2,
                                   (304 - self.watermark.boundingRect().height()) / 2)
-
 
 
 #TODO
