@@ -173,7 +173,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         painter = QPainter(image)
         self.scene.render(painter)
         file_name, _ = QFileDialog.getSaveFileName(self, 'Save File', '', 'Image Files(*.jpg);; All Files(*)')
-        image.save('ok')
+        if file_name:
+            image.save(file_name)
         painter.end()
 
     def set_watermark(self, image=None):
@@ -192,7 +193,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                   (304 - self.watermark.boundingRect().height()) / 2)
 
 #TODO
-# save pic - adress crashing/not saving issue
 # help from actionbar
 # get .exe
 
