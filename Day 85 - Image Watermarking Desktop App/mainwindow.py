@@ -111,20 +111,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.scene.setSceneRect(0, 0, 350, 304)
         self.graphic_window.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.graphic_window.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-
         self.set_watermark()
+
         self.actionLoad.triggered.connect(self.load_image)
         self.actionSave.triggered.connect(self.save_image)
         self.save_button.clicked.connect(self.save_image)
-        self.rotator.position_change.connect(self.rotate_watermark)
         self.spin_box.valueChanged.connect(self.watermark_text_change)
         self.watermark_input_text.textChanged.connect(self.watermark_text_change)
-
 
     def watermark_text_change(self):
         if self.watermark_input_text.text() == '':
             self.watermark.setPlainText('Enter watermark text')
-            print(self.watermark.toPlainText())
         else:
             self.watermark.setPlainText(self.watermark_input_text.text())
         self.watermark.setFont(QFont('Calibri', self.spin_box.value()))
@@ -168,15 +165,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sizing_n_upload(image)
 
     def save_image(self):
+        self.scene.removeItem(self.rotator)
         self.scene.clearSelection()
         self.scene.setSceneRect(self.scene.itemsBoundingRect())
         image = QImage(self.scene.sceneRect().size().toSize(), QImage.Format_ARGB32)
         image.fill(Qt.transparent)
         painter = QPainter(image)
         self.scene.render(painter)
-        image.save('file_name.jpg')
-
-
+        file_name, _ = QFileDialog.getSaveFileName(self, 'Save File', '', 'Image Files(*.jpg);; All Files(*)')
+        image.save('ok')
+        painter.end()
 
     def set_watermark(self, image=None):
         self.watermark = DraggableLabel()
@@ -185,6 +183,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.rotator.setTransformOriginPoint(self.rotator.boundingRect().center())
         self.scene.addItem(self.watermark)
         self.scene.addItem(self.rotator)
+        self.rotator.position_change.connect(self.rotate_watermark)
         if image:
             self.watermark.setPos((image.width() - self.watermark.boundingRect().width()) / 2,
                                   (image.height() - self.watermark.boundingRect().height()) / 2)
@@ -192,8 +191,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.watermark.setPos((350 - self.watermark.boundingRect().width()) / 2,
                                   (304 - self.watermark.boundingRect().height()) / 2)
 
-
 #TODO
-# save pic
+# save pic - adress crashing/not saving issue
 # help from actionbar
 # get .exe
+
+# Improvements ideas
+# Save picture with its original size
+# Adding multiple watermarks
