@@ -14,11 +14,10 @@ class RotationLabel(QGraphicsTextItem):
         self.setPos(10, 0)
         self.setDefaultTextColor(QColor(QColorConstants.White))
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable | QGraphicsItem.ItemSendsScenePositionChanges)
-        self.rotator_geo = self.boundingRect()
-
 
     def itemChange(self, change, value):
         if change == QGraphicsItem.ItemPositionChange:
+            self.rotator_geo = self.boundingRect()
             self.scene_geo = self.scene().sceneRect()
             w = self.rotator_geo.width()
             h = self.rotator_geo.height()
@@ -45,15 +44,15 @@ class RotationLabel(QGraphicsTextItem):
 class DraggableLabel(QGraphicsTextItem):
     def __init__(self):
         super().__init__()
-        self.setPlainText('Enter watermark')
+        self.setPlainText('Enter watermark text')
         self.setFont(QFont('Calibri', 20))
         self.setOpacity(0.5)
         self.setDefaultTextColor(QColor(QColorConstants.White))
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable | QGraphicsItem.ItemSendsScenePositionChanges)
-        self.label_geo = self.boundingRect()
 
     def itemChange(self, change, value):
         if change == QGraphicsItem.ItemPositionChange:
+            self.label_geo = self.boundingRect()
             self.scene_geo = self.scene().sceneRect()
             w = self.label_geo.width()
             h = self.label_geo.height()
@@ -74,7 +73,6 @@ class DraggableLabel(QGraphicsTextItem):
                 value.setY(y)
                 return value
         return super().itemChange(change, value)
-
 
 class CustomScene(QGraphicsScene):
     def __init__(self, parent):
@@ -118,7 +116,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionLoad.triggered.connect(self.load_image)
         self.rotator.position_change.connect(self.rotate_watermark)
 
-    def rotate_watermark(self, position):  #TODO rotation is not that smooth - it works smooth when the rotator is far
+        # self.watermark.textChanged.connect(self.watermark_text_change)
+        self.spin_box.valueChanged.connect(self.watermark_text_change)
+        self.watermark_input_text.textChanged.connect(self.watermark_text_change)
+
+
+    def watermark_text_change(self):
+        if self.watermark_input_text.text() == '':
+            self.watermark.setPlainText('Enter watermark text')
+            print(self.watermark.toPlainText())
+        else:
+            self.watermark.setPlainText(self.watermark_input_text.text())
+        self.watermark.setFont(QFont('Calibri', self.spin_box.value()))
+        self.watermark.adjustSize()
+        self.watermark.setTransformOriginPoint(self.watermark.boundingRect().center())
+
+    def rotate_watermark(self, position):
         item_position = self.watermark.transformOriginPoint()
         angle = math.atan2(item_position.y() - position.y(), item_position.x() - position.x()) / math.pi * 180 + 31
         self.watermark.setRotation(angle)
@@ -169,8 +182,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                   (304 - self.watermark.boundingRect().height()) / 2)
 
 
+
 #TODO
-# change watermark
-# doubleclick
 # save pic
+# help from actionbar
 # get .exe
