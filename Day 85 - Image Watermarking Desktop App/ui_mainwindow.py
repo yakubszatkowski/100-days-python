@@ -92,7 +92,9 @@ class Ui_MainWindow(object):
 "\n"
 "#save_button::hover {\n"
 "	border: 1px solid white;\n"
-"}")
+"}\n"
+"\n"
+"")
         self.actionLoad = QAction(MainWindow)
         self.actionLoad.setObjectName(u"actionLoad")
         self.actionSave = QAction(MainWindow)

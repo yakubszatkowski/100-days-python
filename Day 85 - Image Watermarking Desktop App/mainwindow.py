@@ -1,4 +1,5 @@
-from PySide6.QtWidgets import QMainWindow, QFileDialog, QGraphicsScene, QGraphicsTextItem, QGraphicsItem
+from PySide6.QtWidgets import (QMainWindow, QFileDialog, QGraphicsScene, QGraphicsTextItem, QGraphicsItem, QApplication,
+                               QMessageBox)
 from PySide6.QtGui import QFont, QPixmap, QColor, QColorConstants, QImage, QPainter
 from PySide6.QtCore import Qt, Signal, QPointF
 from ui_mainwindow import Ui_MainWindow
@@ -118,6 +119,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.save_button.clicked.connect(self.save_image)
         self.spin_box.valueChanged.connect(self.watermark_text_change)
         self.watermark_input_text.textChanged.connect(self.watermark_text_change)
+        self.actionAbout.triggered.connect(self.about)
+        self.actionAboutQt.triggered.connect(QApplication.aboutQt)
+
+    def about(self):
+        msg = QMessageBox(self)
+        msg.information(self, 'Information', 'This is my message', QMessageBox.Ok, QMessageBox.Cancel)
 
     def watermark_text_change(self):
         if self.watermark_input_text.text() == '':
@@ -154,6 +161,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.scene.setSceneRect(0, 0, image.width(), image.height())
         self.setFixedSize(image.width() + 50, image.height() + 146)
         self.set_watermark(image)
+
 
     def set_image(self, file_path):
         image = QPixmap(file_path)
@@ -193,9 +201,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                   (304 - self.watermark.boundingRect().height()) / 2)
 
 #TODO
-# help from actionbar
-# get .exe
+# change color of help messageboxes text to black
 
-# Improvements ideas
+#TODO Improvements ideas:
 # Save picture with its original size
 # Adding multiple watermarks
+# Reset rotator

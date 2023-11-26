@@ -82,7 +82,9 @@ QMenu::item:selected {
 
 #save_button::hover {
 	border: 1px solid white;
-}</string>
+}
+
+</string>
   </property>
   <widget class="QWidget" name="main_layout">
    <property name="sizePolicy">
