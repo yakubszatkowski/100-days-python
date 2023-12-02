@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import (QMainWindow, QFileDialog, QGraphicsScene, QGraphicsTextItem, QGraphicsItem, QApplication,
                                QMessageBox)
-from PySide6.QtGui import QFont, QPixmap, QColor, QColorConstants, QImage, QPainter
+from PySide6.QtGui import QFont, QPixmap, QColor, QColorConstants, QImage, QPainter, QIcon
 from PySide6.QtCore import Qt, Signal, QPointF
 from ui_mainwindow import Ui_MainWindow
 import math
@@ -106,6 +106,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('Watermarker')
+        self.setWindowIcon(QIcon('watermark.png'))
 
         self.scene = CustomScene(self)
         self.graphic_window.setScene(self.scene)
