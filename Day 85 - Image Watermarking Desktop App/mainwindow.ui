@@ -25,34 +25,30 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">* {
-	color: white;
-}
-
-#title_label {
+   <string notr="true">#title_label {
   text-align: center;
+  color: white;
 }
 
 #MainWindow {	
-	background-color: qradialgradient(spread:pad, cx:0.511, cy:0.505682, radius:0.79, fx:0.284091, fy:0.25, stop:0 rgba(95, 95, 95, 255), stop:1 rgba(0, 0, 0, 255))
+	background-color: qradialgradient(spread:pad, cx:0.511, cy:0.505682, radius:0.79, fx:0.284091, fy:0.25, stop:0 rgba(95, 95, 95, 255), stop:1 rgba(0, 0, 0, 255));
 }
 
 QMenuBar {
 	background-color: rgb(49,49,49);
 	border-bottom: 0.5px solid white;
-}
-
-QMenuBar::item:selected {
-	background-color: grey;
+    color: white;
 }
 
 QMenu {
 	background-color: rgb(49,49,49);
+    color: white;
 }
 
 QMenu::item:selected {
 	background-color: rgb(49,49,49);
 	border-bottom: 1px solid white;	
+    color: white;
 }
 
 #graphic_window {
@@ -68,6 +64,7 @@ QMenu::item:selected {
 	background-color: rgba(255, 255, 255, 0);
 	border: 0px;
 	border-bottom: 0.5px solid grey;
+    color: white;
 }
 
 #watermark_input_text::hover, #spin_box::hover {
@@ -78,8 +75,11 @@ QMenu::item:selected {
 	border-radius: 10px;
 	background: grey;
 	width: 200px;
+    color: white;
 }
-
+#font_size_label {
+    color: white;
+}
 #save_button::hover {
 	border: 1px solid white;
 }

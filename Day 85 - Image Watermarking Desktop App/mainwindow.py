@@ -124,7 +124,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def about(self):
         msg = QMessageBox(self)
-        msg.information(self, 'Information', 'This is my message', QMessageBox.Ok, QMessageBox.Cancel)
+        msg.information(
+            self,
+            'Information',
+
+            'Watermarking application made by <a href="https://github.com/yakubszatkowski">yakubszatkowski</a> <br><br>'
+            '- Load a picture by drag and dropping picture from your system or load through menu.<br>'
+            '- Customize text and change it\'s font size. <br>'
+            '- Move the rotator on the top left in order to rotate the watermark text. <br>'
+            '- Save the image in your system by clicking save button or save though menu.',
+
+            QMessageBox.Ok,
+            QMessageBox.Cancel)
 
     def watermark_text_change(self):
         if self.watermark_input_text.text() == '':
@@ -139,7 +150,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         item_position = self.watermark.transformOriginPoint()
         angle = math.atan2(item_position.y() - position.y(), item_position.x() - position.x()) / math.pi * 180 + 31
         self.watermark.setRotation(angle)
-        self.rotator.setRotation(-angle)
+        self.rotator.setRotation(-angle*3)
 
     def dragEnterEvent(self, event):
         self.scene.dragEnterEvent(event)
@@ -174,8 +185,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_image(self):
         self.scene.removeItem(self.rotator)
-        self.scene.clearSelection()
-        self.scene.setSceneRect(self.scene.itemsBoundingRect())
         image = QImage(self.scene.sceneRect().size().toSize(), QImage.Format_ARGB32)
         image.fill(Qt.transparent)
         painter = QPainter(image)
@@ -184,6 +193,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if file_name:
             image.save(file_name)
         painter.end()
+        self.scene.addItem(self.rotator)
 
     def set_watermark(self, image=None):
         self.watermark = DraggableLabel()
@@ -206,4 +216,3 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 #TODO Improvements ideas:
 # Save picture with its original size
 # Adding multiple watermarks
-# Reset rotator
