@@ -129,8 +129,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             'Information',
 
             'Watermarking application made by <a href="https://github.com/yakubszatkowski">yakubszatkowski</a> <br><br>'
-            '- Load a picture by drag and dropping picture from your system or load through menu.<br>'
+            '- Load a picture by drag and dropping picture from your system files or load it through menu. <br>'
             '- Customize text and change it\'s font size. <br>'
+            '- Drag the text across the picture. <br>'
             '- Move the rotator on the top left in order to rotate the watermark text. <br>'
             '- Save the image in your system by clicking save button or save though menu.',
 
@@ -173,7 +174,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setFixedSize(image.width() + 50, image.height() + 146)
         self.set_watermark(image)
 
-
     def set_image(self, file_path):
         image = QPixmap(file_path)
         self.sizing_n_upload(image)
@@ -210,8 +210,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.watermark.setPos((350 - self.watermark.boundingRect().width()) / 2,
                                   (304 - self.watermark.boundingRect().height()) / 2)
 
-#TODO
-# change color of help messageboxes text to black
 
 #TODO Improvements ideas:
 # Save picture with its original size
