@@ -4,6 +4,7 @@ from PySide6.QtGui import QFont, QPixmap, QColor, QColorConstants, QImage, QPain
 from PySide6.QtCore import Qt, Signal, QPointF
 from ui_mainwindow import Ui_MainWindow
 import math
+import os
 
 class RotationLabel(QGraphicsTextItem):
     position_change = Signal(QPointF)
@@ -106,7 +107,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('Watermarker')
-        self.setWindowIcon(QIcon('watermark.png'))
+
+        # icon_path = r'C:\Users\kubas\Desktop\100 day python coding\Day 85 - Image Watermarking Desktop App\watermark.ico'
+        icon_path = os.environ.get('icon_path')
+        self.setWindowIcon(QIcon(icon_path))
 
         self.scene = CustomScene(self)
         self.graphic_window.setScene(self.scene)
@@ -211,6 +215,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.watermark.setPos((350 - self.watermark.boundingRect().width()) / 2,
                                   (304 - self.watermark.boundingRect().height()) / 2)
 
+# pyinstaller --windowed --icon=watermark.ico --add-data="watermark.ico;." main.py
 
 #TODO Improvements ideas:
 # Save picture with its original size
