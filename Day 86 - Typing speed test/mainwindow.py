@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QMainWindow, QWidget, QStackedLayout
+from PySide6.QtCore import Qt
 from ui_menuwidget import Ui_menu_widget
 from ui_testwidget import Ui_test_widget
 
@@ -7,6 +8,7 @@ class MenuWidget(QWidget, Ui_menu_widget):
         super().__init__()
         self.setupUi(self)
         self.main_window = parent
+        self.setAttribute(Qt.WA_StyledBackground, True)
         self.start_button.clicked.connect(self.start_test)
 
     def start_test(self):
@@ -17,6 +19,7 @@ class TestWidget(QWidget, Ui_test_widget):
         super().__init__()
         self.setupUi(self)
         self.main_window = parent
+        self.setAttribute(Qt.WA_StyledBackground, True)
         self.return_button.clicked.connect(self.return_to_menu)
 
     def return_to_menu(self):
@@ -41,4 +44,10 @@ class MainWindow(QMainWindow):
     def switch_window(self, index):
         self.stacked_layout.setCurrentIndex(index)
 
-
+#TODO
+# create list of random texts
+# pick random text and put it in text_label when entering test
+# when entering test enable countdown mechanism - 5 seconds
+# after countdown enable input_textedit, start the timer in results_label in s:ms format
+# dynamically highlight letters in text_label that match the letters from input_textedit
+# add functionality to again_button - it should restart

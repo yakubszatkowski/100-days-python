@@ -25,12 +25,12 @@ class Ui_menu_widget(object):
         if not menu_widget.objectName():
             menu_widget.setObjectName(u"menu_widget")
         menu_widget.resize(500, 560)
-        menu_widget.setStyleSheet(u"#menu_widget {\n"
-"background-color:qradialgradient(spread:pad, cx:0.483682, cy:0.307, radius:0.5, fx:0.478, fy:0, stop:0 rgba(173, 185, 207, 255), stop:1 rgba(255, 255, 255, 255))\n"
-"}\n"
-"\n"
-"\n"
-"")
+        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(menu_widget.sizePolicy().hasHeightForWidth())
+        menu_widget.setSizePolicy(sizePolicy)
+        menu_widget.setStyleSheet(u"#menu_widget {background-color:qradialgradient(spread:pad, cx:0.483682, cy:0.307, radius:0.5, fx:0.478, fy:0, stop:0 rgba(173, 185, 207, 255), stop:1 rgba(255, 255, 255, 255))}")
         self.verticalLayout = QVBoxLayout(menu_widget)
         self.verticalLayout.setSpacing(10)
         self.verticalLayout.setObjectName(u"verticalLayout")
