@@ -40,7 +40,7 @@ class Ui_test_widget(object):
         self.countdown_label = QLabel(test_widget)
         self.countdown_label.setObjectName(u"countdown_label")
         font1 = QFont()
-        font1.setPointSize(20)
+        font1.setPointSize(26)
         self.countdown_label.setFont(font1)
 
         self.verticalLayout.addWidget(self.countdown_label, 0, Qt.AlignHCenter|Qt.AlignTop)
@@ -48,41 +48,41 @@ class Ui_test_widget(object):
         self.text_label = QLabel(test_widget)
         self.text_label.setObjectName(u"text_label")
         font2 = QFont()
-        font2.setPointSize(16)
+        font2.setPointSize(20)
         self.text_label.setFont(font2)
         self.text_label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
         self.text_label.setWordWrap(True)
 
         self.verticalLayout.addWidget(self.text_label)
 
-        self.plainTextEdit = QPlainTextEdit(test_widget)
-        self.plainTextEdit.setObjectName(u"plainTextEdit")
-        self.plainTextEdit.setEnabled(False)
-        self.plainTextEdit.setMaximumSize(QSize(16777215, 167))
+        self.textinput_textedit = QPlainTextEdit(test_widget)
+        self.textinput_textedit.setObjectName(u"textinput_textedit")
+        self.textinput_textedit.setEnabled(False)
+        self.textinput_textedit.setMaximumSize(QSize(16777215, 167))
 
-        self.verticalLayout.addWidget(self.plainTextEdit)
+        self.verticalLayout.addWidget(self.textinput_textedit)
 
         self.results_label = QLabel(test_widget)
         self.results_label.setObjectName(u"results_label")
 
         self.verticalLayout.addWidget(self.results_label, 0, Qt.AlignHCenter)
 
-        self.buttons = QHBoxLayout()
-        self.buttons.setSpacing(10)
-        self.buttons.setObjectName(u"buttons")
-        self.buttons.setContentsMargins(50, -1, 50, -1)
+        self.buttons_layout = QHBoxLayout()
+        self.buttons_layout.setSpacing(10)
+        self.buttons_layout.setObjectName(u"buttons_layout")
+        self.buttons_layout.setContentsMargins(50, -1, 50, -1)
         self.again_button = QPushButton(test_widget)
         self.again_button.setObjectName(u"again_button")
 
-        self.buttons.addWidget(self.again_button)
+        self.buttons_layout.addWidget(self.again_button)
 
         self.return_button = QPushButton(test_widget)
         self.return_button.setObjectName(u"return_button")
 
-        self.buttons.addWidget(self.return_button)
+        self.buttons_layout.addWidget(self.return_button)
 
 
-        self.verticalLayout.addLayout(self.buttons)
+        self.verticalLayout.addLayout(self.buttons_layout)
 
         self.verticalLayout.setStretch(0, 1)
         self.verticalLayout.setStretch(1, 2)

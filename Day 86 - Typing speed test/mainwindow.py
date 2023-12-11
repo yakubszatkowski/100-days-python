@@ -1,9 +1,10 @@
 from PySide6.QtWidgets import QMainWindow, QWidget, QStackedLayout
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer
 from ui_menuwidget import Ui_menu_widget
 from ui_testwidget import Ui_test_widget
 from random import choice
 from jokes_list import it_jokes
+
 
 class MenuWidget(QWidget, Ui_menu_widget):
     def __init__(self, parent):
@@ -24,6 +25,8 @@ class TestWidget(QWidget, Ui_test_widget):
         self.setupUi(self)
         self.main_window = parent
         self.setAttribute(Qt.WA_StyledBackground, True)
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.countdown)
 
         self.return_button.clicked.connect(self.switch_to_menu)
         self.again_button.clicked.connect(self.choose_text)
@@ -34,7 +37,20 @@ class TestWidget(QWidget, Ui_test_widget):
     def choose_text(self):
         random_text = choice(it_jokes)
         self.text_label.setText(random_text)
+        self.textinput_textedit.setEnabled(False)
 
+        self.countdown_timer = 5
+        self.countdown_label.setNum(self.countdown_timer)
+        self.timer.start(1000)
+        self.countdown()
+
+    def countdown(self):
+        if self.countdown_timer > 0:
+            self.countdown_label.setNum(self.countdown_timer)
+            self.countdown_timer -= 1
+        else:
+            self.countdown_label.setText('Start!')
+            self.textinput_textedit.setEnabled(True)
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -63,9 +79,6 @@ class MainWindow(QMainWindow):
 
 
 #TODO
-# create list of random texts - done
-# pick random text and put it in text_label when entering test, signal when entering the layout - done
-# when entering test enable countdown mechanism - 5 seconds
-# after countdown enable input_textedit, start the timer in results_label in s:ms format
 # dynamically highlight letters in text_label that match the letters from input_textedit
-# add functionality to again_button - it should restart
+# start the timer in results_label in s:ms format
+# when every letter is highlighted stop the timer, disable the input_textedit, in results show time, words written, words per minute

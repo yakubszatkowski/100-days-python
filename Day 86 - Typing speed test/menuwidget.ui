@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>menu_widget</class>
  <widget class="QWidget" name="menu_widget">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
