@@ -4,6 +4,7 @@ from ui_menuwidget import Ui_menu_widget
 from ui_testwidget import Ui_test_widget
 from random import choice
 from jokes_list import it_jokes
+from copy import copy
 
 
 class MenuWidget(QWidget, Ui_menu_widget):
@@ -18,6 +19,7 @@ class MenuWidget(QWidget, Ui_menu_widget):
 
     def switch_to_test(self):
         self.main_window.switch_window(1)
+
 
 class TestWidget(QWidget, Ui_test_widget):
     def __init__(self, parent):
@@ -59,12 +61,16 @@ class TestWidget(QWidget, Ui_test_widget):
     def text_changed(self):
         self.current_input = self.textinput_textedit.toPlainText()
         input_length = len(self.current_input)
-        text = self.text_label.text()
+        text = self.random_text
 
-        if self.current_input == text[0:input_length]:
-            print('So far it\'s okay')
-        else:
-            print('Error!')
+        colored_text = ''
+        for i, n in enumerate(text):
+            if i < input_length:
+                colored_text += f'<font color={'green' if n == self.current_input[i] else 'red'}>{n}</font>'
+            else:
+                colored_text += n
+
+        self.text_label.setText(colored_text)
 
 
 class MainWindow(QMainWindow):
@@ -96,4 +102,5 @@ class MainWindow(QMainWindow):
 #TODO
 # dynamically highlight letters in text_label that match the letters from input_textedit
 # start the timer in results_label in s:ms format
-# when every letter is highlighted stop the timer, disable the input_textedit, in results show time, words written, words per minute
+# when every letter is highlighted stop the timer, disable the input_textedit,
+#  in results show time, words written, words per minute
