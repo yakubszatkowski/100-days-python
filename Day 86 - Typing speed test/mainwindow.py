@@ -64,11 +64,15 @@ class TestWidget(QWidget, Ui_test_widget):
         text = self.random_text
 
         colored_text = ''
+
         for i, n in enumerate(text):
             if i < input_length:
-                colored_text += f'<font color={'green' if n == self.current_input[i] else 'red'}>{n}</font>'
+                colored_text += f'<span style="background-color: {'green' if n == self.current_input[i] else 'red'}">{n}</span>'
             else:
                 colored_text += n
+
+        if len(colored_text) == len(text):
+            print('work')
 
         self.text_label.setText(colored_text)
 
