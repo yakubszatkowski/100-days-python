@@ -25,8 +25,12 @@ class TestWidget(QWidget, Ui_test_widget):
         self.setupUi(self)
         self.main_window = parent
         self.setAttribute(Qt.WA_StyledBackground, True)
+        self.timer_countdown = QTimer(self)
+        self.timer_countdown.setInterval(1000)
+        self.timer_countdown.timeout.connect(self.countdown)
         self.timer = QTimer(self)
-        self.timer.timeout.connect(self.countdown)
+
+        self.textinput_textedit.textChanged.connect(self.text_changed)
 
         self.return_button.clicked.connect(self.switch_to_menu)
         self.again_button.clicked.connect(self.choose_text)
@@ -35,13 +39,13 @@ class TestWidget(QWidget, Ui_test_widget):
         self.main_window.switch_window(0)
 
     def choose_text(self):
-        random_text = choice(it_jokes)
-        self.text_label.setText(random_text)
+        self.random_text = choice(it_jokes)
+        self.text_label.setText(self.random_text)
         self.textinput_textedit.setEnabled(False)
 
-        self.countdown_timer = 5
+        self.countdown_timer = 0
         self.countdown_label.setNum(self.countdown_timer)
-        self.timer.start(1000)
+        self.timer_countdown.start()
         self.countdown()
 
     def countdown(self):
@@ -51,6 +55,17 @@ class TestWidget(QWidget, Ui_test_widget):
         else:
             self.countdown_label.setText('Start!')
             self.textinput_textedit.setEnabled(True)
+
+    def text_changed(self):
+        self.current_input = self.textinput_textedit.toPlainText()
+        input_length = len(self.current_input)
+        text = self.text_label.text()
+
+        if self.current_input == text[0:input_length]:
+            print('So far it\'s okay')
+        else:
+            print('Error!')
+
 
 class MainWindow(QMainWindow):
     def __init__(self):

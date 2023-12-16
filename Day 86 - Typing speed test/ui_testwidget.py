@@ -57,8 +57,11 @@ class Ui_test_widget(object):
 
         self.textinput_textedit = QPlainTextEdit(test_widget)
         self.textinput_textedit.setObjectName(u"textinput_textedit")
-        self.textinput_textedit.setEnabled(False)
+        self.textinput_textedit.setEnabled(True)
         self.textinput_textedit.setMaximumSize(QSize(16777215, 167))
+        font3 = QFont()
+        font3.setPointSize(16)
+        self.textinput_textedit.setFont(font3)
 
         self.verticalLayout.addWidget(self.textinput_textedit)
 
