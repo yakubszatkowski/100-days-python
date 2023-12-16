@@ -97,7 +97,10 @@
    <item alignment="Qt::AlignHCenter">
     <widget class="QLabel" name="results_label">
      <property name="text">
-      <string>Result</string>
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>

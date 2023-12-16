@@ -67,6 +67,7 @@ class Ui_test_widget(object):
 
         self.results_label = QLabel(test_widget)
         self.results_label.setObjectName(u"results_label")
+        self.results_label.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout.addWidget(self.results_label, 0, Qt.AlignHCenter)
 
@@ -100,7 +101,7 @@ class Ui_test_widget(object):
         test_widget.setWindowTitle(QCoreApplication.translate("test_widget", u"Form", None))
         self.countdown_label.setText(QCoreApplication.translate("test_widget", u"Countdown", None))
         self.text_label.setText(QCoreApplication.translate("test_widget", u"Here is example text", None))
-        self.results_label.setText(QCoreApplication.translate("test_widget", u"Result", None))
+        self.results_label.setText("")
         self.again_button.setText(QCoreApplication.translate("test_widget", u"Again", None))
         self.return_button.setText(QCoreApplication.translate("test_widget", u"Return", None))
     # retranslateUi

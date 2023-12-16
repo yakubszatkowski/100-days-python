@@ -1,10 +1,9 @@
 from PySide6.QtWidgets import QMainWindow, QWidget, QStackedLayout
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import Qt, QTimer, QTime
 from ui_menuwidget import Ui_menu_widget
 from ui_testwidget import Ui_test_widget
 from random import choice
 from jokes_list import it_jokes
-from copy import copy
 
 
 class MenuWidget(QWidget, Ui_menu_widget):
@@ -30,7 +29,9 @@ class TestWidget(QWidget, Ui_test_widget):
         self.timer_countdown = QTimer(self)
         self.timer_countdown.setInterval(1000)
         self.timer_countdown.timeout.connect(self.countdown)
+
         self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_timer)
 
         self.textinput_textedit.textChanged.connect(self.text_changed)
 
@@ -42,10 +43,15 @@ class TestWidget(QWidget, Ui_test_widget):
 
     def choose_text(self):
         self.random_text = choice(it_jokes)
+        self.word_count = len(self.random_text.split(' '))
+        self.results_label.clear()
+        self.textinput_textedit.clear()
+
         self.text_label.setText(self.random_text)
         self.textinput_textedit.setEnabled(False)
+        self.time = QTime(0, 0)
 
-        self.countdown_timer = 0
+        self.countdown_timer = 5
         self.countdown_label.setNum(self.countdown_timer)
         self.timer_countdown.start()
         self.countdown()
@@ -55,8 +61,17 @@ class TestWidget(QWidget, Ui_test_widget):
             self.countdown_label.setNum(self.countdown_timer)
             self.countdown_timer -= 1
         else:
-            self.countdown_label.setText('Start!')
+            self.timer_countdown.stop()
             self.textinput_textedit.setEnabled(True)
+            self.textinput_textedit.setFocus()
+            self.timer.start(10)
+
+            # TODO select cursor on the text edit
+
+    def update_timer(self):
+        self.time = self.time.addMSecs(10)
+        self.display_time = self.time.toString('mm:ss:zzz')[:-1]
+        self.countdown_label.setText(self.display_time)
 
     def text_changed(self):
         self.current_input = self.textinput_textedit.toPlainText()
@@ -64,17 +79,29 @@ class TestWidget(QWidget, Ui_test_widget):
         text = self.random_text
 
         colored_text = ''
-
         for i, n in enumerate(text):
             if i < input_length:
-                colored_text += f'<span style="background-color: {'green' if n == self.current_input[i] else 'red'}">{n}</span>'
+                colored_text += (f'<span style="background-color: {'green' if n == self.current_input[i] else 'red'} '
+                                 f'">{n}</span>')
             else:
                 colored_text += n
 
-        if len(colored_text) == len(text):
-            print('work')
-
+        word_list = colored_text.split()
+        count_correct_letters = word_list.count('green')
         self.text_label.setText(colored_text)
+
+        if len(text) == count_correct_letters:
+            self.finish_test()
+
+    def finish_test(self):
+        self.timer.stop()
+        display_time_split = [int(num) for num in self.display_time.split(':')]
+        minute_decimal = round((display_time_split[0] + display_time_split[1]/60 + display_time_split[2]/60/100), 2)
+        words_per_minute = round((self.word_count / minute_decimal), 2)
+        self.results_label.setText(f'You wrote {self.word_count} words in {self.display_time} which is '
+                                   f'{words_per_minute} WPM! Good job!\nPress "again" button when you are ready to '
+                                   f'try again!')
+        self.textinput_textedit.setEnabled(False)
 
 
 class MainWindow(QMainWindow):
@@ -102,9 +129,3 @@ class MainWindow(QMainWindow):
         if index == 1:
             self.test.choose_text()
 
-
-#TODO
-# dynamically highlight letters in text_label that match the letters from input_textedit
-# start the timer in results_label in s:ms format
-# when every letter is highlighted stop the timer, disable the input_textedit,
-#  in results show time, words written, words per minute
