@@ -12,13 +12,12 @@ class MenuWidget(QWidget, Ui_menu_widget):
         self.setupUi(self)
         self.main_window = parent
         self.setAttribute(Qt.WA_StyledBackground, True)
-
         self.start_button.clicked.connect(self.switch_to_test)
         self.start_button.setShortcut('Return')
 
     def switch_to_test(self):
+        self.main_window.player_name = self.nameinput_lineedit.text()
         self.main_window.switch_window(1)
-
 
 class TestWidget(QWidget, Ui_test_widget):
     def __init__(self, parent):
@@ -41,11 +40,13 @@ class TestWidget(QWidget, Ui_test_widget):
     def switch_to_menu(self):
         self.main_window.switch_window(0)
 
-    def choose_text(self):
+    def choose_text(self, player_name):
+        self.timer.stop()
         self.random_text = choice(it_jokes)
         self.word_count = len(self.random_text.split(' '))
         self.results_label.clear()
         self.textinput_textedit.clear()
+        self.player_name = player_name
 
         self.text_label.setText(self.random_text)
         self.textinput_textedit.setEnabled(False)
@@ -66,8 +67,6 @@ class TestWidget(QWidget, Ui_test_widget):
             self.textinput_textedit.setFocus()
             self.timer.start(10)
 
-            # TODO select cursor on the text edit
-
     def update_timer(self):
         self.time = self.time.addMSecs(10)
         self.display_time = self.time.toString('mm:ss:zzz')[:-1]
@@ -79,12 +78,12 @@ class TestWidget(QWidget, Ui_test_widget):
         text = self.random_text
 
         colored_text = ''
-        for i, n in enumerate(text):
-            if i < input_length:
-                colored_text += (f'<span style="background-color: {'green' if n == self.current_input[i] else 'red'} '
-                                 f'">{n}</span>')
+        for index, character in enumerate(text):
+            if index < input_length:
+                colored_text += (f'<span style="background-color: {'green' if character == self.current_input[index] 
+                else 'red'} ">{character}</span>')
             else:
-                colored_text += n
+                colored_text += character
 
         word_list = colored_text.split()
         count_correct_letters = word_list.count('green')
@@ -99,8 +98,8 @@ class TestWidget(QWidget, Ui_test_widget):
         minute_decimal = round((display_time_split[0] + display_time_split[1]/60 + display_time_split[2]/60/100), 2)
         words_per_minute = round((self.word_count / minute_decimal), 2)
         self.results_label.setText(f'You wrote {self.word_count} words in {self.display_time} which is '
-                                   f'{words_per_minute} WPM! Good job!\nPress "again" button when you are ready to '
-                                   f'try again!')
+                                   f'{words_per_minute} WPM! Good job {self.player_name}!\nPress "again" button when '
+                                   f'you are ready to try again!')
         self.textinput_textedit.setEnabled(False)
 
 
@@ -111,7 +110,9 @@ class MainWindow(QMainWindow):
         self.setFixedSize(500,560)
 
         self.stacked_layout = QStackedLayout()
+        self.player_name = None
         self.start_menu = MenuWidget(self)
+
         self.test = TestWidget(self)
         self.stacked_layout.addWidget(self.start_menu)
         self.stacked_layout.addWidget(self.test)
@@ -127,5 +128,8 @@ class MainWindow(QMainWindow):
 
     def switch_to_test(self, index):
         if index == 1:
-            self.test.choose_text()
+            self.test.choose_text(self.player_name)
 
+#TODO Possible improvements:
+# improve graphic interface
+# local/online highscores
