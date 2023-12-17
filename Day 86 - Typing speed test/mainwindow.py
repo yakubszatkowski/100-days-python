@@ -1,9 +1,11 @@
 from PySide6.QtWidgets import QMainWindow, QWidget, QStackedLayout
 from PySide6.QtCore import Qt, QTimer, QTime
+from PySide6.QtGui import QIcon
 from ui_menuwidget import Ui_menu_widget
 from ui_testwidget import Ui_test_widget
 from random import choice
 from jokes_list import it_jokes
+import os
 
 
 class MenuWidget(QWidget, Ui_menu_widget):
@@ -47,6 +49,8 @@ class TestWidget(QWidget, Ui_test_widget):
         self.results_label.clear()
         self.textinput_textedit.clear()
         self.player_name = player_name
+        if self.player_name == '':
+            self.player_name = 'Anonymous'
 
         self.text_label.setText(self.random_text)
         self.textinput_textedit.setEnabled(False)
@@ -108,11 +112,12 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.setWindowTitle('Speed typing test')
         self.setFixedSize(500,560)
-
+        icon_path = os.environ.get('icon_path_typing_test')
+        self.setWindowIcon(QIcon(icon_path))
         self.stacked_layout = QStackedLayout()
         self.player_name = None
-        self.start_menu = MenuWidget(self)
 
+        self.start_menu = MenuWidget(self)
         self.test = TestWidget(self)
         self.stacked_layout.addWidget(self.start_menu)
         self.stacked_layout.addWidget(self.test)
