@@ -2,9 +2,10 @@ import pygame
 
 class Menu:
     def __init__(self, game):
+        self.run_display = None
         self.game = game
         self.mid_w, self.mid_h = self.game.WIDTH/2, self.game.HEIGHT/2
-        self.run_display = None
+
         self.cursor_rect = pygame.Rect(0, 0, 20, 20)
         self.offset = -100
         self.titlex, self.titley = self.mid_w, self.mid_h - 100
@@ -25,7 +26,7 @@ class MainMenu(Menu):
         self.creditsx, self.creditsy = self.mid_w, self.mid_h + 50
         self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
 
-    def display_menu(self):
+    def display(self):
         self.run_display = True
         while self.run_display:
             self.game.check_events()
@@ -50,7 +51,7 @@ class MainMenu(Menu):
         self.move_cursor()
         if self.game.START_KEY:
             if self.state == 'Start':
-                pass
+                self.game.current_display = self.game.game
             elif self.state == 'Credits':
                 self.game.current_display = self.game.credits
         self.run_display = False
@@ -59,7 +60,7 @@ class CreditsMenu(Menu):
     def __init__(self, game):
         super().__init__(game)
 
-    def display_menu(self):
+    def display(self):
         self.run_display = True
         while self.run_display:
             self.game.check_events()
