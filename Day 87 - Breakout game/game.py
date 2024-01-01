@@ -19,17 +19,6 @@ class Game:
         self.game = GamePlay(self)
         self.current_display = self.main_menu
 
-    # def game_loop(self):
-    #     while self.gameplay:
-    #         pass
-    #         # print('hello')
-    #         # self.clock.tick(self.FPS)
-    #         # self.check_events()
-    #         # self.window.fill(self.BLACK)
-    #         # self.window.blit(self.window, (0, 0))
-    #         # pygame.display.update()
-    #         # self.reset_keys()
-
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -45,7 +34,6 @@ class Game:
                     self.UP_KEY = True
                 if event.key == pygame.K_DOWN:
                     self.DOWN_KEY = True
-
 
     def reset_keys(self):
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
