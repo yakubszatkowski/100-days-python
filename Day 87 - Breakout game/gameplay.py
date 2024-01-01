@@ -1,25 +1,23 @@
 import pygame
-
+from random import choice
+import numpy as np
 class GamePlay:
     def __init__(self, game):
-        self.right_border = None
-        self.left_border = None
-        self.player_block = None
-        self.gameplay = None
+        self.ball, self.right_border, self.left_border, self.player_block, self.gameplay = None, None, None, None, None
         self.game = game
         self.VEL = 5
         self.BLOCK_DIMENSIONS = 50, 15
         self.clock = pygame.time.Clock()
         self.color_list = [
-            (0, 255, 0),
-            (255, 0, 0),
-            (0, 0, 255),
-            (255, 192, 203),
-            (255, 255, 0),
-            (128, 0, 128),
-            (255, 165, 0),
-            (0, 255, 255),
-            (255, 69, 0)
+            (77, 128, 77),
+            (128, 64, 64),
+            (77, 77, 128),
+            (204, 173, 179),
+            (204, 204, 102),
+            (89, 0, 89),
+            (204, 133, 102),
+            (77, 128, 128),
+            (204, 46, 0)
         ]
 
     def blit_screen(self):
@@ -30,46 +28,71 @@ class GamePlay:
         self.gameplay = True
         board_objects = self.init_board()
         blocks_list = self.init_blocks()
+        self.ball = pygame.Rect(self.game.WIDTH / 2 - 5, self.game.HEIGHT / 2, 10, 10)
+        # directions = [-1, 1] #np.arange(-1,1,0.25)
+        # x_dir, y_dir = [choice(directions), choice(directions)]
+        x_dir, y_dir = [1, 1]
         while self.gameplay:
             self.clock.tick(60)
             self.game.check_events()
             self.board(board_objects, blocks_list)
             self.check_input()
+            x_dir, y_dir = self.handle_ball(x_dir, y_dir, blocks_list)
             self.blit_screen()
 
     def init_board(self):
         self.left_border = pygame.Rect(27, 0, 10, self.game.HEIGHT)
         self.right_border = pygame.Rect(self.game.WIDTH - 30, 0, 10, self.game.HEIGHT)
-        self.player_block = pygame.Rect(self.game.WIDTH / 2, 700, 100, 35)
+        self.player_block = pygame.Rect(self.game.WIDTH / 2 - 50, 700, 100, 15)
         return self.player_block, self.left_border, self.right_border
 
     def init_blocks(self):
         blocks_list = []
         start_x = self.left_border.x + 13
         start_y = 10
-        for i in range(60):
+        for i in range(20):
             block = pygame.Rect(start_x, start_y, self.BLOCK_DIMENSIONS[0], self.BLOCK_DIMENSIONS[1])
-            blocks_list.append(block)
+            blocks_list.append((block, choice(self.color_list)))
             start_x += self.BLOCK_DIMENSIONS[0] + 3
             if len(blocks_list) % 10 == 0:
                 start_x = self.left_border.x + 13
-                start_y += 20
-
+                start_y += 18
         return blocks_list
 
     def board(self, board_objects, blocks_list):
         self.game.window.fill(self.game.BLACK)
         for board_object in board_objects:
             pygame.draw.rect(self.game.window, self.game.WHITE, board_object)
-        for block in blocks_list:
-            pygame.draw.rect(self.game.window, self.game.WHITE, block)
+        for block, color in blocks_list:
+            pygame.draw.rect(self.game.window, color, block)
+        pygame.draw.circle(self.game.window, self.game.WHITE, self.ball.center, 5)
 
     def check_input(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT] and self.player_block.x > self.left_border.x + 10:
+        if keys[pygame.K_LEFT] and self.player_block.left > self.left_border.right:
             self.player_block.x -= self.VEL
-        if keys[pygame.K_RIGHT] and self.player_block.x + 100 < self.right_border.x:
+        if keys[pygame.K_RIGHT] and self.player_block.right < self.right_border.left:
             self.player_block.x += self.VEL
         if self.game.BACK_KEY:
             self.game.current_display = self.game.main_menu
             self.gameplay = False
+
+    def handle_ball(self, x_dir, y_dir, blocks):  # why this doesn't work?
+        self.ball.x += x_dir * 3
+        self.ball.y += y_dir * 3
+
+        if self.right_border.colliderect(self.ball) or self.left_border.colliderect(self.ball):
+            x_dir *= -1
+        elif self.player_block.colliderect(self.ball) or self.ball.y <= 0:
+            y_dir *= -1
+        elif self.ball.y == self.game.HEIGHT:
+            print('loser hahah')
+        for block in blocks:
+            if block[0].colliderect(self.ball):
+                y_dir *= -1
+                blocks.remove(block)
+
+        return x_dir, y_dir
+
+    #TODO
+    # improve collision mechanics

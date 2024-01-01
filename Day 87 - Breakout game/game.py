@@ -8,7 +8,7 @@ class Game:
         self.run = True
         self.WIDTH, self.HEIGHT = 600, 800
         self.FPS = 60
-        self.WHITE, self.BLACK = (255, 255, 255), (0, 0, 0)
+        self.WHITE, self.BLACK = (255, 255, 255), (40, 40, 43)
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
 
         self.clock = pygame.time.Clock()
@@ -22,9 +22,7 @@ class Game:
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.run = False
-                self.game.gameplay = False
-                self.current_display.run_display = False
+                self.run, self.game.gameplay, self.current_display.run_display = False, False, False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     self.START_KEY = True
