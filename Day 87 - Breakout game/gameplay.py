@@ -29,15 +29,17 @@ class GamePlay:
         board_objects = self.init_board()
         blocks_list = self.init_blocks()
         self.ball = pygame.Rect(self.game.WIDTH / 2 - 5, self.game.HEIGHT / 2, 10, 10)
-        # directions = [-1, 1] #np.arange(-1,1,0.25)
-        # x_dir, y_dir = [choice(directions), choice(directions)]
-        x_dir, y_dir = [1, 1]
+        directions = np.arange(-1,1,0.25)
+        directions = np.delete(directions, 4)  # deletes 0
+        x_dir, y_dir = choice(directions).item(), choice(directions).item()
+        directions_vector = pygame.Vector2(x_dir, y_dir)
+        normalized_directions_vector = directions_vector.normalize()
         while self.gameplay:
             self.clock.tick(60)
             self.game.check_events()
             self.board(board_objects, blocks_list)
             self.check_input()
-            x_dir, y_dir = self.handle_ball(x_dir, y_dir, blocks_list)
+            normalized_directions_vector = self.handle_ball(normalized_directions_vector, blocks_list)
             self.blit_screen()
 
     def init_board(self):
@@ -77,22 +79,40 @@ class GamePlay:
             self.game.current_display = self.game.main_menu
             self.gameplay = False
 
-    def handle_ball(self, x_dir, y_dir, blocks):  # why this doesn't work?
+    def handle_ball(self, directions_vector, blocks):
+
+        def advanced_collision(block, ball, x_dir, y_dir):  #TODO research alternatives!
+            collision_vector = pygame.Vector2(ball.center) - pygame.Vector2(block.center)
+            normalized_collision_vector = collision_vector.normalize()
+
+            reflection_vector = pygame.Vector2(x_dir, y_dir).reflect(normalized_collision_vector)
+            x_dir, y_dir = reflection_vector.x, reflection_vector.y
+
+            return x_dir, y_dir
+
+
+        x_dir, y_dir = directions_vector
         self.ball.x += x_dir * 3
         self.ball.y += y_dir * 3
 
         if self.right_border.colliderect(self.ball) or self.left_border.colliderect(self.ball):
             x_dir *= -1
-        elif self.player_block.colliderect(self.ball) or self.ball.y <= 0:
+        elif self.ball.y <= 0:
             y_dir *= -1
         elif self.ball.y == self.game.HEIGHT:
             print('loser hahah')
-        for block in blocks:
-            if block[0].colliderect(self.ball):
-                y_dir *= -1
-                blocks.remove(block)
+        elif self.player_block.colliderect(self.ball):
+            x_dir, y_dir = advanced_collision(self.player_block, self.ball, x_dir, y_dir)
+        #     y_dir *= -1
+        # for block in blocks:
+        #     if block[0].colliderect(self.ball):
+        #         y_dir *= -1
+        #         print(pygame.Vector2(self.ball.center), pygame.Vector2(block[0].center))
+        #         print(pygame.Vector2(self.ball.center).normalize(), pygame.Vector2(block[0].center).normalize())
+        #         print(type(pygame.Vector2(self.ball.center)))
+        #         blocks.remove(block)
 
-        return x_dir, y_dir
+        directions_vector = x_dir, y_dir
+        return directions_vector
 
-    #TODO
-    # improve collision mechanics
+
