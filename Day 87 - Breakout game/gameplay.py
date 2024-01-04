@@ -1,11 +1,11 @@
 import pygame
 from random import choice
-import numpy as np
 import math
 
 class GamePlay:
     def __init__(self, game):
         self.ball, self.right_border, self.left_border, self.player_block, self.gameplay = None, None, None, None, None
+        self.horizontal_bounce, self.vertical_bounce, self.direction_radian = 1, 1, math.pi
         self.game = game
         self.VEL = 5
         self.BLOCK_DIMENSIONS = 50, 15
@@ -31,18 +31,13 @@ class GamePlay:
         board_objects = self.init_board()
         blocks_list = self.init_blocks()
         self.ball = pygame.Rect(self.game.WIDTH / 2 - 5, self.game.HEIGHT / 2, 10, 10)
-        directions = np.arange(-1,1,0.25)
-        directions = np.delete(directions, 4)  # deletes 0
-        x_dir, y_dir = choice(directions).item(), choice(directions).item()
-        directions_vector = pygame.Vector2(x_dir, y_dir)
-        normalized_directions_vector = directions_vector.normalize()
-        normalized_directions_vector = 0, 1
+
         while self.gameplay:
             self.clock.tick(60)
             self.game.check_events()
             self.board(board_objects, blocks_list)
             self.check_input()
-            normalized_directions_vector = self.handle_ball(normalized_directions_vector, blocks_list)
+            self.handle_ball(blocks_list)
             self.blit_screen()
 
     def init_board(self):
@@ -82,32 +77,22 @@ class GamePlay:
             self.game.current_display = self.game.main_menu
             self.gameplay = False
 
-    def handle_ball(self, directions_vector, blocks):
-        def block_rebound(block, ball, y_dir, x_dir):
-            if ball.y > block.top or ball.y < block.bottom:
-                diff = (block.x + block.width / 2) - (ball.x + ball.width / 2)
-                direction_radians = math.radians(diff)
-                x_dir = -math.sin(direction_radians)
-                y_dir *= -1
+    def handle_ball(self, blocks):
 
-            return x_dir, y_dir
 
-        x_dir, y_dir = directions_vector
-        self.ball.x += x_dir * 3
-        self.ball.y += y_dir * 3
+        x_dir = math.sin(self.direction_radian)
+        y_dir = -math.cos(self.direction_radian)
 
         if self.right_border.colliderect(self.ball) or self.left_border.colliderect(self.ball):
-            x_dir *= -1
+            self.horizontal_bounce *= -1
         elif self.ball.y <= 0:
-            y_dir *= -1
-        elif self.ball.y >= self.game.HEIGHT:
-            print('loser hahah')
-            y_dir *= -1
+            self.vertical_bounce *= -1
+        elif self.ball.y >= self.game.HEIGHT - 10:
+            self.vertical_bounce *= -1
         elif self.ball.colliderect(self.player_block):
-            x_dir, y_dir = block_rebound(self.player_block, self.ball, y_dir, x_dir)
+            self.vertical_bounce *= -1
 
-
-        directions_vector = x_dir, y_dir
-        return directions_vector
+        self.ball.x += 3 * x_dir * self.horizontal_bounce
+        self.ball.y += 3 * y_dir * self.vertical_bounce
 
 
