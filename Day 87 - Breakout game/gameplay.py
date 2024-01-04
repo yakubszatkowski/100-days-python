@@ -1,6 +1,8 @@
 import pygame
 from random import choice
 import numpy as np
+import math
+
 class GamePlay:
     def __init__(self, game):
         self.ball, self.right_border, self.left_border, self.player_block, self.gameplay = None, None, None, None, None
@@ -34,6 +36,7 @@ class GamePlay:
         x_dir, y_dir = choice(directions).item(), choice(directions).item()
         directions_vector = pygame.Vector2(x_dir, y_dir)
         normalized_directions_vector = directions_vector.normalize()
+        normalized_directions_vector = 0, 1
         while self.gameplay:
             self.clock.tick(60)
             self.game.check_events()
@@ -45,7 +48,7 @@ class GamePlay:
     def init_board(self):
         self.left_border = pygame.Rect(27, 0, 10, self.game.HEIGHT)
         self.right_border = pygame.Rect(self.game.WIDTH - 30, 0, 10, self.game.HEIGHT)
-        self.player_block = pygame.Rect(self.game.WIDTH / 2 - 50, 700, 100, 15)
+        self.player_block = pygame.Rect(self.game.WIDTH / 2 - 50, 700, 100, 15) #
         return self.player_block, self.left_border, self.right_border
 
     def init_blocks(self):
@@ -80,16 +83,14 @@ class GamePlay:
             self.gameplay = False
 
     def handle_ball(self, directions_vector, blocks):
-
-        def advanced_collision(block, ball, x_dir, y_dir):  #TODO research alternatives!
-            collision_vector = pygame.Vector2(ball.center) - pygame.Vector2(block.center)
-            normalized_collision_vector = collision_vector.normalize()
-
-            reflection_vector = pygame.Vector2(x_dir, y_dir).reflect(normalized_collision_vector)
-            x_dir, y_dir = reflection_vector.x, reflection_vector.y
+        def block_rebound(block, ball, y_dir, x_dir):
+            if ball.y > block.top or ball.y < block.bottom:
+                diff = (block.x + block.width / 2) - (ball.x + ball.width / 2)
+                direction_radians = math.radians(diff)
+                x_dir = -math.sin(direction_radians)
+                y_dir *= -1
 
             return x_dir, y_dir
-
 
         x_dir, y_dir = directions_vector
         self.ball.x += x_dir * 3
@@ -99,18 +100,12 @@ class GamePlay:
             x_dir *= -1
         elif self.ball.y <= 0:
             y_dir *= -1
-        elif self.ball.y == self.game.HEIGHT:
+        elif self.ball.y >= self.game.HEIGHT:
             print('loser hahah')
-        elif self.player_block.colliderect(self.ball):
-            x_dir, y_dir = advanced_collision(self.player_block, self.ball, x_dir, y_dir)
-        #     y_dir *= -1
-        # for block in blocks:
-        #     if block[0].colliderect(self.ball):
-        #         y_dir *= -1
-        #         print(pygame.Vector2(self.ball.center), pygame.Vector2(block[0].center))
-        #         print(pygame.Vector2(self.ball.center).normalize(), pygame.Vector2(block[0].center).normalize())
-        #         print(type(pygame.Vector2(self.ball.center)))
-        #         blocks.remove(block)
+            y_dir *= -1
+        elif self.ball.colliderect(self.player_block):
+            x_dir, y_dir = block_rebound(self.player_block, self.ball, y_dir, x_dir)
+
 
         directions_vector = x_dir, y_dir
         return directions_vector
