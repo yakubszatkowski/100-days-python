@@ -4,8 +4,9 @@ import math
 
 class GamePlay:
     def __init__(self, game):
+        self.direction_radian = None
         self.ball, self.right_border, self.left_border, self.player_block, self.gameplay = None, None, None, None, None
-        self.horizontal_bounce, self.vertical_bounce, self.direction_radian = 1, 1, math.pi
+        self.ball_direction = 180
         self.game = game
         self.VEL = 5
         self.BLOCK_DIMENSIONS = 50, 15
@@ -31,13 +32,12 @@ class GamePlay:
         board_objects = self.init_board()
         blocks_list = self.init_blocks()
         self.ball = pygame.Rect(self.game.WIDTH / 2 - 5, self.game.HEIGHT / 2, 10, 10)
-
         while self.gameplay:
             self.clock.tick(60)
             self.game.check_events()
             self.board(board_objects, blocks_list)
             self.check_input()
-            self.handle_ball(blocks_list)
+            self.ball_movement(blocks_list)
             self.blit_screen()
 
     def init_board(self):
@@ -77,22 +77,26 @@ class GamePlay:
             self.game.current_display = self.game.main_menu
             self.gameplay = False
 
-    def handle_ball(self, blocks):
+    def ball_movement(self, blocks):
+        def bounce(diff):
+            self.ball_direction = (180 - self.ball_direction) % 360
+            self.ball_direction -= diff
+
+        direction_radians = math.radians(self.ball_direction)
+
+        self.ball.x += 5 * math.sin(direction_radians)
+        self.ball.y += 5 * -math.cos(direction_radians)
+
+        if self.player_block.colliderect(self.ball):
+            if self.player_block.top < self.ball.y:
+                diff = (self.player_block.x + self.player_block.width / 2) - (self.ball.x + self.ball.width / 2)
+                bounce(diff)
 
 
-        x_dir = math.sin(self.direction_radian)
-        y_dir = -math.cos(self.direction_radian)
-
-        if self.right_border.colliderect(self.ball) or self.left_border.colliderect(self.ball):
-            self.horizontal_bounce *= -1
         elif self.ball.y <= 0:
-            self.vertical_bounce *= -1
-        elif self.ball.y >= self.game.HEIGHT - 10:
-            self.vertical_bounce *= -1
-        elif self.ball.colliderect(self.player_block):
-            self.vertical_bounce *= -1
-
-        self.ball.x += 3 * x_dir * self.horizontal_bounce
-        self.ball.y += 3 * y_dir * self.vertical_bounce
-
+            bounce(0)
+        elif self.ball.y >= self.game.HEIGHT:  # losing condition here
+            bounce(0)
+        elif self.ball.colliderect(self.right_border) or self.ball.colliderect(self.left_border):
+            bounce(180)
 
