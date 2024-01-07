@@ -22,7 +22,7 @@ class Game:
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.run, self.game.gameplay, self.current_display.run_display = False, False, False
+                self.run, self.game.gameplay, self.current_display.run_display, self.game.countdown_flag = False, False, False, False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     self.START_KEY = True
