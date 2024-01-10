@@ -7,6 +7,7 @@ from kivy.properties import *
 from kivy.clock import Clock
 from random import choice
 
+# font size - font_size: self.width/20
 LabelBase.register(name='Montserrat', fn_regular='Montserrat-Light.ttf')
 
 win_conditions = [
@@ -35,6 +36,7 @@ class Game(Screen):
     player_1_current_figure = StringProperty()
     player_2_current_figure = StringProperty()
     winner = StringProperty()
+
 
     def disable_buttons(self, disable):
         if not disable:
@@ -240,6 +242,7 @@ class WindowManager(ScreenManager):
 
 
 class TicTacToe(App):
+
     def build(self):
         return Builder.load_file('tictactoe.kv')
 
