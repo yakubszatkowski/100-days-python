@@ -13,11 +13,12 @@ class GamePlay:
         self.ball_group = pygame.sprite.Group()
         self.block_group = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
-        # self.all_sprites.add(self.player_group, self.ball_group, self.block_group)
+
 
     def blit_screen(self):
         self.game.window.blit(self.game.window, (0, 0))
         pygame.display.update()
+
 
     def display(self):
         self.gameplay = True
@@ -29,13 +30,13 @@ class GamePlay:
             self.check_input()
             self.blit_screen()
 
+
     def init_board(self):
         self.left_border = pygame.Rect(27, 0, 10, self.game.HEIGHT)
         self.right_border = pygame.Rect(self.game.WIDTH - 30, 0, 10, self.game.HEIGHT)
         self.player_block = PlayerBlock(self.game.WIDTH / 2 - 50, 700)
-        self.ball = Ball(self.game.WIDTH / 2 - 5, self.game.HEIGHT / 2)
-
         self.player_group.add(self.player_block)
+        self.ball = Ball(self.game.WIDTH / 2 - 5, self.game.HEIGHT / 2, self.game, self, self.player_block)
         self.ball_group.add(self.ball)
         # self.block_group.add()
         self.all_sprites.add(self.player_group, self.ball_group, self.block_group)
@@ -50,11 +51,6 @@ class GamePlay:
 
 
     def check_input(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            print('left')
-        if keys[pygame.K_RIGHT]:
-            print('right')
         if self.game.BACK_KEY:
             self.game.current_display = self.game.main_menu
             self.gameplay = False
