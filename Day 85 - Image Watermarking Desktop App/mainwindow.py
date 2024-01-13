@@ -108,7 +108,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle('Watermarker')
 
-        # icon_path = r'C:\Users\kubas\Desktop\100 day python coding\Day 85 - Image Watermarking Desktop App\watermark.ico'
         icon_path = os.environ.get('icon_path')
         self.setWindowIcon(QIcon(icon_path))
 
