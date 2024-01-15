@@ -9,8 +9,6 @@ class GamePlay:
         self.game = game
         self.clock = pygame.time.Clock()
 
-        self.player_group = pygame.sprite.Group()
-        self.ball_group = pygame.sprite.Group()
         self.block_group = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
 
@@ -30,17 +28,12 @@ class GamePlay:
             self.check_input()
             self.blit_screen()
 
-
     def init_board(self):
         self.left_border = pygame.Rect(27, 0, 10, self.game.HEIGHT)
         self.right_border = pygame.Rect(self.game.WIDTH - 30, 0, 10, self.game.HEIGHT)
-        self.player_block = PlayerBlock(self.game.WIDTH / 2 - 50, 700)
-        self.player_group.add(self.player_block)
+        self.player_block = PlayerBlock(210, 700)  # self.game.WIDTH / 2 - 50
         self.ball = Ball(self.game.WIDTH / 2 - 5, self.game.HEIGHT / 2, self.game, self, self.player_block)
-        self.ball_group.add(self.ball)
-        # self.block_group.add()
-        self.all_sprites.add(self.player_group, self.ball_group, self.block_group)
-
+        self.all_sprites.add(self.player_block, self.ball, self.block_group)
 
     def draw_board(self):
         self.game.window.fill(self.game.BLACK)
@@ -54,8 +47,5 @@ class GamePlay:
         if self.game.BACK_KEY:
             self.game.current_display = self.game.main_menu
             self.gameplay = False
-
-
-
-
-
+            for sprite in self.all_sprites.sprites():
+                sprite.kill()
