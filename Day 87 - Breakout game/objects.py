@@ -16,9 +16,9 @@ class PlayerBlock(pygame.sprite.Sprite):
 
     def move(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT] and self.rect.left > 39:
             self.rect.x -= self.VELOCITY
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_RIGHT] and self.rect.right < 566:
             self.rect.x += self.VELOCITY
 
 
