@@ -31,7 +31,7 @@ class GamePlay:
     def init_board(self):
         self.left_border = pygame.Rect(27, 0, 10, self.game.HEIGHT)
         self.right_border = pygame.Rect(self.game.WIDTH - 30, 0, 10, self.game.HEIGHT)
-        self.player_block = PlayerBlock(210, 700)  # self.game.WIDTH / 2 - 50
+        self.player_block = PlayerBlock(430, 700)  # self.game.WIDTH / 2 - 50
         self.ball = Ball(self.game.WIDTH / 2 - 5, self.game.HEIGHT / 2, self.game, self, self.player_block)
         self.all_sprites.add(self.player_block, self.ball, self.block_group)
 
