@@ -52,12 +52,13 @@ class Ball(pygame.sprite.Sprite):
         self.blocks = self.gameplay.block_group
         self.width, self.height = 10, 10
         self.image = pygame.Surface((self.width, self.height))
+        self.image.fill((40, 40, 43))
         self.rect = self.image.get_rect()
         pygame.draw.circle(self.image, 'white', (self.width // 2, self.height // 2), 5)
         self.rect.topleft = (x, y)
         self.direction = 180
         self.velocity = 5
-        self.collision_tolerance = 10
+        self.collision_tolerance = 6
 
     def update(self):
         def bounce(angle):
@@ -104,6 +105,7 @@ class Ball(pygame.sprite.Sprite):
         elif self.rect.y >= self.game.HEIGHT - 10:  # losing condition
             self.rect.y -= 10
             bounce(180)
+            self.gameplay.countdown(True)
         elif self.rect.colliderect(self.gameplay.right_border):
             self.rect.x -= 10
             bounce(0)
