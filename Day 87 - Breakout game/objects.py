@@ -102,10 +102,10 @@ class Ball(pygame.sprite.Sprite):
         elif self.rect.y <= 0 + 10:
             self.rect.y += 10
             bounce(180)
-        elif self.rect.y >= self.game.HEIGHT - 10:  # losing condition
-            self.rect.y -= 10
-            bounce(180)
-            self.gameplay.countdown(True)
+        elif self.rect.y >= self.game.HEIGHT - 10 and self.gameplay.gameplay == True:
+            self.rect.y -= 11
+            self.velocity = 0
+            self.gameplay.countdown(lost=True)
         elif self.rect.colliderect(self.gameplay.right_border):
             self.rect.x -= 10
             bounce(0)
