@@ -1,0 +1,13 @@
+@font-face {
+    font-family: Medio;
+    src: url('../font/medio.otf');
+}
+
+body {
+    background: #2b2031;
+    font-family: 'Medio';
+}
+
+h1 {
+    color: #705d97;
+}
