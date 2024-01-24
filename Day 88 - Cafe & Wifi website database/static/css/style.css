@@ -4,10 +4,17 @@
 }
 
 body {
-    background: #2b2031;
     font-family: 'Medio';
+    text-align: center;
+}
+
+.main_background {
+    position: fixed;
+    width: 100%;
+    inset: 0;
+    background: radial-gradient(ellipse, #38220f 1%, black 100%);
 }
 
 h1 {
-    color: #705d97;
+    color: #967259;
 }
