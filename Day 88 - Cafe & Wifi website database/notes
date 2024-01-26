@@ -1,9 +1,9 @@
 Palette:
-#ece0d1 - cream
-#dbc1ac - dark cream
-#967259 - light coffee
-#634832 - mid coffe
-#38220f - dark coffe
+#ece0d1 - rgb(236, 224, 209) - cream
+#dbc1ac - rgb(219, 193, 172) -  dark cream
+#967259 - rgb(150, 114, 89) - light coffee
+#634832 - rgb(99, 72, 50) - mid coffe
+#38220f - rgb(56, 34, 15) - dark coffe
 
-- curvy waves animation: https://www.youtube.com/watch?v=lPJVi797Uy0 <- navbar and footer
+- curvy waves animation: https://www.youtube.com/watch?v=2dPISFndyKg <- navbar and footer
 - Google maps API?
