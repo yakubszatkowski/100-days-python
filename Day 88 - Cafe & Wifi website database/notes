@@ -5,5 +5,12 @@ Palette:
 #634832 - rgb(99, 72, 50) - mid coffe
 #38220f - rgb(56, 34, 15) - dark coffe
 
-- curvy waves animation: https://www.youtube.com/watch?v=2dPISFndyKg <- navbar and footer
-- Google maps API?
+- Google maps API?: https://developers.google.com/maps/documentation/places/web-service/overview#places-api-new
+- https://www.youtube.com/watch?v=qkSmuquMueA
+
+
+#TODO
+# Get Cafe informations by using Google maps API - cafe name, location, address, rating, (find other information like 
+# is wi-fi available etc.)
+https://www.youtube.com/watch?v=Tva5HvZLN7g
+# Create a searchbar that is able to search by location
