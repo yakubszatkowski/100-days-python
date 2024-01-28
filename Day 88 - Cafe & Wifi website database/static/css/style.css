@@ -24,9 +24,34 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 60px;
 }
 
-#autocomplete {
-    width: 20%;
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    width: 50%;
+    margin: 0 auto;
 }
+
+#autocomplete {
+    width: 30%;
+    background-color: rgba(219, 193, 172, 0.5);
+    color: #ece0d1;
+}
+
+#autocomplete::placeholder {
+    color: #ece0d1;
+}
+
+.search-button {
+    text-decoration: none;
+    background-color: #ece0d1;
+    color: #38220f;
+    margin-inline: 6px;
+    padding: 1px 12px;
+    font-size: small;
+    font-family: inherit;
+}
+
 
 .waves {
     position: fixed;
@@ -89,6 +114,10 @@ h1, h2, h3, h4, h5, h6 {
 
     .content {
         height: 30vh;
+    }
+
+    #autocomplete {
+        width: 35%;
     }
 }
 
