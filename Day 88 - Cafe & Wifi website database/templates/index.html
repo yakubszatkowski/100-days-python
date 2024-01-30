@@ -4,22 +4,17 @@
     <meta charset="UTF-8">
     <title>Café finder by yakubszatkowski</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
 </head>
 <body>
     <section class="main_background">
         <h1 class="title">Find Café in Poland</h1>
-
-        <form class="search-bar" method="post">
+        <form id="cafe-form" class="search-bar" method="post">
             <input id="autocomplete" name="search_input" placeholder="Enter your location" type="text">
             <button type="submit" class="search-button">Search</button>
         </form>
-
         {% include "waves.html" %}
     </section>
-
     <script src="{{url_for('static', filename='js/place_autocomplete.js')}}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ API_KEY }}&libraries=places&callback=initAutocomplete"></script>
-    
 </body>
 </html>
