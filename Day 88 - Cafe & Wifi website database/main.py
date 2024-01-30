@@ -8,8 +8,10 @@ API_KEY = os.environ.get("Google_API_KEY")
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        search_input = request.form['search_input']
-        print(search_input)
+        args = request.form
+        if args:
+            print(args['search_input'])
+            print(args['geometry'])
     return render_template('index.html', API_KEY=API_KEY)
 
 

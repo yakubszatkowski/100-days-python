@@ -9,7 +9,8 @@
     <section class="main_background">
         <h1 class="title">Find Café in Poland</h1>
         <form id="cafe-form" class="search-bar" method="post">
-            <input id="autocomplete" name="search_input" placeholder="Enter your location" type="text">
+            <input type="text" id="autocomplete" name="search_input" placeholder="Enter your location" >
+            <input type="hidden" id="geometry" name="geometry">
             <button type="submit" class="search-button">Search</button>
         </form>
         {% include "waves.html" %}
@@ -18,3 +19,5 @@
     <script src="https://maps.googleapis.com/maps/api/js?key={{ API_KEY }}&libraries=places&callback=initAutocomplete"></script>
 </body>
 </html>
+
+
