@@ -19,4 +19,3 @@ function onPlaceChanged() {
     document.getElementById('cafe-form').submit();
 }
 
-// TODO: if hitting search button with manual text select first 

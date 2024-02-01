@@ -52,6 +52,23 @@ h1, h2, h3, h4, h5, h6 {
     font-family: inherit;
 }
 
+.pac-container {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.pac-item:hover {
+    background-color: rgba(255,255,255,0.6);
+}
+
+.pac-item-query {
+    color: #ece0d1;
+}
+
+.pac-item {
+    color: rgba(255,255,255,0.6);
+}
+
+
 
 .waves {
     position: fixed;
