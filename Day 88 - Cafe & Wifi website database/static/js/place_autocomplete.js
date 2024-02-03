@@ -9,13 +9,20 @@ function initAutocomplete() {
             fields: ['place_id', 'geometry', 'name']
         }
     );
-
-    autocomplete.addListener('place_changed', onPlaceChanged);
+    autocomplete.addListener('place_changed', getGeometry);
 }
 
-function onPlaceChanged() {
+function handleSearch() {  
+    var arrowDownEvent = new KeyboardEvent('keydown', {key: 'ArrowDown', keyCode: 40,});
+    var enterEvent = new KeyboardEvent('keydown', {key: 'Enter', keyCode: 13,});
+    
+    document.getElementById('autocomplete').dispatchEvent(arrowDownEvent);
+    document.getElementById('autocomplete').dispatchEvent(enterEvent);
+}
+
+function getGeometry() {
     var place = autocomplete.getPlace();
-    document.getElementById('geometry').value = place.geometry.location
+    document.getElementById('geometry').value = place.geometry.location;
     document.getElementById('cafe-form').submit();
 }
 

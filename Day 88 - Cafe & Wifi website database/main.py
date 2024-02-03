@@ -19,6 +19,5 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 #TODO
-    # Styling autocomplete google dropdown list
     # if hitting search button with manual text select first 
-    
+    # Lowering billing from gcp - implement usage quatos maximum amount of requests
