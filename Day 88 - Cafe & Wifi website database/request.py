@@ -1,20 +1,27 @@
 import os
 import requests
 
-API_KEY = os.environ.get("Google_API_KEY")
-keyword = str('kawiarnia')
-LAT, LNG = 50.2649, 19.0238
-location = f'{LAT},{LNG}'
+class RequestCafePlaces:
+    def __init__(self):
+        self.API_KEY = os.environ.get("Google_API_KEY")
+        self.keyword = str('kawiarnia')
 
-params = {
-    'keyword': keyword,
-    'location': location,
-    'radius': 5000,
-    'key': API_KEY
-    # types: restaurant, cafe, establishment ?
-}
+    def send_request(self, geolocation):
+        LAT, LNG = float(geolocation[0]), float(geolocation[1])
+        location = f'{LAT},{LNG}'
 
-response = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', params=params)
-response.raise_for_status()
-data = response.json()
-print(data)
+        self.params = {
+            'keyword': self.keyword,
+            'location': location,
+            'radius': 10000,
+            'key': self.API_KEY,
+            'types': ['restaurant', 'cafe', 'establishment']
+        }
+
+        response = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', params=self.params)
+        response.raise_for_status()
+        data = response.json()
+        return data
+    
+# request_cafe = RequestCafePlaces()
+# request_cafe.send_request((50.26489189999999, 19.0237815))

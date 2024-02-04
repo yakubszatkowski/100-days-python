@@ -15,6 +15,17 @@
             <input type="hidden" id="geometry" name="geometry">
             <button type="submit" class="search-button" onclick="handleSearch(event)">Search</button>
         </form>
+        {% if data %}
+            {% for business in data %}
+            <div>
+                <h2>{{ business['name'] }}</h2>
+                <p>{{ business['rating'] }}</p>
+                <p>{% if business.get('opening_hours', {}).get('open_now', False) %}Open{% else %}Closed{% endif %}</p>
+                <p>{{ business['vicinity'] }}</p>
+            </div>
+            {% endfor %}
+        {% endif %}
+
         {% include "waves.html" %}
     </section>
     <script src="{{url_for('static', filename='js/place_autocomplete.js')}}"></script>
