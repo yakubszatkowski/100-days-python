@@ -6,7 +6,7 @@ function initAutocomplete() {
         {
             types: ['geocode'],
             componentRestrictions: {country: ['PL']},
-            fields: ['place_id', 'geometry', 'name']
+            fields: ['geometry']
         }
     );
     autocomplete.addListener('place_changed', getGeometry);
