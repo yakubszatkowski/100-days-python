@@ -29,10 +29,9 @@ if __name__ == '__main__':
 
 
 #TODO
-    
+    # this may be the one to inspect response? https://requests-cache.readthedocs.io/en/stable/user_guide/inspection.html
     # read requests-cache library https://requests-cache.readthedocs.io/en/stable/index.html
 
     # Do something about scroll bar on the right
     # CSS div card for place details
     # Card should contain: name of business, rating, address, opening hours, contant number, photo (maybe photo carousel?)
-    
