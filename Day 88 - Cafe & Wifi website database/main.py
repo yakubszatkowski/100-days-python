@@ -9,6 +9,7 @@ request_cafe = RequestCafePlaces()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    list_of_cafes = None
     if request.method == 'POST':
         args = request.form
         name, geolocation = args['search_input'], args['geometry']
@@ -16,10 +17,8 @@ def index():
             geolocation = ast.literal_eval(geolocation)
             print(name, geolocation)
             list_of_cafes = request_cafe.query_results(geolocation)
-            print(list_of_cafes)
 
-    return render_template('index.html', API_KEY=API_KEY)
-
+    return render_template('index.html', API_KEY=API_KEY, cafes=list_of_cafes)
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -31,4 +30,3 @@ if __name__ == '__main__':
     # Card should contain:
     # From nearby_places: 'place_id', 'name', 'rating', 'user_ratings_total', 'vicinity'
     # From place_detail: 'weekday_text', 'formatted_phone_number', 'website'
-    

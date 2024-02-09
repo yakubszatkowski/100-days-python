@@ -8,7 +8,7 @@ class RequestCafePlaces:
 
     def __init__(self):
         self.API_KEY = os.environ.get("Google_API_KEY")
-        self.keyword = str('kawiarnia')
+        self.keyword = 'kawiarnia'
 
 
     def nearby_search(self, geolocation):
@@ -27,7 +27,7 @@ class RequestCafePlaces:
         response = session.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', params=self.nearby_search_params)
         print(f'\nnearby_search cache key: {response.cache_key} \nIs cached: {response.from_cache} \nExpires at: {response.expires}')
         nearby_search_data = response.json()
-        
+
         return nearby_search_data
 
 
@@ -75,6 +75,4 @@ class RequestCafePlaces:
             )
 
         return list_of_nearby_places
-
-
 

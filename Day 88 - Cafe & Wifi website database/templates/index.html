@@ -16,6 +16,10 @@
             <input type="hidden" id="geometry" name="geometry">
             <button type="submit" class="search-button" onclick="handleSearch(event)">Search</button>
         </form>
+        {% if cafes %}
+            <p>{{cafes}}</p>
+
+        {% endif %}
 
 
         {% include "waves.html" %}
