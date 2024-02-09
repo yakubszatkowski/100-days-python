@@ -1,13 +1,15 @@
 import os
 from requests_cache import CachedSession, SQLiteCache
 
-backend = SQLiteCache('.cache/http_cache.sqlite')
+backend = SQLiteCache('.cache/http_cache.sqlite')  # could've also split the databases on APIs' requests
 session = CachedSession(expire_after=60*60*24*29, backend=backend)
 
 class RequestCafePlaces:
+
     def __init__(self):
         self.API_KEY = os.environ.get("Google_API_KEY")
         self.keyword = str('kawiarnia')
+
 
     def nearby_search(self, geolocation):
         LAT, LNG = geolocation[0], geolocation[1]
@@ -23,37 +25,56 @@ class RequestCafePlaces:
         }
 
         response = session.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', params=self.nearby_search_params)
-        print(f'nearby_search key: {response.cache_key} \nIs cached: {response.from_cache} \nExpires at: {response.expires}')
+        print(f'\nnearby_search cache key: {response.cache_key} \nIs cached: {response.from_cache} \nExpires at: {response.expires}')
         nearby_search_data = response.json()
+        
         return nearby_search_data
-    
+
+
     def place_details(self, place_id):
         self.place_details_params = {
             'key': self.API_KEY,
             'place_id': place_id
         }
         response = session.get('https://maps.googleapis.com/maps/api/place/details/json', params=self.place_details_params)
-        print(f'place_details key: {response.cache_key} \nIs cached: {response.from_cache} \nExpires at: {response.expires}')
+        print(f'\nplace_details cache key: {response.cache_key} \nIs cached: {response.from_cache} \nExpires at: {response.expires}')
         place_details_data = response.json()
+
         return place_details_data
 
 
+    def query_results(self, geolocation):
+        list_of_nearby_places = []
+        nearby_search_data = self.nearby_search(geolocation)
+        
+        for business in nearby_search_data['results']:
 
-# TESTING
-request_cafe = RequestCafePlaces()
+            place_details_data = self.place_details(business['place_id'])['result']
+            place_id = business['place_id']
+            name = business['name']
+            rating = business['rating']
+            user_ratings_total = business['user_ratings_total']
+            address = business['vicinity']
+            opening_hours = place_details_data.get('current_opening_hours', 'Not available')
+            if opening_hours != 'Not available':
+                opening_hours = opening_hours['weekday_text']
+            phone_number = place_details_data.get('formatted_phone_number', 'Not available')
+            website = place_details_data.get('website', 'Not available')
+
+            list_of_nearby_places.append(
+                {
+                    'place_id': place_id,
+                    'name': name,
+                    'rating': rating,
+                    'user_ratings_total': user_ratings_total,
+                    'address': address,
+                    'opening_hours': opening_hours,
+                    'phone_number': phone_number,
+                    'website': website,
+                }
+            )
+
+        return list_of_nearby_places
 
 
-# # NEARBY_SEARCH
-# nearby_search_data = request_cafe.nearby_search((50.26489189999999, 19.0237815))
-# for business in nearby_search_data['results']:
-#     print(business['place_id'])
 
-
-# PLACE_DETAILS
-place_details_data = request_cafe.place_details('ChIJec0jSTrOFkcR_FSBdytaZZI')
-print(place_details_data)
-
-
-# # TEST IF CACHED
-# print(session.cache.contains('0ae94cb83e13f6a9'))
-# print(session.cache.urls())

@@ -14,12 +14,9 @@ def index():
         name, geolocation = args['search_input'], args['geometry']
         if name and geolocation:
             geolocation = ast.literal_eval(geolocation)
-            print(name, geolocation, '\n')
-
-            # data = request_cafe.nearby_search(geolocation)  # this one expensive
-            # for business in data['results']:
-            #     print(business['place_id'])
-
+            print(name, geolocation)
+            list_of_cafes = request_cafe.query_results(geolocation)
+            print(list_of_cafes)
 
     return render_template('index.html', API_KEY=API_KEY)
 
@@ -29,9 +26,9 @@ if __name__ == '__main__':
 
 
 #TODO
-    # this may be the one to inspect response? https://requests-cache.readthedocs.io/en/stable/user_guide/inspection.html
-    # read requests-cache library https://requests-cache.readthedocs.io/en/stable/index.html
-
     # Do something about scroll bar on the right
     # CSS div card for place details
-    # Card should contain: name of business, rating, address, opening hours, contant number, photo (maybe photo carousel?)
+    # Card should contain:
+    # From nearby_places: 'place_id', 'name', 'rating', 'user_ratings_total', 'vicinity'
+    # From place_detail: 'weekday_text', 'formatted_phone_number', 'website'
+    
