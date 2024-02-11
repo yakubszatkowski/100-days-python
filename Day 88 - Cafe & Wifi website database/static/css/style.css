@@ -70,6 +70,14 @@ h1, h2, h3, h4, h5, h6, p {
     color: rgba(255,255,255,0.6);
 }
 
+.coffe-icon-shoutout {
+    position: absolute;
+    bottom: 4%;
+    right: 0%;
+    text-decoration: none;
+    color: #ece0d1
+}
+
 
 
 .waves {

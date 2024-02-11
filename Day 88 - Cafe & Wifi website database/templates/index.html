@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>Café finder by yakubszatkowski</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/coffee.png')}}">
+    
 </head>
 
 <body>
@@ -21,7 +23,7 @@
 
         {% endif %}
 
-
+        <a href="https://www.flaticon.com/free-icons/coffee" title="coffee icons" class="coffe-icon-shoutout">Coffee icon by surang</a>
         {% include "waves.html" %}
     </section>
     <script src="{{url_for('static', filename='js/place_autocomplete.js')}}"></script>

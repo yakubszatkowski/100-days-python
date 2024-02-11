@@ -17,6 +17,7 @@ def index():
             geolocation = ast.literal_eval(geolocation)
             print(name, geolocation)
             list_of_cafes = request_cafe.query_results(geolocation)
+            print(list_of_cafes)
 
     return render_template('index.html', API_KEY=API_KEY, cafes=list_of_cafes)
 
@@ -25,8 +26,10 @@ if __name__ == '__main__':
 
 
 #TODO
-    # Do something about scroll bar on the right
     # CSS div card for place details
     # Card should contain:
     # From nearby_places: 'place_id', 'name', 'rating', 'user_ratings_total', 'vicinity'
     # From place_detail: 'weekday_text', 'formatted_phone_number', 'website'
+
+    # Check out Flask-Limiter - it may help with limiting post requests to 10 per hour
+
