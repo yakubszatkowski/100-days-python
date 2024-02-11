@@ -1,5 +1,6 @@
 import os
 from requests_cache import CachedSession, SQLiteCache
+from time_format import format_weekday_text
 
 backend = SQLiteCache('.cache/http_cache.sqlite')  # could've also split the databases on APIs' requests
 session = CachedSession(expire_after=60*60*24*29, backend=backend)
@@ -25,7 +26,7 @@ class RequestCafePlaces:
         }
 
         response = session.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', params=self.nearby_search_params)
-        print(f'\nnearby_search cache key: {response.cache_key} \nIs cached: {response.from_cache} \nExpires at: {response.expires}')
+        # print(f'\nnearby_search cache key: {response.cache_key} \nIs cached: {response.from_cache} \nExpires at: {response.expires}')
         nearby_search_data = response.json()
 
         return nearby_search_data
@@ -37,7 +38,7 @@ class RequestCafePlaces:
             'place_id': place_id
         }
         response = session.get('https://maps.googleapis.com/maps/api/place/details/json', params=self.place_details_params)
-        print(f'\nplace_details cache key: {response.cache_key} \nIs cached: {response.from_cache} \nExpires at: {response.expires}')
+        # print(f'\nplace_details cache key: {response.cache_key} \nIs cached: {response.from_cache} \nExpires at: {response.expires}')
         place_details_data = response.json()
 
         return place_details_data
@@ -47,7 +48,7 @@ class RequestCafePlaces:
         list_of_nearby_places = []
         nearby_search_data = self.nearby_search(geolocation)
         
-        for business in nearby_search_data['results']:
+        for business in nearby_search_data['results']:  # change to normal later
 
             place_details_data = self.place_details(business['place_id'])['result']
             place_id = business['place_id']
@@ -55,11 +56,14 @@ class RequestCafePlaces:
             rating = business['rating']
             user_ratings_total = business['user_ratings_total']
             address = business['vicinity']
+            phone_number = place_details_data.get('formatted_phone_number', 'Not available')
+            website = place_details_data.get('website', 'Not available')
+
             opening_hours = place_details_data.get('current_opening_hours', 'Not available')
             if opening_hours != 'Not available':
                 opening_hours = opening_hours['weekday_text']
-            phone_number = place_details_data.get('formatted_phone_number', 'Not available')
-            website = place_details_data.get('website', 'Not available')
+                weekday_info = format_weekday_text(opening_hours)
+
 
             list_of_nearby_places.append(
                 {
@@ -68,7 +72,7 @@ class RequestCafePlaces:
                     'rating': rating,
                     'user_ratings_total': user_ratings_total,
                     'address': address,
-                    'opening_hours': opening_hours,
+                    'opening_hours': weekday_info,
                     'phone_number': phone_number,
                     'website': website,
                 }
