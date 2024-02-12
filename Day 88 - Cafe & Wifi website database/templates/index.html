@@ -11,15 +11,31 @@
 <body>
     <section class="main_background">
         
-        <h1 class="title">Find Café in Poland</h1>
+        <h2 class="title">Find Café in Poland</h2>
         <form id="cafe-form" class="search-bar" method="post">
             <input type="text" id="autocomplete" name="search_input" placeholder="Enter your location" >
             <input type="hidden" id="geometry" name="geometry">
             <button type="submit" class="search-button" onclick="handleSearch(event)">Search</button>
         </form>
-        {% if cafes %}
-            <p>{{cafes}}</p>
+        {% if location %}
+            <h1>Cafes nearby - {{ location }}</h1>
+        {% endif %}
 
+        {% if cafes %}
+            <div class="card">
+                <div class="card-top-left">
+                    
+                </div>
+                <div class="card-top-right">
+                    
+                </div>
+                <div class="card-bottom-left">
+                    
+                </div>
+                <div class="card-bottom-right">
+                    
+                </div>
+            </div>
         {% endif %}
 
         <a href="https://www.flaticon.com/free-icons/coffee" title="coffee icons" class="coffe-icon-shoutout">Coffee icon by surang</a>

@@ -9,7 +9,7 @@ request_cafe = RequestCafePlaces()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    list_of_cafes = None
+    list_of_cafes, name = None, None
     if request.method == 'POST':
         args = request.form
         name, geolocation = args['search_input'], args['geometry']
@@ -19,7 +19,7 @@ def index():
             list_of_cafes = request_cafe.query_results(geolocation)
             print(list_of_cafes)
 
-    return render_template('index.html', API_KEY=API_KEY, cafes=list_of_cafes)
+    return render_template('index.html', API_KEY=API_KEY, cafes=list_of_cafes, location=name)
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -28,8 +28,7 @@ if __name__ == '__main__':
 #TODO
     # CSS div card for place details
     # Card should contain:
-    # From nearby_places: 'place_id', 'name', 'rating', 'user_ratings_total', 'vicinity'
-    # From place_detail: 'weekday_text', 'formatted_phone_number', 'website'
+    # Card elements: Name, rating, user_ratings_total, address, opening_hours, phone_number website
 
     # Check out Flask-Limiter - it may help with limiting post requests to 10 per hour
 

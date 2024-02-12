@@ -71,12 +71,56 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .coffe-icon-shoutout {
-    position: absolute;
+    position: fixed;
     bottom: 4%;
-    right: 0%;
+    right: 1%;
     text-decoration: none;
     color: #ece0d1
 }
+
+.card {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(236, 224, 209, 0.5);
+    border-radius: 30px/20px;
+    width: 40%;
+    height: 30%;
+}
+
+.card-top-left {
+    position: relative;
+    float: left;
+    width: 34%;
+    height: 66%;
+    top: 0;
+}
+
+.card-top-right {
+    position: relative;
+    float: right;
+    width: 66%;
+    height: 66%;
+    top: 0;
+}
+
+.card-bottom-left {
+    position: relative;
+    float: left;
+    width: 34%;
+    height: 34%;
+
+}
+
+.card-bottom-right {
+    position: relative;
+    float: right;
+    width: 66%;
+    height: 34%;
+
+}
+
+
 
 
 

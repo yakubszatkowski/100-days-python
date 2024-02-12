@@ -48,4 +48,3 @@ def format_weekday_text(opening_hours):
 
     return info
 
-
