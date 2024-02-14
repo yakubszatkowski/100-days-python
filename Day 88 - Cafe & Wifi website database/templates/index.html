@@ -18,24 +18,35 @@
             <button type="submit" class="search-button" onclick="handleSearch(event)">Search</button>
         </form>
         {% if location %}
-            <h1>Cafes nearby - {{ location }}</h1>
+            <h1>Cafes nearby {{ location }}:</h1>
         {% endif %}
 
         {% if cafes %}
+            {% for cafe in cafes %}
             <div class="card">
                 <div class="card-top-left">
-                    
+                    <h1>{{ cafe['name'] }}</h1> 
                 </div>
                 <div class="card-top-right">
-                    
+                    <h3>Opening hours:</h3>
+                    {% for weekday in cafe['opening_hours']['weekdays_opening_hours'] %}
+                        <p class="weekday">{{ weekday }}: {{ weekday }}</p>
+                    {% endfor %}
                 </div>
                 <div class="card-bottom-left">
-                    
+                    <h3 class="rating rating-2">Rating: {{ cafe['rating'] }}</h3>
+                    <p class="rating">Scored by {{ cafe['user_ratings_total'] }} users</p>
+                    <h3>Currently open</h3>
+                    {% if cafe['website'] %}
+                        <a href="{{ cafe['website'] }}"><h3>Visit website</h3></a>
+                    {% endif %}
                 </div>
                 <div class="card-bottom-right">
-                    
+                    <h3>{{ cafe['address'] }}</h3>
+                    <h3>+48 {{ cafe['phone_number'] }}</h3>
                 </div>
             </div>
+            {% endfor %}
         {% endif %}
 
         <a href="https://www.flaticon.com/free-icons/coffee" title="coffee icons" class="coffe-icon-shoutout">Coffee icon by surang</a>
