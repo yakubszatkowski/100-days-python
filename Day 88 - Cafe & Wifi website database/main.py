@@ -27,9 +27,5 @@ if __name__ == '__main__':
 
 
 #TODO
-    # CSS div card for place details
-    # Card should contain:
-    # Card elements: Name, rating, user_ratings_total, address, opening_hours, phone_number website
-
     # Check out Flask-Limiter - it may help with limiting post requests to 10 per hour
 

@@ -29,14 +29,25 @@
                 </div>
                 <div class="card-top-right">
                     <h3>Opening hours:</h3>
-                    {% for weekday in cafe['opening_hours']['weekdays_opening_hours'] %}
-                        <p class="weekday">{{ weekday }}: {{ weekday }}</p>
+                    {% for weekday, hours in cafe['opening_hours']['weekdays_opening_hours'].items() %}
+                        <p class="weekday">{{ weekday }} : 
+                            {% if hours|length == 2 %}
+                                {{ hours[0] }} - {{ hours[1] }}
+                            {% else %}
+                                {{ hours}}
+                            {% endif %}
+                        </p>
                     {% endfor %}
                 </div>
                 <div class="card-bottom-left">
                     <h3 class="rating rating-2">Rating: {{ cafe['rating'] }}</h3>
                     <p class="rating">Scored by {{ cafe['user_ratings_total'] }} users</p>
-                    <h3>Currently open</h3>
+                    {% if cafe['opening_hours']['is_open'] %}
+                        <h3>Currently open</h3>
+                    {% else %}
+                        <h3>Closed</h3>
+                    {% endif %}
+                    
                     {% if cafe['website'] %}
                         <a href="{{ cafe['website'] }}"><h3>Visit website</h3></a>
                     {% endif %}

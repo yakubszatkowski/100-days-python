@@ -30,7 +30,7 @@ class RequestCafePlaces:
         }
 
         response = session.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', params=self.nearby_search_params)
-        print(f'\nnearby_search cache key: {response.cache_key} \nIs cached: {response.from_cache} \nExpires at: {response.expires}')
+        # print(f'\nnearby_search cache key: {response.cache_key} \nIs cached: {response.from_cache} \nExpires at: {response.expires}')
         nearby_search_data = response.json()
 
         return nearby_search_data
@@ -42,7 +42,7 @@ class RequestCafePlaces:
             'place_id': place_id
         }
         response = session.get('https://maps.googleapis.com/maps/api/place/details/json', params=self.place_details_params)
-        print(f'\nplace_details cache key: {response.cache_key} \nIs cached: {response.from_cache} \nExpires at: {response.expires}')
+        # print(f'\nplace_details cache key: {response.cache_key} \nIs cached: {response.from_cache} \nExpires at: {response.expires}')
         place_details_data = response.json()
 
         return place_details_data

@@ -12,12 +12,13 @@ def format_weekday_text(opening_hours):
             weekday_info[day[0]] = 'Open 24 hours'
         else:
             if 'AM' in split_list:
-                day[1] = split_list[1], split_list[5]
+                time_elements = f'{split_list[1]} {split_list[2]}', f'{split_list[5]} {split_list[6]}'
             else:
-                day[1] = split_list[1], split_list[4]
-            day[1] = [datetime.datetime.strptime(time_string, '%H:%M').time() for time_string in day[1]]
-            day[1][1] = (datetime.datetime.combine(datetime.date.today(), day[1][1]) + datetime.timedelta(hours=12)).time()
-            weekday_info[day[0]] = day[1]
+                time_elements = f'{split_list[1]} {split_list[5]}', f'{split_list[4]} {split_list[5]}'
+            time_elements = [datetime.datetime.strptime(time_string, '%I:%M %p').time() for time_string in time_elements]
+            weekday_info[day[0]] = time_elements
+    
+    # print(weekday_info)
     
     today_weekday = datetime.datetime.today().strftime('%A')
     time_now = datetime.datetime.today().time()
@@ -48,3 +49,18 @@ def format_weekday_text(opening_hours):
 
     return info
 
+# # TESTING
+# opening_hours = [
+#   'Monday: 12:00\u2009–\u200910:00\u202fPM',
+#   'Tuesday: 2:00\u2009–\u20098:00\u202fPM',
+#   'Wednesday: 10:00\u202fAM\u2009–\u200910:00\u202fPM',
+#   'Thursday: 10:00\u202fAM\u2009–\u200910:00\u202fPM',
+#   'Friday: 10:00\u202fAM\u2009–\u200911:00\u202fPM',
+# #   'Saturday: 10:00\u202fAM\u2009–\u200911:00\u202fPM',
+# #   'Sunday: 10:00\u202fAM\u2009–\u200911:00\u202fPM'
+#   'Saturday: Open 24 hours',
+#   'Sunday: Closed'
+# ]
+
+# x = format_weekday_text(opening_hours)
+# print(x)
