@@ -1,0 +1,14 @@
+body {
+    background-color: rgb(20, 40, 40);
+    font-family: 'Calibri Light';
+    align-items: center;
+    text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    color: antiquewhite;
+}
+
+.title {
+    margin-top: 50px;
+}
