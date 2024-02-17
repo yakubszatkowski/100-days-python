@@ -2,8 +2,20 @@
 {% block content %}
 
 <h1 class="title">Todotodo</h1>
-<div class="main-card">
-    <p>Main card will be here</p>
+<h3>Input your task and press enter!</p>
+<div class="input-card">
+    <form method="post">
+        <input type="text" name="task" class="input-bar" autocomplete="off">
+    </form>
 </div>
 
+{% if tasks %}
+<div class="task-list">
+
+</div>
+{% endif %}
+
+<form method="post">
+    <input type="submit" class="reset-button" name="reset_button" value="Reset tasks">
+</form>
 {% endblock %}

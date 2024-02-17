@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(20, 40, 40);
+    background-color: rgb(20, 30, 30);
     font-family: 'Calibri Light';
     align-items: center;
     text-align: center;
@@ -11,4 +11,49 @@ h1, h2, h3, h4, h5, h6, p {
 
 .title {
     margin-top: 50px;
+}
+
+.input-card {
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.6);
+    width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.input-bar {
+    background-color: rgba(150, 150, 150, 0.6);
+    border: none;
+    width: calc(100% - 20px);
+    height: 40px;
+    padding: 0;
+    cursor: text;
+}
+
+.input-bar:hover {
+    border: 1px;
+    border-color: antiquewhite;
+}
+
+.input-bar[type=text] {
+    color: antiquewhite;
+    font-size: 30px;
+    padding-left: 20px;
+}
+
+.reset-button {
+    position: fixed;
+    bottom: 4%;
+    right: 1%;
+    color: antiquewhite;
+    background-color: rgba(255, 255, 255, 0.4);
+    border: none;
+    width: 100px;
+    height: 40px;
+    transition: 0.5s;
+}
+
+.reset-button:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+    color: black;
 }
