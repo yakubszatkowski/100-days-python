@@ -9,13 +9,21 @@
     </form>
 </div>
 
-{% if tasks %}
-<div class="task-list">
-
-</div>
+{% if tasks|length > 0 %}
+    <div class="task-list-card">
+        {% for task in tasks %}
+            <form method="post" class="task">
+                <input type="checkbox" class="checkbox">
+                <h1>{{ task }}</h1>
+                <input type="hidden" name="task_index" value="{{loop.index}}">
+                <input type="submit" class="delete-task-button" name="delete_task_button" value="X">
+            </form>
+        {% endfor %}
+    </div>
 {% endif %}
 
 <form method="post">
     <input type="submit" class="reset-button" name="reset_button" value="Reset tasks">
 </form>
+<a href="https://www.flaticon.com/free-icons/equipment" title="equipment icons">Equipment icons created by Ylivdesign - Flaticon</a>
 {% endblock %}
