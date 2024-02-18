@@ -14,9 +14,13 @@
         {% for task in tasks %}
             <form method="post" class="task">
                 <input type="checkbox" class="checkbox">
-                <h1>{{ task }}</h1>
-                <input type="hidden" name="task_index" value="{{loop.index}}">
-                <input type="submit" class="delete-task-button" name="delete_task_button" value="X">
+                <span class="task-text">{{ task }}</span>
+                
+                <div class="task-buttons-wrapper">
+                    <input type="submit" class="task-button pen edit-task-button" name="edit_task_button" value=" ">
+                    <input type="submit" class="task-button" name="delete_task_button" value="X">
+                    <input type="hidden" name="task_index" value="{{ loop.index }}">
+                </div>
             </form>
         {% endfor %}
     </div>
@@ -25,5 +29,5 @@
 <form method="post">
     <input type="submit" class="reset-button" name="reset_button" value="Reset tasks">
 </form>
-<a href="https://www.flaticon.com/free-icons/equipment" title="equipment icons">Equipment icons created by Ylivdesign - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/equipment" class ="shoutout" title="equipment icons">Pen icon by Ylivdesign</a>
 {% endblock %}

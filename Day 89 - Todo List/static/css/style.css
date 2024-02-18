@@ -43,7 +43,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .reset-button {
     position: fixed;
-    bottom: 8%;
+    bottom: 4%;
     right: 1%;
     color: antiquewhite;
     background-color: rgba(255, 255, 255, 0.4);
@@ -56,6 +56,7 @@ h1, h2, h3, h4, h5, h6, p {
 .reset-button:hover {
     background-color: rgba(255, 255, 255, 0.7);
     color: black;
+    cursor: pointer;
 }
 
 .task-list-card {
@@ -69,7 +70,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .task {
-    margin-top: 5px;
+    margin: 8px 0px;
     display: flex;
     background-color: rgba(40, 40, 40, 0.6);
 }
@@ -82,20 +83,43 @@ h1, h2, h3, h4, h5, h6, p {
     height: 40px;
 }
 
-.delete-task-button {
+.task-buttons-wrapper {
     align-self: center;
-    height: 30px;
-    width: 30px;
     margin-left: auto;
+    vertical-align: middle;
     margin-right: 20px;
-    background-color: transparent;
-    border: 0;
-    font-size: 20px;
-    font-weight: bold;
-    color: lightgray;
-    transition: 0.15s;
 }
 
-.delete-task-button:hover {
-    border: 1px solid aliceblue
+.task-button {
+    height: 30px;
+    width: 30px;
+    background-color: transparent;
+    margin: 3px;
+    border: 1px solid transparent;
+    font-size: 30px;
+    color: black;
+    filter: invert(1);
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.pen {
+    margin-top: 5px;
+    background-image: url(../img/tool.png);
+    background-size: 30px 30px;
+}
+
+
+.shoutout {
+    position: fixed;
+    bottom: 1%;
+    right: 1%;
+    text-decoration: none;
+    color: #ece0d1;
+    font-size: small;
+}
+
+.task-text {
+    padding: 20px 10px;
+    font-size: 30px;
 }
