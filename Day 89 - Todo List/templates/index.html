@@ -1,33 +1,35 @@
 {% extends "base.html" %}
+
 {% block content %}
 
-<h1 class="title">Todotodo</h1>
-<h3>Input your task and press enter!</p>
-<div class="input-card">
-    <form method="post">
-        <input type="text" name="task" class="input-bar" autocomplete="off">
-    </form>
-</div>
-
-{% if tasks|length > 0 %}
-    <div class="task-list-card">
-        {% for task in tasks %}
-            <form method="post" class="task">
-                <input type="checkbox" class="checkbox">
-                <span class="task-text" name="edited-task">{{ task }}</span>
-                
-                <div class="task-buttons-wrapper">
-                    <input type="submit" class="task-button pen edit-task-button" name="edit_task_button" value=" ">
-                    <input type="submit" class="task-button" name="delete_task_button" value="X">
-                    <input type="hidden" name="task_index" value="{{ loop.index }}">
-                </div>
-            </form>
-        {% endfor %}
+    <h1 class="title">Todotodo</h1>
+    <h3>Input your task and press enter!</p>
+    <div class="input-card">
+        <form method="post">
+            <input type="text" name="task" class="input-bar" autocomplete="off">
+        </form>
     </div>
-{% endif %}
 
-<form method="post">
-    <input type="submit" class="reset-button" name="reset_button" value="Reset tasks">
-</form>
-<a href="https://www.flaticon.com/free-icons/equipment" class ="shoutout" title="equipment icons">Pen icon by Ylivdesign</a>
+    {% if tasks|length > 0 %}
+        <div class="task-list-card">
+            {% for task in tasks %}
+                <form method="post" class="task-form">
+                    <input type="checkbox" class="checkbox">
+                    <span class="task-text" name="edited-task">{{ task }}</span>
+                    
+                    <div class="task-buttons-wrapper">
+                        <input type="submit" class="task-button pen edit-task-button" name="edit_task_button" value=" ">
+                        <input type="submit" class="task-button" name="delete_task_button" value="X">
+                        <input type="hidden" name="task_index" value="{{ loop.index }}">
+                    </div>
+                </form>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post">
+        <input type="submit" class="reset-button" name="reset_button" value="Reset tasks">
+    </form>
+    <a href="https://www.flaticon.com/free-icons/equipment" class ="shoutout" title="equipment icons">Pen icon by Ylivdesign</a>
+
 {% endblock %}

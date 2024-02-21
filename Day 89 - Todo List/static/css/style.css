@@ -69,7 +69,7 @@ h1, h2, h3, h4, h5, h6, p {
     justify-content: space-between;
 }
 
-.task {
+.task-form {
     margin: 8px 0px;
     display: flex;
     background-color: rgba(40, 40, 40, 0.6);

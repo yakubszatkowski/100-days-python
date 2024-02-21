@@ -8,11 +8,19 @@ task_list = []
 def index():
     if request.method == 'POST':
         input_task = request.form.get('task')
+        edited_task = request.form.get('edit_task_input')
+        try:
+            task_index = int(request.form.get('task_index')) - 1
+        except TypeError:
+            pass
+
         if input_task:  # add task
             task_list.append(input_task)
         elif request.form.get('delete_task_button'):  # delete task
-            task_index = int(request.form.get('task_index')) - 1
             task_list.pop(task_index)
+        elif edited_task:
+            task_list[task_index] = edited_task
+            print(task_list)
         elif request.form.get('reset_button'):  # delete all tasks
             task_list.clear()
             
@@ -24,10 +32,10 @@ if __name__ == '__main__':
 
 
 #TODO
-    # edit task
-        # js - add event listener
     # changing tasks order by click and drag
     # warning before deliting all tasks
     # gratulations message when all tasks are finished
+
+    # store data as cookies?
 
     # website reference: https://flask.io/PEhyTiWzw08V

@@ -1,8 +1,11 @@
-var tasks = document.getElementsByClassName('task');
+var tasks = document.getElementsByClassName('task-form');
 var enterEvent = new KeyboardEvent('keydown', { key: 'Enter', keyCode: 13 });
 
 const submitInput = (event) => {
-    if (event.key == 'Enter')
+    if (event.key === 'Enter') {
+        const form = event.target.closest('.task-form');
+        form.submit();
+    }
 }
 
 const createInput = (text, event) => {
@@ -17,7 +20,7 @@ const createInput = (text, event) => {
 
     text.parentNode.replaceChild(edit_input, text)
 
-    text.addEventListener('keypress', function(event) {
+    edit_input.addEventListener('keypress', function(event) {
         submitInput(event)
     })
 }
