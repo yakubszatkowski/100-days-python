@@ -120,6 +120,14 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .task-text {
-    padding: 20px 10px;
+    margin: 10px 0px;
+    padding: 10px 10px;
     font-size: 30px;
+}
+
+.edit-text {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    width: 85%;
 }

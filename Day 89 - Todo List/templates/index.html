@@ -14,7 +14,7 @@
         {% for task in tasks %}
             <form method="post" class="task">
                 <input type="checkbox" class="checkbox">
-                <span class="task-text">{{ task }}</span>
+                <span class="task-text" name="edited-task">{{ task }}</span>
                 
                 <div class="task-buttons-wrapper">
                     <input type="submit" class="task-button pen edit-task-button" name="edit_task_button" value=" ">
