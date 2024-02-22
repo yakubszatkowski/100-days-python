@@ -11,9 +11,10 @@
     </div>
 
     {% if tasks|length > 0 %}
-        <div class="task-list-card">
+        <div class="task-list-card" id="task-container">
             {% for task in tasks %}
-                <form method="post" class="task-form">
+                <form method="post" class="task-form draggable">
+                    <img src="{{url_for('static', filename='img/drag_drop_icon.png')}}" class="drag-drop-icon">
                     <input type="checkbox" class="checkbox">
                     <span class="task-text" name="edited-task">{{ task }}</span>
                     

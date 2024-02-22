@@ -70,6 +70,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .task-form {
+    align-items: center;
     margin: 8px 0px;
     display: flex;
     background-color: rgba(40, 40, 40, 0.6);
@@ -78,7 +79,7 @@ h1, h2, h3, h4, h5, h6, p {
 .checkbox {
     position: relative;
     align-self: center;
-    margin: 0px 30px;
+    margin: 0px 20px;
     width: 40px;
     height: 40px;
 }
@@ -109,7 +110,6 @@ h1, h2, h3, h4, h5, h6, p {
     background-size: 30px 30px;
 }
 
-
 .shoutout {
     position: fixed;
     bottom: 1%;
@@ -129,5 +129,12 @@ h1, h2, h3, h4, h5, h6, p {
     background-color: transparent;
     color: white;
     border: 1px solid white;
-    width: 85%;
+    width: 80%;
+}
+
+.drag-drop-icon {
+    height: 40px;
+    width: 25px;
+    padding-left: 20px;
+    cursor: grab;
 }

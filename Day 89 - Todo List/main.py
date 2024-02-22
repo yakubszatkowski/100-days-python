@@ -9,6 +9,7 @@ def index():
     if request.method == 'POST':
         input_task = request.form.get('task')
         edited_task = request.form.get('edit_task_input')
+        
         try:
             task_index = int(request.form.get('task_index')) - 1
         except TypeError:
@@ -32,9 +33,7 @@ if __name__ == '__main__':
 
 
 #TODO
-    # edit autofocus - done
-    # edit submit the edit_task_input when clicking outside of the box
-    # changing tasks order by drag and drop
+    # changing tasks order by drag and drop - https://www.youtube.com/watch?v=jfYWwQrtzzY
     # warning before deliting all tasks
     # gratulations message when all tasks are finished
 
