@@ -1,37 +1,36 @@
 var tasks = document.getElementsByClassName('task-form');
-var enterEvent = new KeyboardEvent('keydown', { key: 'Enter', keyCode: 13 });
-
-const submitInput = (event) => {
-    if (event.key === 'Enter') {
-        const form = event.target.closest('.task-form');
-        form.submit();
-    }
-}
 
 const createInput = (text, event) => {
     event.preventDefault();
-    var string_value = text.textContent;
 
     var edit_input = document.createElement('input');
     edit_input.type = 'text';
-    edit_input.value = string_value
+    edit_input.value = text.textContent;
     edit_input.classList.add('task-text', 'edit-text')
     edit_input.name = 'edit_task_input'
-
+    
     text.parentNode.replaceChild(edit_input, text)
+    edit_input.focus()
 
-    edit_input.addEventListener('keypress', function(event) {
-        submitInput(event)
+    edit_input.addEventListener('keypress', event => {
+        if (event.key === 'Enter') {
+            const form = event.target.parentNode
+            form.submit();
+    }})
+
+    edit_input.addEventListener('focusout', event => {
+        const form = event.target.parentNode
+        form.submit();
     })
 }
 
 for (var i = 0; i < tasks.length; i++) {
     const task = tasks[i];
-
     const edit_button = task.querySelector('.edit-task-button');
     const task_text = task.querySelector('.task-text');
 
-    edit_button.addEventListener("click", function (event) {
+    edit_button.addEventListener('click', function (event) {
         createInput(task_text, event);
     });
 }
+

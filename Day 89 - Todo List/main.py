@@ -32,10 +32,11 @@ if __name__ == '__main__':
 
 
 #TODO
-    # changing tasks order by click and drag
+    # edit autofocus - done
+    # edit submit the edit_task_input when clicking outside of the box
+    # changing tasks order by drag and drop
     # warning before deliting all tasks
     # gratulations message when all tasks are finished
 
     # store data as cookies?
-
     # website reference: https://flask.io/PEhyTiWzw08V
