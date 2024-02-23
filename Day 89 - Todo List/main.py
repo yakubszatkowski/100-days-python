@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
-task_list = []
-
+# task_list = []
+task_list = ['buy milk', 'go for a walk', 'take a shower', 'go bed early']
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -33,7 +33,8 @@ if __name__ == '__main__':
 
 
 #TODO
-    # changing tasks order by drag and drop - https://www.youtube.com/watch?v=jfYWwQrtzzY
+    # implement onEnd functionality
+        
     # warning before deliting all tasks
     # gratulations message when all tasks are finished
 

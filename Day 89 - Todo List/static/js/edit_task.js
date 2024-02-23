@@ -25,19 +25,6 @@ const createInput = (text, event) => {
     });
 }
 
-const getDragAfterElement = (container, y) => {
-    const draggable_elements = [...container.querySelectorAll('.draggable:not(.dragging)')]
-    return draggable_elements.reduce( (closest, child) => {
-        const box = child.getBoundingClientRect()
-        const offset = y - box.top - box.height / 2
-        if (offset < 0 && offset > closest.offset) {
-            return { offset: offset, element: child}
-        } else {
-            return closest
-        }
-    }, { offset: Number.NEGATIVE_INFINITY }).element
-}
-
 for (var i = 0; i < tasks.length; i++) {
     const task = tasks[i];
     const edit_button = task.querySelector('.edit-task-button');
@@ -46,27 +33,14 @@ for (var i = 0; i < tasks.length; i++) {
     edit_button.addEventListener('click', function (event) {
         createInput(task_text, event);
     });
-
-    task.addEventListener('dragstart', () => {
-        task.classList.add('dragging')
-    })
-
-    task.addEventListener('dragend', () => {
-        task.classList.remove('dragging')
-    })
-
-    task_container.addEventListener('dragover', (event) => {
-        event.preventDefault();
-        const afterElement = getDragAfterElement(task_container, event.clientY);
-        const draggable = document.querySelector('.dragging');
-        if (afterElement == null) {
-            task_container.appendChild(draggable);
-        } else {
-            task_container.insertBefore(draggable, afterElement);
-        }
-    });
 }
 
 
 
 
+new Sortable(task_container, {
+    animation: 150,
+    chosenClass: "sortable-chosen",
+    dragClass: "sortable-drag",
+    handle: ".drag-drop-icon"
+});

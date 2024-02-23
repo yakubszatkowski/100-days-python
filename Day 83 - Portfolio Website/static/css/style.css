@@ -1,6 +1,3 @@
-* {
-}
-
 body {
   color: white;
   font-family: 'Montserrat';
@@ -180,7 +177,7 @@ p, h3, h4, h5, h6 {  /* .content-text previously instead of p */
 }
 
 .one-line-text {
-  margin-inline 20px;
+  margin-inline: 20px;
   display: flex;
   align-items: center;
   justify-content: left;
