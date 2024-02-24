@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.environ.get('admin_password')
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
-
+ 
 
 class Translation(db.Model):
     __tablename__ = "Translations"
