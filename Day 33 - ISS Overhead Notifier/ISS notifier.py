@@ -12,7 +12,7 @@ parameters = {
     'lng': LNG,
     'formatted': 0,
 }
-
+ 
 while True:
     # ISS API #
     response = requests.get(url='http://api.open-notify.org/iss-now.json')
