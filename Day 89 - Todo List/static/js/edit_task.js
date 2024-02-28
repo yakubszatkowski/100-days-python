@@ -35,12 +35,30 @@ for (var i = 0; i < tasks.length; i++) {
     });
 }
 
+const submitNewList = (event) => {
+    var new_tasks_sort = document.getElementsByClassName('task-text');
+    var hidden_form = document.getElementById('hidden-form')
+    var new_task_list = [];
+    for(let item of new_tasks_sort) {
+        text = item.textContent;
+        new_task_list.push(text);
+    };
+    
+    const hidden_list = document.createElement('input');
+    hidden_list.type = 'hidden';
+    hidden_list.name = 'new_task_list'
+    hidden_list.value = new_task_list
 
-
+    hidden_form.appendChild(hidden_list);
+    hidden_form.submit()
+}
 
 new Sortable(task_container, {
     animation: 150,
     chosenClass: "sortable-chosen",
     dragClass: "sortable-drag",
-    handle: ".drag-drop-icon"
+    handle: ".drag-drop-icon",
+    onEnd: function(event) {
+        submitNewList(event);
+    },
 });

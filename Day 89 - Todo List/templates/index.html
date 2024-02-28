@@ -3,7 +3,7 @@
 {% block content %}
 
     <h1 class="title">Todotodo</h1>
-    <h3>Input your task and press enter!</p>
+    <h3>Input your task and press enter!</h3>
     <div class="input-card">
         <form method="post">
             <input type="text" name="task" class="input-bar" autocomplete="off">
@@ -12,20 +12,21 @@
 
     {% if tasks|length > 0 %}
         <div class="task-list-card" id="task-container">
-        {% for task in tasks %}
-            <form method="post" class="task-form draggable">
-                <img src="{{ url_for('static', filename='img/drag_drop_icon.png') }}" class="drag-drop-icon">
-                <input type="checkbox" class="checkbox">
-                <span class="task-text" name="edited-task">{{ task }}</span>
-                
-                <div class="task-buttons-wrapper">
-                    <input type="submit" class="task-button pen edit-task-button" name="edit_task_button" value=" ">
-                    <input type="submit" class="task-button" name="delete_task_button" value="X">
-                    <input type="hidden" name="task_index" value="{{ loop.index }}">
-                </div>
-            </form>
-        {% endfor %}
+            {% for task in tasks %}
+                <form method="post" class="task-form draggable">
+                    <img src="{{ url_for('static', filename='img/drag_drop_icon.png') }}" class="drag-drop-icon">
+                    <input type="checkbox" class="checkbox">
+                    <span class="task-text" name="edited-task">{{ task }}</span>
+                    
+                    <div class="task-buttons-wrapper">
+                        <input type="submit" class="task-button pen edit-task-button" name="edit_task_button" value=" ">
+                        <input type="submit" class="task-button" name="delete_task_button" value="X">
+                        <input type="hidden" name="task_index" value="{{ loop.index }}">
+                    </div>
+                </form>
+            {% endfor %}
         </div>
+        <form method="post" id="hidden-form"></form>
     {% endif %}
 
     <form method="post">
