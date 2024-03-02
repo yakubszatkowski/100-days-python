@@ -15,8 +15,8 @@
             {% for task in tasks %}
                 <form method="post" class="task-form draggable">
                     <img src="{{ url_for('static', filename='img/drag_drop_icon.png') }}" class="drag-drop-icon">
-                    <input type="checkbox" class="checkbox">
-                    <span class="task-text" name="edited-task">{{ task }}</span>
+                    <input type="checkbox" class="checkbox" name="check" {% if task[1] %}checked{% endif %}>
+                    <span class="task-text" name="edited-task">{{ task[0] }}</span>
                     
                     <div class="task-buttons-wrapper">
                         <input type="submit" class="task-button pen edit-task-button" name="edit_task_button" value=" ">

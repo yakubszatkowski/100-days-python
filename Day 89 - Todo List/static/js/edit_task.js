@@ -27,11 +27,16 @@ const createInput = (text, event) => {
 
 const submitNewList = (event) => {
     var new_tasks_sort = document.getElementsByClassName('task-text');
+    var checkboxes = document.getElementsByClassName('checkbox');
     var hidden_form = document.getElementById('hidden-form')
     var new_task_list = [];
-    for(let item of new_tasks_sort) {
-        text = item.textContent;
-        new_task_list.push(text);
+
+    for (let i = 0; i < new_tasks_sort.length; i++) {
+        var text = new_tasks_sort[i].textContent
+        var checkbox = checkboxes[i].checked
+        var task = [text, checkbox]
+        
+        new_task_list.push(task);
     };
     
     const hidden_list = document.createElement('input');
@@ -47,10 +52,14 @@ for (var i = 0; i < tasks.length; i++) {
     const task = tasks[i];
     const edit_button = task.querySelector('.edit-task-button');
     const task_text = task.querySelector('.task-text');
+    const checkbox = task.querySelector('.checkbox')
 
     edit_button.addEventListener('click', function (event) {
         createInput(task_text, event);
     });
+    checkbox.addEventListener('change', function() {
+        submitNewList()
+    })
 }
 
 new Sortable(task_container, {
