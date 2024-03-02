@@ -25,16 +25,6 @@ const createInput = (text, event) => {
     });
 }
 
-for (var i = 0; i < tasks.length; i++) {
-    const task = tasks[i];
-    const edit_button = task.querySelector('.edit-task-button');
-    const task_text = task.querySelector('.task-text');
-
-    edit_button.addEventListener('click', function (event) {
-        createInput(task_text, event);
-    });
-}
-
 const submitNewList = (event) => {
     var new_tasks_sort = document.getElementsByClassName('task-text');
     var hidden_form = document.getElementById('hidden-form')
@@ -51,6 +41,16 @@ const submitNewList = (event) => {
 
     hidden_form.appendChild(hidden_list);
     hidden_form.submit()
+}
+
+for (var i = 0; i < tasks.length; i++) {
+    const task = tasks[i];
+    const edit_button = task.querySelector('.edit-task-button');
+    const task_text = task.querySelector('.task-text');
+
+    edit_button.addEventListener('click', function (event) {
+        createInput(task_text, event);
+    });
 }
 
 new Sortable(task_container, {

@@ -23,7 +23,6 @@ def index():
             task_list.pop(task_index)
         elif edited_task:  # edit task
             task_list[task_index] = edited_task
-            print(task_list)
         elif request.form.get('reset_button'):  # delete all tasks
             task_list.clear()
         elif new_task_order:  # new tasks order
@@ -37,9 +36,7 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 
-#TODO
-    # implement onEnd functionality update list order and submit it
-        
+#TOD       
     # warning before deliting all tasks
     # gratulations message when all tasks are finished
 

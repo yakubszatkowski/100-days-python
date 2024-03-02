@@ -29,7 +29,7 @@
         <form method="post" id="hidden-form"></form>
     {% endif %}
 
-    <form method="post">
+    <form method="post" onsubmit="return confirm('Are you sure you want to reset your tasks?');">
         <input type="submit" class="reset-button" name="reset_button" value="Reset tasks">
     </form>
     <a href="https://www.flaticon.com/free-icons/equipment" class ="shoutout" title="equipment icons">Pen icon by Ylivdesign</a>
