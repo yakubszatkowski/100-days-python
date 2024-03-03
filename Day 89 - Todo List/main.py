@@ -3,12 +3,14 @@ import json
 
 app = Flask(__name__)
 
+
 def get_tasks():
     tasks_cookie = request.cookies.get('task_list')
     if tasks_cookie:
         return json.loads(tasks_cookie)
     else:
         return []
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -52,7 +54,3 @@ def index():
 if __name__ == '__main__':
     app.run(debug=True)
 
-
-#TODO
-    # store data as cookies? https://pythonbasics.org/flask-cookies/
-    # website reference: https://flask.io/PEhyTiWzw08V
