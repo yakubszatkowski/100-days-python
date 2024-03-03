@@ -1,12 +1,18 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
+import json
 
 app = Flask(__name__)
 
-task_list = [['buy milk', True], ['go for a walk', False], ['take a shower', False], ['go bed early', False]]
+def get_tasks():
+    tasks_cookie = request.cookies.get('task_list')
+    if tasks_cookie:
+        return json.loads(tasks_cookie)
+    else:
+        return []
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    global task_list
+    task_list = get_tasks()
     if request.method == 'POST':
         input_task = request.form.get('task')
         edited_task = request.form.get('edit_task_input')
@@ -34,6 +40,11 @@ def index():
                 boolean_item = (True if new_list[i+1] == 'true' else False)
                 new_task_list.append([new_list[i], boolean_item])
             task_list = new_task_list
+
+        response = make_response(render_template('index.html', tasks=task_list))
+        print(json.dumps(task_list))
+        response.set_cookie('task_list', json.dumps(task_list))
+        return response
             
     return render_template('index.html', tasks=task_list)
 
@@ -42,8 +53,6 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 
-#TODO       
-    # gratulations message when all tasks are finished
-
-    # store data as cookies?
+#TODO
+    # store data as cookies? https://pythonbasics.org/flask-cookies/
     # website reference: https://flask.io/PEhyTiWzw08V
