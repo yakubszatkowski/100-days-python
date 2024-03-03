@@ -1,0 +1,27 @@
+body {
+    background-color: rgb(65, 19, 41);
+    font-family: 'Montserrat';
+    align-items: center;
+    text-align: center;
+}
+
+.title-card {
+    color: rgb(226, 135, 179);
+    margin: 0px 30px;
+}
+
+.title-card h1 {
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
+
+#text-area {
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(226, 135, 179);
+    border: none;
+    width: 60%;
+    height: 80%;
+    font-family: inherit;
+    font-size: 20px;
+}
+
