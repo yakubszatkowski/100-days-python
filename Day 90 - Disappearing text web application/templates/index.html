@@ -10,12 +10,14 @@
 <body>
     <div class="title-card">
         <h1>Disappero</h1>
-        <h4>An online writing app where if you stop typing, your work will disappear.</h4>
-        <h4>Click below to begin</h4>
+        <h4>An online writing app where if you stop typing for 5 seconds, your work will disappear.</h4>
+        <h4>Start typing your text below to begin</h4>
     </div>
 
     <div class="typing-card">
-        <textarea name="text-area" id="text-area" spellcheck="false" rows="20"></textarea>
+        <textarea name="text-area" class="textarea" spellcheck="false" rows="28"></textarea>
     </div>
+
+    <script src="{{url_for('static', filename='js/listener.js')}}"></script>
 </body>
 </html>
