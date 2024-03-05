@@ -7,3 +7,5 @@ class MainWidget(QWidget, Ui_MainWidget):
         super(MainWidget, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('PDF to Audiobook converter')
+
+        

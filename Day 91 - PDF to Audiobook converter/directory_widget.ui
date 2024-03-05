@@ -26,10 +26,12 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"># background-color: rgb(20, 20, 20);
+   <string notr="true">#MainWidget {
+   background-color: rgb(20, 20, 20);
+}
 
-QPushButton {
-	width: 20px;
+QLabel {
+    color: rgb(220, 220, 220);
 }
 
 
@@ -44,7 +46,7 @@ QPushButton {
      <height>281</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="main_layout" stretch="1,3,1,0,1">
+   <layout class="QVBoxLayout" name="main_layout" stretch="2,2,1,1,1">
     <property name="topMargin">
      <number>20</number>
     </property>
@@ -52,7 +54,13 @@ QPushButton {
      <number>20</number>
     </property>
     <item alignment="Qt::AlignHCenter">
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="title_label_2">
+      <property name="font">
+       <font>
+        <family>Onyx</family>
+        <pointsize>26</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>PDF2Sound</string>
       </property>
@@ -60,8 +68,26 @@ QPushButton {
     </item>
     <item alignment="Qt::AlignHCenter">
      <widget class="QLabel" name="title_label">
+      <property name="font">
+       <font>
+        <family>Calibri Light</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;PDF to Audiobook&lt;br&gt;converter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;PDF to Audiobook converter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </item>
+    <item alignment="Qt::AlignHCenter">
+     <widget class="QLabel" name="file_name">
+      <property name="font">
+       <font>
+        <family>Calibri Light</family>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </item>
@@ -79,20 +105,21 @@ QPushButton {
         <height>16777215</height>
        </size>
       </property>
-      <property name="text">
-       <string>Choose pdf file</string>
+      <property name="font">
+       <font>
+        <family>Calibri Light</family>
+       </font>
       </property>
-     </widget>
-    </item>
-    <item alignment="Qt::AlignHCenter">
-     <widget class="QLabel" name="file_name">
       <property name="text">
-       <string/>
+       <string>Select file</string>
       </property>
      </widget>
     </item>
     <item alignment="Qt::AlignHCenter">
      <widget class="QPushButton" name="convert_button">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="minimumSize">
        <size>
         <width>120</width>
@@ -104,6 +131,11 @@ QPushButton {
         <width>150</width>
         <height>16777215</height>
        </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri Light</family>
+       </font>
       </property>
       <property name="text">
        <string>Convert</string>
