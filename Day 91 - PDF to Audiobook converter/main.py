@@ -13,6 +13,6 @@ if __name__ == '__main__':
     
 #TODO
     # create gui that will be able to select .pdf files via directory 
-        # button transition effect
+        # learn animation https://www.youtube.com/watch?v=75PG0sloTc8
     # convert pdf text to text variable in python
     # convert text to audio and save it as .mp3

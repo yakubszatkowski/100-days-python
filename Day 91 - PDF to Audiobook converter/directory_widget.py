@@ -30,18 +30,28 @@ class Ui_MainWidget(object):
 "}\n"
 "\n"
 "QLabel {\n"
-"    color: rgb(220, 220, 220);\n"
+"    color: rgb(255, 255, 255);\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"	background-color: rgb(255, 255, 255);\n"
+"	border: 1px solid transparent;\n"
+"	margin: 2px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"	border: 1px solid transparent\n"
 "}\n"
 "\n"
 "\n"
 "")
-        self.widget = QWidget(MainWidget)
-        self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(34, 10, 231, 281))
-        self.main_layout = QVBoxLayout(self.widget)
+        self.layoutWidget = QWidget(MainWidget)
+        self.layoutWidget.setObjectName(u"layoutWidget")
+        self.layoutWidget.setGeometry(QRect(34, 10, 231, 281))
+        self.main_layout = QVBoxLayout(self.layoutWidget)
         self.main_layout.setObjectName(u"main_layout")
         self.main_layout.setContentsMargins(0, 20, 0, 20)
-        self.title_label_2 = QLabel(self.widget)
+        self.title_label_2 = QLabel(self.layoutWidget)
         self.title_label_2.setObjectName(u"title_label_2")
         font = QFont()
         font.setFamilies([u"Onyx"])
@@ -50,7 +60,7 @@ class Ui_MainWidget(object):
 
         self.main_layout.addWidget(self.title_label_2, 0, Qt.AlignHCenter)
 
-        self.title_label = QLabel(self.widget)
+        self.title_label = QLabel(self.layoutWidget)
         self.title_label.setObjectName(u"title_label")
         font1 = QFont()
         font1.setFamilies([u"Calibri Light"])
@@ -59,7 +69,7 @@ class Ui_MainWidget(object):
 
         self.main_layout.addWidget(self.title_label, 0, Qt.AlignHCenter)
 
-        self.file_name = QLabel(self.widget)
+        self.file_name = QLabel(self.layoutWidget)
         self.file_name.setObjectName(u"file_name")
         font2 = QFont()
         font2.setFamilies([u"Calibri Light"])
@@ -67,7 +77,7 @@ class Ui_MainWidget(object):
 
         self.main_layout.addWidget(self.file_name, 0, Qt.AlignHCenter)
 
-        self.directory_file_button = QPushButton(self.widget)
+        self.directory_file_button = QPushButton(self.layoutWidget)
         self.directory_file_button.setObjectName(u"directory_file_button")
         self.directory_file_button.setMinimumSize(QSize(120, 0))
         self.directory_file_button.setMaximumSize(QSize(150, 16777215))
@@ -75,7 +85,7 @@ class Ui_MainWidget(object):
 
         self.main_layout.addWidget(self.directory_file_button, 0, Qt.AlignHCenter)
 
-        self.convert_button = QPushButton(self.widget)
+        self.convert_button = QPushButton(self.layoutWidget)
         self.convert_button.setObjectName(u"convert_button")
         self.convert_button.setEnabled(False)
         self.convert_button.setMinimumSize(QSize(120, 0))

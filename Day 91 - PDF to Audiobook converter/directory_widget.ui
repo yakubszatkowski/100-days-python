@@ -31,13 +31,23 @@
 }
 
 QLabel {
-    color: rgb(220, 220, 220);
+    color: rgb(255, 255, 255);
+}
+
+QPushButton {
+	background-color: rgb(255, 255, 255);
+	border: 1px solid transparent;
+	margin: 2px;
+}
+
+QPushButton:hover {
+	border: 1px solid transparent
 }
 
 
 </string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>34</x>
