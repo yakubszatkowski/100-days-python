@@ -35,13 +35,13 @@ QLabel {
 }
 
 QPushButton {
-	background-color: rgb(255, 255, 255);
+	background-color: rgb(198,198,198);
 	border: 1px solid transparent;
 	margin: 2px;
 }
 
-QPushButton:hover {
-	border: 1px solid transparent
+QPushButton:disabled {
+	background-color: rgb(158,158,158);
 }
 
 

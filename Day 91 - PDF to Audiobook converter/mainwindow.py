@@ -1,7 +1,11 @@
 from PySide6.QtWidgets import QWidget
-from PySide6.QtCore import QEvent, QPropertyAnimation
+from PySide6.QtCore import QEvent, QVariantAnimation, QAbstractAnimation
 from PySide6.QtGui import QColor
 from directory_widget import Ui_MainWidget
+import functools
+
+def helper_function(widget, color):
+    widget.setStyleSheet("background-color: {}".format(color.name()))
 
 
 class MainWidget(QWidget, Ui_MainWidget):
@@ -15,9 +19,16 @@ class MainWidget(QWidget, Ui_MainWidget):
 
     def eventFilter(self, obj, ev):  # button hover
         if ev.type() == QEvent.Enter and obj.isEnabled():
-            print("you've just hovered over button")
+            self.hover_animation(obj, QColor(198, 198, 198), QColor(255, 255, 255))
         elif ev.type() == QEvent.Leave and obj.isEnabled():
-            print("you've left")
+            self.hover_animation(obj, QColor(255, 255, 255), QColor(198, 198, 198))
 
-    def hover_animation(self, obj):
-        pass
+    def hover_animation(self, obj, start_color, target_color):
+        anim = QVariantAnimation(
+            obj,
+            duration=300,
+            startValue=start_color,
+            endValue=target_color
+        )
+        anim.valueChanged.connect(functools.partial(helper_function, obj))
+        anim.start(QAbstractAnimation.DeleteWhenStopped)
