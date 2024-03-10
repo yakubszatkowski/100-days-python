@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QWidget, QFileDialog
 from PySide6.QtCore import QEvent, QVariantAnimation, QAbstractAnimation
 from PySide6.QtGui import QColor
 from directory_widget import Ui_MainWidget
+from convert_to_audio import read_pdf, convert_to_audio
 import functools
 
 def helper_function(widget, color):
@@ -19,7 +20,6 @@ class MainWidget(QWidget, Ui_MainWidget):
         self.directory_file_button.clicked.connect(self.load_pdf)
         self.convert_button.installEventFilter(self)
         self.convert_button.clicked.connect(self.convert_pdf)
-        
 
     def eventFilter(self, obj, ev):  # button hover
         if ev.type() == QEvent.Enter and obj.isEnabled(): # when hover
@@ -40,10 +40,12 @@ class MainWidget(QWidget, Ui_MainWidget):
 
     def load_pdf(self):
         file_path = QFileDialog.getOpenFileName(self, 'Open File', '', 'PDF Files (*.pdf)')[0]
-        file_name = file_path.split('/')[-1]
-        self.file_name.setText(file_name)
-        self.pdf_to_convert = file_path
-        self.convert_button.setEnabled(True)
+        if file_path:
+            self.book_title = file_path.split('/')[-1].split('.')[0]
+            self.file_name.setText(self.book_title)
+            self.pdf_to_convert = file_path
+            self.convert_button.setEnabled(True)
 
     def convert_pdf(self):
-        print('convert function here')
+        pdf_contents = read_pdf(self.pdf_to_convert)
+        convert_to_audio(pdf_contents, self.book_title)
