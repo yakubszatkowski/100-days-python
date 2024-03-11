@@ -1,13 +1,10 @@
-from pypdf import PdfReader
-import pyttsx3
-import os
+import fitz, os, pathlib, pyttsx3
+
 
 def read_pdf(file_path):
-    reader = PdfReader(file_path)
-    text = ""
-    for page in reader.pages[:2]:
-        text += page.extract_text() + "\n"
-
+    with fitz.open(file_path) as doc:
+        text = chr(12).join([page.get_text() for page in doc])
+    
     return text
 
 def convert_to_audio(text, book_title):
@@ -23,8 +20,10 @@ def convert_to_audio(text, book_title):
     voices = engine.getProperty('voices')
     choosen_voice = None
     for voice in voices:
+        print(voice)
         if 'English' in voice.name:
             choosen_voice = voice
+    
     engine.setProperty('voice', choosen_voice.id)
     engine.setProperty('rate', 150)
     engine.setProperty('volume', 1.0)
@@ -32,7 +31,7 @@ def convert_to_audio(text, book_title):
     engine.runAndWait()
 
 
-# # testing
-# test_file = "C:/Users/kubas/Desktop/100 day python coding/Day 91 - PDF to Audiobook converter/.test/book.pdf"
-# text = read_pdf(test_file)
-# convert_to_audio(text, 'test')
+# testing
+test_file = r"C:\Users\kubas\Desktop\100 day python coding\Day 91 - PDF to Audiobook converter\testing_pdf\test english.pdf"
+text = read_pdf(test_file)
+convert_to_audio(text, 'test')

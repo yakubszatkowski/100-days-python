@@ -15,13 +15,14 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLabel, QPushButton, QSizePolicy,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QLabel,
+    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
 
 class Ui_MainWidget(object):
     def setupUi(self, MainWidget):
         if not MainWidget.objectName():
             MainWidget.setObjectName(u"MainWidget")
+        MainWidget.setEnabled(True)
         MainWidget.resize(300, 300)
         MainWidget.setMinimumSize(QSize(300, 300))
         MainWidget.setMaximumSize(QSize(300, 300))
@@ -43,6 +44,20 @@ class Ui_MainWidget(object):
 "	background-color: rgb(158,158,158);\n"
 "}\n"
 "\n"
+"QComboBox {\n"
+"	background-color: rgb(198,198,198);\n"
+"	margin: 5px;\n"
+"	border: none;\n"
+"	padding-left: 4px\n"
+"}\n"
+"\n"
+"QComboBox:disabled {\n"
+"	background-color: rgb(158,158,158);\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView {\n"
+"    background-color: rgb(198,198,198)\n"
+"}\n"
 "\n"
 "")
         self.layoutWidget = QWidget(MainWidget)
@@ -79,26 +94,40 @@ class Ui_MainWidget(object):
 
         self.directory_file_button = QPushButton(self.layoutWidget)
         self.directory_file_button.setObjectName(u"directory_file_button")
+        self.directory_file_button.setEnabled(True)
         self.directory_file_button.setMinimumSize(QSize(120, 0))
         self.directory_file_button.setMaximumSize(QSize(150, 16777215))
         self.directory_file_button.setFont(font2)
 
         self.main_layout.addWidget(self.directory_file_button, 0, Qt.AlignHCenter)
 
+        self.convert_layout = QHBoxLayout()
+        self.convert_layout.setObjectName(u"convert_layout")
         self.convert_button = QPushButton(self.layoutWidget)
         self.convert_button.setObjectName(u"convert_button")
         self.convert_button.setEnabled(False)
-        self.convert_button.setMinimumSize(QSize(120, 0))
         self.convert_button.setMaximumSize(QSize(150, 16777215))
         self.convert_button.setFont(font2)
 
-        self.main_layout.addWidget(self.convert_button, 0, Qt.AlignHCenter)
+        self.convert_layout.addWidget(self.convert_button)
+
+        self.language_combo_box = QComboBox(self.layoutWidget)
+        self.language_combo_box.addItem("")
+        self.language_combo_box.addItem("")
+        self.language_combo_box.setObjectName(u"language_combo_box")
+        self.language_combo_box.setEnabled(False)
+        self.language_combo_box.setMaximumSize(QSize(150, 25))
+        self.language_combo_box.setFont(font2)
+
+        self.convert_layout.addWidget(self.language_combo_box)
+
+
+        self.main_layout.addLayout(self.convert_layout)
 
         self.main_layout.setStretch(0, 2)
         self.main_layout.setStretch(1, 2)
         self.main_layout.setStretch(2, 1)
         self.main_layout.setStretch(3, 1)
-        self.main_layout.setStretch(4, 1)
 
         self.retranslateUi(MainWidget)
 
@@ -112,5 +141,8 @@ class Ui_MainWidget(object):
         self.file_name.setText("")
         self.directory_file_button.setText(QCoreApplication.translate("MainWidget", u"Select file", None))
         self.convert_button.setText(QCoreApplication.translate("MainWidget", u"Convert", None))
+        self.language_combo_box.setItemText(0, QCoreApplication.translate("MainWidget", u"Polish", None))
+        self.language_combo_box.setItemText(1, QCoreApplication.translate("MainWidget", u"English", None))
+
     # retranslateUi
 

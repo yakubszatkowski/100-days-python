@@ -10,6 +10,9 @@ if __name__ == '__main__':
     app.exec()
 
 # pyside6-uic directory_widget.ui > directory_widget.py
-    
+
 #TODO
-    # Loading screen?
+    # language choice computer's from registry
+    # save directory
+    # loading screen when converting
+    # highlight convert button when enabled (after choosing file)

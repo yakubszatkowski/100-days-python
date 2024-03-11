@@ -20,6 +20,7 @@ class MainWidget(QWidget, Ui_MainWidget):
         self.directory_file_button.clicked.connect(self.load_pdf)
         self.convert_button.installEventFilter(self)
         self.convert_button.clicked.connect(self.convert_pdf)
+        # self.language_combo_box.addItems
 
     def eventFilter(self, obj, ev):  # button hover
         if ev.type() == QEvent.Enter and obj.isEnabled(): # when hover
