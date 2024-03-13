@@ -1,4 +1,4 @@
-import fitz, os, pathlib, pyttsx3
+import fitz, os, pyttsx3
 
 
 def read_pdf(file_path):
@@ -31,7 +31,7 @@ def convert_to_audio(text, book_title):
     engine.runAndWait()
 
 
-# testing
-test_file = r"C:\Users\kubas\Desktop\100 day python coding\Day 91 - PDF to Audiobook converter\testing_pdf\test english.pdf"
-text = read_pdf(test_file)
-convert_to_audio(text, 'test')
+# # testing
+# test_file = r"C:\Users\kubas\Desktop\100 day python coding\Day 91 - PDF to Audiobook converter\testing_pdf\test english.pdf"
+# text = read_pdf(test_file)
+# convert_to_audio(text, 'test')

@@ -1,15 +1,17 @@
-from PySide6.QtWidgets import QWidget, QFileDialog
+from PySide6.QtWidgets import QWidget, QFileDialog, QPushButton, QComboBox
 from PySide6.QtCore import QEvent, QVariantAnimation, QAbstractAnimation
-from PySide6.QtGui import QColor
+from PySide6.QtGui import QColor, QStandardItem
 from directory_widget import Ui_MainWidget
 from convert_to_audio import read_pdf, convert_to_audio
-import functools
+import functools, pyttsx3
+
 
 def helper_function(widget, color):
     widget.setStyleSheet("background-color: {}".format(color.name()))
 
 
 class MainWidget(QWidget, Ui_MainWidget):
+
     def __init__(self):
         super(MainWidget, self).__init__()
         self.setupUi(self)
@@ -20,16 +22,28 @@ class MainWidget(QWidget, Ui_MainWidget):
         self.directory_file_button.clicked.connect(self.load_pdf)
         self.convert_button.installEventFilter(self)
         self.convert_button.clicked.connect(self.convert_pdf)
-        # self.language_combo_box.addItems
+        self.language_combo_box.installEventFilter(self)
+
+        # for troubleshooting
+        self.language_combo_box.setEnabled(True)
+
+        engine = pyttsx3.init()
+        voices = engine.getProperty('voices')
+        for voice in voices:
+            language = voice.name.split('- ')[1]
+            if '(' in language:
+                language = language.split('(')[0]
+            self.language_combo_box.addItem(language)
+        engine.runAndWait()
 
     def eventFilter(self, obj, ev):  # button hover
         if ev.type() == QEvent.Enter and obj.isEnabled(): # when hover
-            self.hover_animation(obj, QColor(198, 198, 198), QColor(255, 255, 255))
+            self.qobj_hover_animation(obj, QColor(198, 198, 198), QColor(255, 255, 255))
         elif ev.type() == QEvent.Leave and obj.isEnabled(): # when leaving hover
-            self.hover_animation(obj, QColor(255, 255, 255), QColor(198, 198, 198))
+            self.qobj_hover_animation(obj, QColor(255, 255, 255), QColor(198, 198, 198))
         return super().eventFilter(obj, ev)
 
-    def hover_animation(self, obj, start_color, target_color):
+    def qobj_hover_animation(self, obj, start_color, target_color):
         anim = QVariantAnimation(
             obj,
             duration=300,
@@ -39,6 +53,7 @@ class MainWidget(QWidget, Ui_MainWidget):
         anim.valueChanged.connect(functools.partial(helper_function, obj))
         anim.start(QAbstractAnimation.DeleteWhenStopped)
 
+
     def load_pdf(self):
         file_path = QFileDialog.getOpenFileName(self, 'Open File', '', 'PDF Files (*.pdf)')[0]
         if file_path:
@@ -46,6 +61,7 @@ class MainWidget(QWidget, Ui_MainWidget):
             self.file_name.setText(self.book_title)
             self.pdf_to_convert = file_path
             self.convert_button.setEnabled(True)
+            self.language_combo_box.setEnabled(True)
 
     def convert_pdf(self):
         pdf_contents = read_pdf(self.pdf_to_convert)

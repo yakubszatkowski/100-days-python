@@ -48,7 +48,7 @@ class Ui_MainWidget(object):
 "	background-color: rgb(198,198,198);\n"
 "	margin: 5px;\n"
 "	border: none;\n"
-"	padding-left: 4px\n"
+"	padding-left: 4px;\n"
 "}\n"
 "\n"
 "QComboBox:disabled {\n"
@@ -56,8 +56,10 @@ class Ui_MainWidget(object):
 "}\n"
 "\n"
 "QComboBox QAbstractItemView {\n"
-"    background-color: rgb(198,198,198)\n"
+"    background-color: rgb(198,198,198);\n"
+"	selection-background-color: red;\n"
 "}\n"
+"\n"
 "\n"
 "")
         self.layoutWidget = QWidget(MainWidget)
@@ -114,8 +116,9 @@ class Ui_MainWidget(object):
         self.language_combo_box = QComboBox(self.layoutWidget)
         self.language_combo_box.addItem("")
         self.language_combo_box.addItem("")
+        self.language_combo_box.addItem("")
         self.language_combo_box.setObjectName(u"language_combo_box")
-        self.language_combo_box.setEnabled(False)
+        self.language_combo_box.setEnabled(True)
         self.language_combo_box.setMaximumSize(QSize(150, 25))
         self.language_combo_box.setFont(font2)
 
@@ -141,8 +144,9 @@ class Ui_MainWidget(object):
         self.file_name.setText("")
         self.directory_file_button.setText(QCoreApplication.translate("MainWidget", u"Select file", None))
         self.convert_button.setText(QCoreApplication.translate("MainWidget", u"Convert", None))
-        self.language_combo_box.setItemText(0, QCoreApplication.translate("MainWidget", u"Polish", None))
-        self.language_combo_box.setItemText(1, QCoreApplication.translate("MainWidget", u"English", None))
+        self.language_combo_box.setItemText(0, QCoreApplication.translate("MainWidget", u"1", None))
+        self.language_combo_box.setItemText(1, QCoreApplication.translate("MainWidget", u"2", None))
+        self.language_combo_box.setItemText(2, QCoreApplication.translate("MainWidget", u"3", None))
 
     # retranslateUi
 
