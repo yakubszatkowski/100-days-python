@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QWidget, QFileDialog, QPushButton, QComboBox
-from PySide6.QtCore import QEvent, QVariantAnimation, QAbstractAnimation
-from PySide6.QtGui import QColor, QStandardItem
+from PySide6.QtWidgets import *
+from PySide6.QtCore import *
+from PySide6.QtGui import *
 from directory_widget import Ui_MainWidget
 from convert_to_audio import read_pdf, convert_to_audio
 import functools, pyttsx3
@@ -26,6 +26,7 @@ class MainWidget(QWidget, Ui_MainWidget):
 
         # for troubleshooting
         self.language_combo_box.setEnabled(True)
+        self.language_combo_box.highlighted.connect(self.hover_combobox_item)
 
         engine = pyttsx3.init()
         voices = engine.getProperty('voices')
@@ -36,12 +37,19 @@ class MainWidget(QWidget, Ui_MainWidget):
             self.language_combo_box.addItem(language)
         engine.runAndWait()
 
-    def eventFilter(self, obj, ev):  # button hover
-        if ev.type() == QEvent.Enter and obj.isEnabled(): # when hover
+
+    def hover_combobox_item(self, index):
+        item = self.language_combo_box.model().item(index)
+        print(item, index)
+
+
+    def eventFilter(self, obj, ev):  # QObject hover
+        if ev.type() == QEvent.Enter and obj.isEnabled(): # when hovering
             self.qobj_hover_animation(obj, QColor(198, 198, 198), QColor(255, 255, 255))
-        elif ev.type() == QEvent.Leave and obj.isEnabled(): # when leaving hover
+        elif ev.type() == QEvent.Leave and obj.isEnabled(): # when leaving hovering
             self.qobj_hover_animation(obj, QColor(255, 255, 255), QColor(198, 198, 198))
         return super().eventFilter(obj, ev)
+
 
     def qobj_hover_animation(self, obj, start_color, target_color):
         anim = QVariantAnimation(
@@ -62,6 +70,7 @@ class MainWidget(QWidget, Ui_MainWidget):
             self.pdf_to_convert = file_path
             self.convert_button.setEnabled(True)
             self.language_combo_box.setEnabled(True)
+
 
     def convert_pdf(self):
         pdf_contents = read_pdf(self.pdf_to_convert)

@@ -62,8 +62,12 @@ QComboBox QAbstractItemView {
     background-color: rgb(198,198,198);
 }
 
-QComboBox QAbstractItemView::item:hover {
-	background-color: lightgreen;
+QComboBox::drop-down {
+	border: 0px;
+}
+
+QComboBox::down-arrow {
+	image: url(:/image/down-arrow.png);
 }</string>
   </property>
   <widget class="QWidget" name="layoutWidget">
@@ -208,6 +212,8 @@ QComboBox QAbstractItemView::item:hover {
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

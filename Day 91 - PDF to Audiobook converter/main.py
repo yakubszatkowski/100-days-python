@@ -10,10 +10,11 @@ if __name__ == '__main__':
     app.exec()
 
 # pyside6-uic directory_widget.ui > directory_widget.py
+# pyside6-rcc resources.qrc -o resource_rc.py
 
 #TODO
     # language choice computer's from registry 
-        # - implement eventFilter to the combobox list's items - issues with system overwriting the hover effect? how to access objects of qcombobox items?
+        # - implement animation for QComboBox items - QStandardItem
     # save directory
     # loading screen when converting
     # highlight convert button when enabled (after choosing file)

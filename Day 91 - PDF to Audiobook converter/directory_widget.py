@@ -17,6 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QLabel,
     QPushButton, QSizePolicy, QVBoxLayout, QWidget)
+import resources_rc
 
 class Ui_MainWidget(object):
     def setupUi(self, MainWidget):
@@ -57,11 +58,15 @@ class Ui_MainWidget(object):
 "\n"
 "QComboBox QAbstractItemView {\n"
 "    background-color: rgb(198,198,198);\n"
-"	selection-background-color: red;\n"
 "}\n"
 "\n"
+"QComboBox::drop-down {\n"
+"	border: 0px;\n"
+"}\n"
 "\n"
-"")
+"QComboBox::down-arrow {\n"
+"	image: url(:/image/down-arrow.png);\n"
+"}")
         self.layoutWidget = QWidget(MainWidget)
         self.layoutWidget.setObjectName(u"layoutWidget")
         self.layoutWidget.setGeometry(QRect(34, 10, 231, 281))
