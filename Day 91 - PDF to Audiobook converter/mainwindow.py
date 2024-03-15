@@ -9,6 +9,14 @@ import functools, pyttsx3
 def helper_function(widget, color):
     widget.setStyleSheet("background-color: {}".format(color.name()))
 
+class ComboBoxDelegate(QStyledItemDelegate):
+    def paint(self, painter, option, index):
+        if option.state & QStyle.State_MouseOver:   # if hover
+            background_color = QColor(255, 255, 255)  
+        else:                                       # leaving hover
+            background_color = QColor(198, 198, 198)  
+        painter.fillRect(option.rect, background_color)
+        painter.drawText(option.rect, index.data())
 
 class MainWidget(QWidget, Ui_MainWidget):
 
@@ -23,25 +31,24 @@ class MainWidget(QWidget, Ui_MainWidget):
         self.convert_button.installEventFilter(self)
         self.convert_button.clicked.connect(self.convert_pdf)
         self.language_combo_box.installEventFilter(self)
+        delegate = ComboBoxDelegate(self.language_combo_box)
+        self.language_combo_box.setItemDelegate(delegate)
 
         # for troubleshooting
         self.language_combo_box.setEnabled(True)
-        self.language_combo_box.highlighted.connect(self.hover_combobox_item)
 
-        engine = pyttsx3.init()
-        voices = engine.getProperty('voices')
-        for voice in voices:
+
+        self.engine = pyttsx3.init()
+        self.voices = self.engine.getProperty('voices')
+        for voice in self.voices:
             language = voice.name.split('- ')[1]
             if '(' in language:
                 language = language.split('(')[0]
             self.language_combo_box.addItem(language)
-        engine.runAndWait()
-
+        self.engine.runAndWait()
 
     def hover_combobox_item(self, index):
         item = self.language_combo_box.model().item(index)
-        print(item, index)
-
 
     def eventFilter(self, obj, ev):  # QObject hover
         if ev.type() == QEvent.Enter and obj.isEnabled(): # when hovering
@@ -52,6 +59,7 @@ class MainWidget(QWidget, Ui_MainWidget):
 
 
     def qobj_hover_animation(self, obj, start_color, target_color):
+        print(type(obj))
         anim = QVariantAnimation(
             obj,
             duration=300,
