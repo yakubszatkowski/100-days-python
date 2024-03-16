@@ -9,6 +9,7 @@ import functools, pyttsx3
 def helper_function(widget, color):
     widget.setStyleSheet("background-color: {}".format(color.name()))
 
+
 class ComboBoxDelegate(QStyledItemDelegate):
     def paint(self, painter, option, index):
         if option.state & QStyle.State_MouseOver:   # if hover
@@ -18,13 +19,12 @@ class ComboBoxDelegate(QStyledItemDelegate):
         painter.fillRect(option.rect, background_color)
         painter.drawText(option.rect, index.data())
 
-class MainWidget(QWidget, Ui_MainWidget):
 
+class MainWidget(QWidget, Ui_MainWidget):
     def __init__(self):
         super(MainWidget, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('PDF2Sound by yakubszatkowski')
-        self.pdf_to_convert = None
 
         self.directory_file_button.installEventFilter(self)
         self.directory_file_button.clicked.connect(self.load_pdf)
@@ -33,10 +33,6 @@ class MainWidget(QWidget, Ui_MainWidget):
         self.language_combo_box.installEventFilter(self)
         delegate = ComboBoxDelegate(self.language_combo_box)
         self.language_combo_box.setItemDelegate(delegate)
-
-        # for troubleshooting
-        self.language_combo_box.setEnabled(True)
-
 
         self.engine = pyttsx3.init()
         self.voices = self.engine.getProperty('voices')
@@ -47,8 +43,6 @@ class MainWidget(QWidget, Ui_MainWidget):
             self.language_combo_box.addItem(language)
         self.engine.runAndWait()
 
-    def hover_combobox_item(self, index):
-        item = self.language_combo_box.model().item(index)
 
     def eventFilter(self, obj, ev):  # QObject hover
         if ev.type() == QEvent.Enter and obj.isEnabled(): # when hovering
@@ -59,7 +53,6 @@ class MainWidget(QWidget, Ui_MainWidget):
 
 
     def qobj_hover_animation(self, obj, start_color, target_color):
-        print(type(obj))
         anim = QVariantAnimation(
             obj,
             duration=300,
