@@ -74,5 +74,7 @@ class MainWidget(QWidget, Ui_MainWidget):
 
 
     def convert_pdf(self):
+        file_name, _ = QFileDialog.getSaveFileName(self, 'Save File', f'{self.book_title}', 'Audio Files(*.mp3);; All Files(*)')
+        language = self.language_combo_box.currentText()
         pdf_contents = read_pdf(self.pdf_to_convert)
-        convert_to_audio(pdf_contents, self.book_title)
+        convert_to_audio(pdf_contents, language, file_name)

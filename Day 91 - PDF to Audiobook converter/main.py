@@ -13,8 +13,5 @@ if __name__ == '__main__':
 # pyside6-rcc resources.qrc -o resource_rc.py
 
 #TODO
-    # language choice computer's from registry 
-        # - implement animation for QComboBox items - QStandardItem
-    # save directory
     # loading screen when converting
     # highlight convert button when enabled (after choosing file)
