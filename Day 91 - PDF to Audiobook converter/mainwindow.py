@@ -2,7 +2,7 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from directory_widget import Ui_MainWidget
-from convert_to_audio import read_pdf, convert_to_audio
+from convert_to_audio import SplashScreen
 import functools, pyttsx3
 
 
@@ -12,7 +12,7 @@ def helper_function(widget, color):
 
 class ComboBoxDelegate(QStyledItemDelegate):
     def paint(self, painter, option, index):
-        if option.state & QStyle.State_MouseOver:   # if hover
+        if option.state & QStyle.State_MouseOver:   # hover
             background_color = QColor(255, 255, 255)  
         else:                                       # leaving hover
             background_color = QColor(198, 198, 198)  
@@ -43,11 +43,15 @@ class MainWidget(QWidget, Ui_MainWidget):
             self.language_combo_box.addItem(language)
         self.engine.runAndWait()
 
+        self.splashscreen = SplashScreen()
+        # troubleshooting
+        self.convert_button.setEnabled(True)
+
 
     def eventFilter(self, obj, ev):  # QObject hover
-        if ev.type() == QEvent.Enter and obj.isEnabled(): # when hovering
+        if ev.type() == QEvent.Enter and obj.isEnabled(): # hover
             self.qobj_hover_animation(obj, QColor(198, 198, 198), QColor(255, 255, 255))
-        elif ev.type() == QEvent.Leave and obj.isEnabled(): # when leaving hovering
+        elif ev.type() == QEvent.Leave and obj.isEnabled(): # leaving hover
             self.qobj_hover_animation(obj, QColor(255, 255, 255), QColor(198, 198, 198))
         return super().eventFilter(obj, ev)
 
@@ -74,7 +78,13 @@ class MainWidget(QWidget, Ui_MainWidget):
 
 
     def convert_pdf(self):
-        file_name, _ = QFileDialog.getSaveFileName(self, 'Save File', f'{self.book_title}', 'Audio Files(*.mp3);; All Files(*)')
-        language = self.language_combo_box.currentText()
-        pdf_contents = read_pdf(self.pdf_to_convert)
-        convert_to_audio(pdf_contents, language, file_name)
+        # save_path, _ = QFileDialog.getSaveFileName(self, 'Save File', f'{self.book_title}', 'Audio Files(*.mp3);; All Files(*)')
+        # language = self.language_combo_box.currentText()
+        
+        path = r'C:\Users\kubas\Desktop\100 day python coding\Day 91 - PDF to Audiobook converter\.test\book.pdf'
+        language = 'English'
+        save_path = r'C:\Users\kubas\Desktop\100 day python coding\Day 91 - PDF to Audiobook converter\audiobooks'
+
+        self.splashscreen.read_pdf(path)
+        self.splashscreen.convert_to_audio(language, save_path)
+
