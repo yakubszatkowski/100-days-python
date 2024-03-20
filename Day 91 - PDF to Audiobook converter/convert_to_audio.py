@@ -11,6 +11,7 @@ class ConversionThread(QThread):
         self.save_file_path = save_file_path
         self.language = language
         self.text = text
+        
 
 
     def run(self):

@@ -3,7 +3,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 from directory_widget import Ui_MainWidget
 from convert_to_audio import SplashScreen
-import functools, pyttsx3
+import functools, pyttsx3, os
 
 
 def helper_function(widget, color):
@@ -25,6 +25,9 @@ class MainWidget(QWidget, Ui_MainWidget):
         super(MainWidget, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('PDF2Sound by yakubszatkowski')
+
+        icon_path = os.environ.get('icon_path_pdf_to_audio')
+        self.setWindowIcon(QIcon(icon_path))
 
         self.directory_file_button.installEventFilter(self)
         self.directory_file_button.clicked.connect(self.load_pdf)
