@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="image">
+    <file>g0R5.gif</file>
     <file>down-arrow.png</file>
   </qresource>
 </RCC>

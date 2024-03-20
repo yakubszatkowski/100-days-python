@@ -45,7 +45,7 @@ class MainWidget(QWidget, Ui_MainWidget):
 
         self.splashscreen = SplashScreen()
         # troubleshooting
-        self.convert_button.setEnabled(True)
+        # self.convert_button.setEnabled(True)
 
 
     def eventFilter(self, obj, ev):  # QObject hover
@@ -78,13 +78,18 @@ class MainWidget(QWidget, Ui_MainWidget):
 
 
     def convert_pdf(self):
-        # save_path, _ = QFileDialog.getSaveFileName(self, 'Save File', f'{self.book_title}', 'Audio Files(*.mp3);; All Files(*)')
-        # language = self.language_combo_box.currentText()
-        
-        path = r'C:\Users\kubas\Desktop\100 day python coding\Day 91 - PDF to Audiobook converter\.test\book.pdf'
-        language = 'English'
-        save_path = r'C:\Users\kubas\Desktop\100 day python coding\Day 91 - PDF to Audiobook converter\audiobooks'
+        save_path, _ = QFileDialog.getSaveFileName(self, 'Save File', f'{self.book_title}', 'Audio Files(*.mp3);; All Files(*)')
+        language = self.language_combo_box.currentText()
 
-        self.splashscreen.read_pdf(path)
-        self.splashscreen.convert_to_audio(language, save_path)
+        if save_path:
+            self.directory_file_button.setEnabled(False)
+            self.title_label.setText('Currently converting...')
+            self.splashscreen.read_pdf(self.pdf_to_convert)
+            self.splashscreen.convert_to_audio(language, save_path)
+        self.title_label.setText('PDF to Audiobook converter')
+        self.directory_file_button.setEnabled(True)
+
+        # path = r'C:\Users\kubas\Desktop\100 day python coding\Day 91 - PDF to Audiobook converter\.test\book.pdf'
+        # language = 'English'
+        # save_path = r'C:\Users\kubas\Desktop\100 day python coding\Day 91 - PDF to Audiobook converter\audiobooks'
 

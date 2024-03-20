@@ -13,6 +13,5 @@ if __name__ == '__main__':
 # pyside6-uic progressbar_widget.ui > progressbar_widget.py
 # pyside6-rcc resources.qrc -o resource_rc.py
 
-#TODO
-    # loading screen when converting - progress bar attached to both red_pdf and convert_to_audio
-    # highlight convert button when enabled (after choosing file)
+# icon source: https://www.flaticon.com/free-icon/mic_2882877?term=microphone&page=1&position=4&origin=search&related_id=2882877
+
