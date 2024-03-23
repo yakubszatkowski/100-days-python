@@ -13,7 +13,6 @@ class ConversionThread(QThread):
         self.text = text
         
 
-
     def run(self):
         save_path = f'{self.save_file_path}'
 
@@ -30,7 +29,12 @@ class ConversionThread(QThread):
 
         engine.save_to_file(self.text, save_path)
         engine.runAndWait()
-        print('From here it\'s finished')
+        # print('From here it\'s finished')
+
+
+    def terminate(self):
+        self.terminated = True
+        super().terminate()
 
 
 class SplashScreen(QSplashScreen, Ui_progress_widget):
@@ -39,6 +43,7 @@ class SplashScreen(QSplashScreen, Ui_progress_widget):
         super(SplashScreen, self).__init__()
         self.setupUi(self)
         self.setWindowFlag(Qt.FramelessWindowHint)
+        self.terminate = False
 
 
     def read_pdf(self, file_path):
@@ -50,6 +55,8 @@ class SplashScreen(QSplashScreen, Ui_progress_widget):
             page_count = doc.page_count
             current_page = 0
             for page in doc:
+                if self.terminate:
+                    return
                 current_page += 1
                 progress_percent = math.floor((current_page / page_count)*max_percent)
                 self.text += chr(12) + page.get_text()
@@ -72,24 +79,26 @@ class SplashScreen(QSplashScreen, Ui_progress_widget):
         self.conversion.finished.connect(self.finalizing)
 
         for second in range(est_conversion_time+1):
+            if self.terminate:
+                return
             progress_percent = math.floor((second/est_conversion_time)*max_percent) - 1
             total_progress = progress_percent+50
             self.progress_bar.setValue(total_progress)
             
-            print(total_progress, self.conversion.isFinished())
+            # print(total_progress, self.conversion.isFinished())
             time.sleep(1)
             QApplication.processEvents()
             if total_progress == 99:
                 self.progres_label.setText('Almost done...')
             if self.conversion.isFinished():
-                print('Is finished:', self.conversion.isFinished())
+                # print('Is finished:', self.conversion.isFinished())
                 break
     
     
     def finalizing(self):
-        self.progress_bar.setValue(100)
-        QApplication.processEvents()
-        message_box = QMessageBox()
-        message_box.information(None, 'Fishined', 'PDF to Speech conversion finished!')
+        if not self.conversion.terminated:
+            self.progress_bar.setValue(100)
+            QApplication.processEvents()
+            message_box = QMessageBox()
+            message_box.information(None, 'Fishined', 'PDF to Speech conversion finished!')
         self.text = ''
-

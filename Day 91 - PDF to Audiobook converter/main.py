@@ -15,3 +15,6 @@ if __name__ == '__main__':
 
 # icon source: https://www.flaticon.com/free-icon/mic_2882877?term=microphone&page=1&position=4&origin=search&related_id=2882877
 
+#TODO
+
+    # Try hover option on QComboBox item with QApplication.processEvents() now

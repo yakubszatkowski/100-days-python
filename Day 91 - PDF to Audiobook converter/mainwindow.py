@@ -3,7 +3,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 from directory_widget import Ui_MainWidget
 from convert_to_audio import SplashScreen
-import functools, pyttsx3, os
+import functools, pyttsx3, os, time
 
 
 def helper_function(widget, color):
@@ -11,6 +11,7 @@ def helper_function(widget, color):
 
 
 class ComboBoxDelegate(QStyledItemDelegate):
+
     def paint(self, painter, option, index):
         if option.state & QStyle.State_MouseOver:   # hover
             background_color = QColor(255, 255, 255)  
@@ -21,6 +22,7 @@ class ComboBoxDelegate(QStyledItemDelegate):
 
 
 class MainWidget(QWidget, Ui_MainWidget):
+
     def __init__(self):
         super(MainWidget, self).__init__()
         self.setupUi(self)
@@ -47,8 +49,6 @@ class MainWidget(QWidget, Ui_MainWidget):
         self.engine.runAndWait()
 
         self.splashscreen = SplashScreen()
-        # troubleshooting
-        # self.convert_button.setEnabled(True)
 
 
     def eventFilter(self, obj, ev):  # QObject hover
@@ -81,18 +81,27 @@ class MainWidget(QWidget, Ui_MainWidget):
 
 
     def convert_pdf(self):
-        save_path, _ = QFileDialog.getSaveFileName(self, 'Save File', f'{self.book_title}', 'Audio Files(*.mp3);; All Files(*)')
+        self.save_path, _ = QFileDialog.getSaveFileName(self, 'Save File', self.book_title, 'Audio Files(*.mp3);; All Files(*)')
         language = self.language_combo_box.currentText()
 
-        if save_path:
+        if self.save_path:
             self.directory_file_button.setEnabled(False)
             self.title_label.setText('Currently converting...')
             self.splashscreen.read_pdf(self.pdf_to_convert)
-            self.splashscreen.convert_to_audio(language, save_path)
+            self.splashscreen.convert_to_audio(language, self.save_path)
         self.title_label.setText('PDF to Audiobook converter')
         self.directory_file_button.setEnabled(True)
 
-        # path = r'C:\Users\kubas\Desktop\100 day python coding\Day 91 - PDF to Audiobook converter\.test\book.pdf'
-        # language = 'English'
-        # save_path = r'C:\Users\kubas\Desktop\100 day python coding\Day 91 - PDF to Audiobook converter\audiobooks'
 
+    def closeEvent(self, event):
+        self.splashscreen.terminate = True
+        try:
+            conversion_thread = self.splashscreen.conversion
+        except AttributeError:
+            pass
+        else:
+            conversion_thread.quit()
+            conversion_thread.wait(3000) 
+            if conversion_thread.isRunning():
+                conversion_thread.terminate()
+            # os.remove(self.save_path)
