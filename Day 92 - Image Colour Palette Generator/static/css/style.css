@@ -1,16 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+}
 body {
-    background-color: rgb(102, 102, 106);
+    background-color: #222629;
     font-family: 'Roboto', sans-serif;
     align-items: center;
     text-align: center;
 }
 
 h1, h2, h3, h4, h5, h6, p {
-    color: rgb(250, 248, 215)
+    color: #86C232;
 }
 
 .title-card {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: rgba(10, 10, 10, 0.1);
-    margin: 0 auto;
-    width: 60%;
+    padding: 20px 0;
+    width: 50%;
+    box-shadow: 0 0px 20px 10px rgba(10,10,10,.1);
+}
+
+.title-card * {
+    padding: 12px 0;
+}
+
+
+input[type="file"] {
+    display: none;
+}
+  
+.input-file-button {
+    border: 1px solid #61892F;
+    background-color: rgba(10, 10, 10, 0.1);
+    color: #86C232;
+    display: inline-block;
+    padding: 4px 12px;
+    cursor: pointer;
+
 }
