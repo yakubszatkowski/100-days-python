@@ -3,7 +3,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 from directory_widget import Ui_MainWidget
 from convert_to_audio import SplashScreen
-import functools, pyttsx3, os, time
+import functools, pyttsx3, os
 
 
 def helper_function(widget, color):
@@ -86,11 +86,13 @@ class MainWidget(QWidget, Ui_MainWidget):
 
         if self.save_path:
             self.directory_file_button.setEnabled(False)
+            self.convert_button.setEnabled(False)
             self.title_label.setText('Currently converting...')
             self.splashscreen.read_pdf(self.pdf_to_convert)
             self.splashscreen.convert_to_audio(language, self.save_path)
         self.title_label.setText('PDF to Audiobook converter')
         self.directory_file_button.setEnabled(True)
+        self.convert_button.setEnabled(True)
 
 
     def closeEvent(self, event):
@@ -104,4 +106,5 @@ class MainWidget(QWidget, Ui_MainWidget):
             conversion_thread.wait(3000) 
             if conversion_thread.isRunning():
                 conversion_thread.terminate()
-            # os.remove(self.save_path)
+
+            
