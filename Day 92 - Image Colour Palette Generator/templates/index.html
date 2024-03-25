@@ -25,9 +25,9 @@
         <h1>PaletteProbe</h1>
         <h4>Choose an image for color extraction</h2>
         
-        <form method="post" id="file-form" class="task-form draggable">
+        <form method="post" id="file-form" class="task-form draggable" enctype="multipart/form-data">
             <label for="file-upload" class="input-file-button">Choose file</label>
-            <input id="file-upload" name="picture-upload" type="file">
+            <input id="file-upload" name="picture-upload" type="file" multiple accept="image/*">
         </form>
     </div>
     
