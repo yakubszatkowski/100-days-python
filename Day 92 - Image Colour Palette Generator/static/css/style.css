@@ -102,3 +102,19 @@ input[type="file"] {
 .input-file-button:hover {
     box-shadow: 0 0 8px 1px #61892F;
 }
+
+.analysis-card {
+    z-index: 2;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(10, 10, 10, 0.5);
+    padding: 20px 0;
+    width: 80%;
+    box-shadow: 0 0px 20px 10px rgba(10,10,10,.6);
+}
+
+.analysis-card + .title-card {
+    top: 17%;
+}
