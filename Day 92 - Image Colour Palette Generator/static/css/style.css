@@ -103,7 +103,7 @@ input[type="file"] {
     box-shadow: 0 0 8px 1px #61892F;
 }
 
-.analysis-card {
+.analyzis-card {
     position: relative;
     display: flex;
     z-index: 2;
@@ -126,7 +126,7 @@ input[type="file"] {
     width: 40%;
 }
 
-.analysed-image {
+.analyzed-image {
     max-width: 600px;
     max-height: 600px;
 }
