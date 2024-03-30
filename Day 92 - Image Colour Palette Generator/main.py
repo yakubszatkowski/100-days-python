@@ -17,6 +17,9 @@ def index():
         filename = os.path.join(app.config["IMAGE_UPLOADS"], image.filename)
         pil_image = Image.open(filename)
         dominant_colors = dominant_colors_extraction(pil_image)
+        filename = filename.replace(' ', '%20')
+
+        print(dominant_colors)
 
         return render_template('index.html', colors_list=dominant_colors, image=filename)
     return render_template('index.html')
@@ -26,8 +29,6 @@ if __name__ == '__main__':
 
 
 #TODO
-    # analysis - https://colab.research.google.com/drive/1loupRmuDJGitzdvMcTB7o7Etim_-bjdQ#scrollTo=Fg75QSPht7bK
-    # transition after posting an image - title card goes on top, an analysis card on bottom
-    # analysis card - picture on the left, top 10 colors on the right with the HEX code inside of them and their percentages
+    # remove images after usage
 
 # reference: https://www.coolphptools.com/color_extract#demo

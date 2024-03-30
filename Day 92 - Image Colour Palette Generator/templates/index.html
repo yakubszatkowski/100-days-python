@@ -38,10 +38,17 @@
             </div>
             
             <div class="right-side-card">
-                <h1>TEST</h1>
+
+                {% for color in colors_list %}
+                    <div style="background-color: {{ color[0] }};">
+                        <h4 style="color: {{ color[0] }}; filter: invert(100%);">{{ color[0] }} - {{ color[1] }}%</h4>
+                    </div>
+                    
+                {% endfor %}
             </div>
 
         </div>
+        <script>document.getElementsByClassName('title-card')[0].style.top = '18vh'</script>
     {% endif %}
 
     
