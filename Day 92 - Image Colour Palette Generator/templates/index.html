@@ -21,12 +21,6 @@
         </ul>
     </div>
     
-    {% if colors_list %}  <!-- for conditional styling purposes this has to go before .title-card -->
-        <div class="analysis-card">
-            <h1>hello world</h1>
-        </div>
-    {% endif %}
-
     <div class="title-card">
         <h1>PaletteProbe</h1>
         <h4>Choose an image for color extraction</h2>
@@ -36,6 +30,19 @@
             <input id="file-upload" name="picture-upload" type="file" multiple accept="image/*">
         </form>
     </div>
+
+    {% if colors_list %} 
+        <div class="analysis-card">
+            <div class="left-side-card">
+                <img src={{image}} class="analysed-image">
+            </div>
+            
+            <div class="right-side-card">
+                <h1>TEST</h1>
+            </div>
+
+        </div>
+    {% endif %}
 
     
     <script src="{{url_for('static', filename='js/formListener.js')}}"></script>
