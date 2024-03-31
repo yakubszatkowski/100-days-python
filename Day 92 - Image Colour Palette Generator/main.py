@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.config["IMAGE_UPLOADS"] = UPLOAD_FOLDER
 
 def delete_file(path):
-    time.sleep(30)
+    time.sleep(120)
     os.remove(path)
     return
 
@@ -33,9 +33,5 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-#TODO
-    # remove images after usage
 
 # reference: https://www.coolphptools.com/color_extract#demo
