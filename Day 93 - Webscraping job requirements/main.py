@@ -7,7 +7,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-
+def find_job_titles():
+    return job_list.find_elements(By.CSS_SELECTOR, 'li.jobs-search-results__list-item div.job-card-container div.artdeco-entity-lockup__content div.artdeco-entity-lockup__title a strong')
 
 email = 'rtyrtyqweqwe39@gmail.com'
 password = os.environ.get('D32_gmail_pass')
@@ -45,7 +46,7 @@ time.sleep(3)
 
 experience_level_options = driver.find_element(By.CSS_SELECTOR, 'button[id="searchFilter_experience"]')
 experience_level_options.click()
-time.sleep(3)
+time.sleep(2)
 
 internship_checkbox = driver.find_element(By.CSS_SELECTOR, 'label[for=experience-1]')
 entry_checkbox = driver.find_element(By.CSS_SELECTOR, 'label[for=experience-2]')
@@ -54,5 +55,21 @@ entry_checkbox.click()
 time.sleep(2)
 
 show_results_button = driver.find_element(By.CSS_SELECTOR, 'div[id="hoverable-outlet-experience-level-filter-value"] button[data-control-name="filter_show_results"]')
-# print(show_results_button.is_displayed())
 show_results_button.click()
+time.sleep(2)
+
+job_list = driver.find_element(By.CSS_SELECTOR, 'ul.scaffold-layout__list-container')
+
+is_full_list = False
+while not is_full_list:
+    job_titles = find_job_titles()
+    job_titles_amount = len(job_titles)
+    driver.execute_script("arguments[0].scrollIntoView();", job_titles[-1])
+    time.sleep(1)
+    new_job_titles_amount = len(find_job_titles())
+    if new_job_titles_amount == job_titles_amount:
+        is_full_list = True
+
+print(len(job_titles))
+
+    
