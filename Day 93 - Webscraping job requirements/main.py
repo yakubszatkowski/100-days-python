@@ -1,18 +1,33 @@
 import os, time
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-def find_job_titles():
-    return job_list.find_elements(By.CSS_SELECTOR, 'li.jobs-search-results__list-item div.job-card-container div.artdeco-entity-lockup__content div.artdeco-entity-lockup__title a strong')
 
 email = 'rtyrtyqweqwe39@gmail.com'
 password = os.environ.get('D32_gmail_pass')
 chrome_driver_path = os.environ.get('D48_chrome_driver_path')
+
+
+def find_job_titles():
+    return job_list.find_elements(By.CSS_SELECTOR, 'li.jobs-search-results__list-item div.job-card-container div.artdeco-entity-lockup__content div.artdeco-entity-lockup__title a strong')
+
+
+def load_job_listing():
+    is_full_list = False
+    while not is_full_list:
+        job_titles = find_job_titles()
+        job_titles_amount = len(job_titles)
+        driver.execute_script("arguments[0].scrollIntoView();", job_titles[-1])
+        time.sleep(1)
+        new_job_titles_amount = len(find_job_titles())
+        if new_job_titles_amount == job_titles_amount:
+            is_full_list = True
+
+    return job_titles
+
 
 options = Options()
 # options.add_argument('-headless=new')
@@ -21,7 +36,7 @@ driver = webdriver.Chrome(options=options, service=Service(executable_path=chrom
 
 driver.get('https://linkedin.com')
 driver.maximize_window()
-time.sleep(2)
+time.sleep(3)
 
 mail_input = driver.find_element(By.CSS_SELECTOR, '#session_key')
 password_input = driver.find_element(By.CSS_SELECTOR, '#session_password')
@@ -29,15 +44,15 @@ submit_button = driver.find_element(By.CSS_SELECTOR, r'div[data-test-id="hero__c
 mail_input.send_keys(email)
 password_input.send_keys(password)
 submit_button.click()
-time.sleep(20)
+time.sleep(20)  # fill captcha
 
 jobs = driver.find_element(By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')
 jobs.click()
-time.sleep(1)
+time.sleep(3)
 
 search_bar = driver.find_element(By.XPATH, '//*[@id="global-nav-search"]/div/div[2]')
 search_bar.click()
-time.sleep(1)
+time.sleep(3)
 
 search_bar_input = driver.find_element(By.CSS_SELECTOR, 'div.jobs-search-box__inner input.jobs-search-box__keyboard-text-input')
 search_bar_input.send_keys('"machine learning"')
@@ -46,30 +61,31 @@ time.sleep(3)
 
 experience_level_options = driver.find_element(By.CSS_SELECTOR, 'button[id="searchFilter_experience"]')
 experience_level_options.click()
-time.sleep(2)
+time.sleep(3)
 
 internship_checkbox = driver.find_element(By.CSS_SELECTOR, 'label[for=experience-1]')
 entry_checkbox = driver.find_element(By.CSS_SELECTOR, 'label[for=experience-2]')
 internship_checkbox.click()
 entry_checkbox.click()
-time.sleep(2)
+time.sleep(3)
 
 show_results_button = driver.find_element(By.CSS_SELECTOR, 'div[id="hoverable-outlet-experience-level-filter-value"] button[data-control-name="filter_show_results"]')
 show_results_button.click()
-time.sleep(2)
+time.sleep(3)
 
 job_list = driver.find_element(By.CSS_SELECTOR, 'ul.scaffold-layout__list-container')
+job_titles = load_job_listing()
+driver.execute_script("arguments[0].scrollIntoView();", job_titles[0])
 
-is_full_list = False
-while not is_full_list:
-    job_titles = find_job_titles()
-    job_titles_amount = len(job_titles)
-    driver.execute_script("arguments[0].scrollIntoView();", job_titles[-1])
-    time.sleep(1)
-    new_job_titles_amount = len(find_job_titles())
-    if new_job_titles_amount == job_titles_amount:
-        is_full_list = True
+for job_title in job_titles[:1]:
+    job_title.click()
+    job_description = driver.find_element(By.CSS_SELECTOR, 'div#job-details span')
+    print(job_description.text)
 
-print(len(job_titles))
+# html_content = driver.find_element(By.TAG_NAME, 'body').get_attribute('innerHTML')
+# html_content = driver.page_source
+# soup = BeautifulSoup(html_content, 'html.parser')
 
-    
+# soup_titles = soup.select(selector='li.jobs-search-results__list-item div.job-card-container div.artdeco-entity-lockup__content div.artdeco-entity-lockup__title a strong')
+# for titles in soup_titles:
+#     print(titles.getText().strip())
