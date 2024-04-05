@@ -1,5 +1,4 @@
 import os, time
-from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -29,6 +28,7 @@ def load_job_listing():
     return job_titles
 
 
+# INITIALIZE DRIVER
 options = Options()
 # options.add_argument('-headless=new')
 options.add_experimental_option("detach", True)
@@ -38,14 +38,18 @@ driver.get('https://linkedin.com')
 driver.maximize_window()
 time.sleep(3)
 
+
+# LOGIN
 mail_input = driver.find_element(By.CSS_SELECTOR, '#session_key')
 password_input = driver.find_element(By.CSS_SELECTOR, '#session_password')
 submit_button = driver.find_element(By.CSS_SELECTOR, r'div[data-test-id="hero__content"] form[data-id="sign-in-form"] button[data-id="sign-in-form__submit-btn"]')
 mail_input.send_keys(email)
 password_input.send_keys(password)
 submit_button.click()
-time.sleep(20)  # fill captcha
+time.sleep(20)
 
+
+# SEARCH FOR INTERNSHIP AND ENTRY LEVEL POSITIONS
 jobs = driver.find_element(By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')
 jobs.click()
 time.sleep(3)
@@ -73,19 +77,17 @@ show_results_button = driver.find_element(By.CSS_SELECTOR, 'div[id="hoverable-ou
 show_results_button.click()
 time.sleep(3)
 
+
 job_list = driver.find_element(By.CSS_SELECTOR, 'ul.scaffold-layout__list-container')
 job_titles = load_job_listing()
 driver.execute_script("arguments[0].scrollIntoView();", job_titles[0])
 
-for job_title in job_titles[:1]:
+job_descriptions = ''
+for job_title in job_titles:
     job_title.click()
     job_description = driver.find_element(By.CSS_SELECTOR, 'div#job-details span')
-    print(job_description.text)
+    job_descriptions += job_description.text + ' \n'
 
-# html_content = driver.find_element(By.TAG_NAME, 'body').get_attribute('innerHTML')
-# html_content = driver.page_source
-# soup = BeautifulSoup(html_content, 'html.parser')
 
-# soup_titles = soup.select(selector='li.jobs-search-results__list-item div.job-card-container div.artdeco-entity-lockup__content div.artdeco-entity-lockup__title a strong')
-# for titles in soup_titles:
-#     print(titles.getText().strip())
+with open('job_descriptions.txt', "w", encoding="utf-8") as f:
+    f.write(job_descriptions)
