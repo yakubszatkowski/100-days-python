@@ -1,4 +1,4 @@
-import os, time
+import os, time, re
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -49,7 +49,7 @@ submit_button.click()
 time.sleep(20)
 
 
-# SEARCH FOR INTERNSHIP AND ENTRY LEVEL POSITIONS
+# FILTER FOR INTERNSHIP AND ENTRY LEVEL POSITIONS
 jobs = driver.find_element(By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')
 jobs.click()
 time.sleep(3)
@@ -78,16 +78,28 @@ show_results_button.click()
 time.sleep(3)
 
 
+# LOAD FIRST PAGE JOB LISTINGS
 job_list = driver.find_element(By.CSS_SELECTOR, 'ul.scaffold-layout__list-container')
 job_titles = load_job_listing()
 driver.execute_script("arguments[0].scrollIntoView();", job_titles[0])
 
-job_descriptions = ''
+
+# GRAB JOB REQUIREMENTS OF EACH JOB TITLE IN THE LIST
+job_requirements = ''
 for job_title in job_titles:
     job_title.click()
+    time.sleep(1)
     job_description = driver.find_element(By.CSS_SELECTOR, 'div#job-details span')
-    job_descriptions += job_description.text + ' \n'
+    job_description_elements = job_description.find_elements(By.CSS_SELECTOR, 'span')
 
+    for i, element in enumerate(job_description_elements):
+        html_object = element.get_attribute('innerHTML')
+        if '<li>' in html_object:
+            html_pattern = re.compile('<.*?>')
+            html_object_text_only = re.sub(html_pattern, '', html_object)
+            line = str(i) + ': ' + html_object_text_only + '\n'
+            job_requirements += line 
+        
 
-with open('job_descriptions.txt', "w", encoding="utf-8") as f:
-    f.write(job_descriptions)
+with open(r'Day 93 - Webscraping job requirements\.misc\job_descriptions.txt', "w", encoding="utf-8") as f:
+    f.write(job_requirements)
