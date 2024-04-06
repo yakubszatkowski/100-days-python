@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
+from keywords_list import negative_keywords
 
 email = 'rtyrtyqweqwe39@gmail.com'
 password = os.environ.get('D32_gmail_pass')
@@ -94,12 +95,13 @@ for job_title in job_titles:
 
     for i, element in enumerate(job_description_elements):
         html_object = element.get_attribute('innerHTML')
-        if '<li>' in html_object:
+        if any(keyword in html_object for keyword in negative_keywords):
+            pass
+        elif '<li>' in html_object:
             html_pattern = re.compile('<.*?>')
             html_object_text_only = re.sub(html_pattern, '', html_object)
             line = str(i) + ': ' + html_object_text_only + '\n'
             job_requirements += line 
         
-
-with open(r'Day 93 - Webscraping job requirements\.misc\job_descriptions.txt', "w", encoding="utf-8") as f:
+with open(r'.misc\job_descriptions.txt', "w", encoding="utf-8") as f:
     f.write(job_requirements)
