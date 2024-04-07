@@ -99,9 +99,9 @@ for job_title in job_titles:
             pass
         elif '<li>' in html_object:
             html_pattern = re.compile('<.*?>')
-            html_object_text_only = re.sub(html_pattern, '', html_object)
+            html_object_text_only = re.sub(html_pattern, '', html_object).strip()
             line = str(i) + ': ' + html_object_text_only + '\n'
             job_requirements += line 
         
-with open(r'.misc\job_descriptions.txt', "w", encoding="utf-8") as f:
+with open(r'Day 93 - Webscraping job requirements\.misc\job_descriptions.txt', "w", encoding="utf-8") as f:
     f.write(job_requirements)

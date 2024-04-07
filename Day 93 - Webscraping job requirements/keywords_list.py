@@ -17,5 +17,3 @@ keywords_lower_case = [
 keywords_title_case = [keyword.title() for keyword in keywords_lower_case]
 
 negative_keywords = keywords_lower_case + keywords_title_case
-
-print(negative_keywords)
