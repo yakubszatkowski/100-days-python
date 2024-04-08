@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import *
 from keywords_list import negative_keywords
 
 email = 'rtyrtyqweqwe39@gmail.com'
@@ -51,57 +52,77 @@ time.sleep(20)
 
 
 # FILTER FOR INTERNSHIP AND ENTRY LEVEL POSITIONS
-jobs = driver.find_element(By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')
-jobs.click()
-time.sleep(3)
+analyzed_job_titles = [
+    # # data related
+    '"machine learning"', '"data science"', '"data engineer"', '"data analyst"', '"AI engineer"', 
+    # web development related
+    '"back end developer"', '"front end developer"', '"web developer"', '"full stack developer"', 
+    # # software related
+    '"software engineer"', '"software developer"', '"software architect"', 
+    # # mobile app related
+    '"android developer"', '"ios developer"', '"mobile app developer"', 
+    # # other
+    '"game developer"', '"solutions architect"', '"blockchain"', '"automation rpa"', 
+    '"systems analyst"', '"network engineer"', '"cloud engineer"', '"devops"'
+    # '"_______"', 
+]
 
-search_bar = driver.find_element(By.XPATH, '//*[@id="global-nav-search"]/div/div[2]')
-search_bar.click()
-time.sleep(3)
+for analyzed_job_title in analyzed_job_titles:
+    jobs = driver.find_element(By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')
+    jobs.click()
+    time.sleep(3)
 
-search_bar_input = driver.find_element(By.CSS_SELECTOR, 'div.jobs-search-box__inner input.jobs-search-box__keyboard-text-input')
-search_bar_input.send_keys('"machine learning"')
-search_bar_input.send_keys(Keys.ENTER)
-time.sleep(3)
+    search_bar = driver.find_element(By.XPATH, '//*[@id="global-nav-search"]/div/div[2]')
+    search_bar.click()
+    time.sleep(3)
 
-experience_level_options = driver.find_element(By.CSS_SELECTOR, 'button[id="searchFilter_experience"]')
-experience_level_options.click()
-time.sleep(3)
+    search_bar_input = driver.find_element(By.CSS_SELECTOR, 'div.jobs-search-box__inner input.jobs-search-box__keyboard-text-input')
+    search_bar_input.send_keys(analyzed_job_title)
+    search_bar_input.send_keys(Keys.ENTER)
+    time.sleep(3)
 
-internship_checkbox = driver.find_element(By.CSS_SELECTOR, 'label[for=experience-1]')
-entry_checkbox = driver.find_element(By.CSS_SELECTOR, 'label[for=experience-2]')
-internship_checkbox.click()
-entry_checkbox.click()
-time.sleep(3)
+    experience_level_options = driver.find_element(By.CSS_SELECTOR, 'button[id="searchFilter_experience"]')
+    experience_level_options.click()
+    time.sleep(3)
 
-show_results_button = driver.find_element(By.CSS_SELECTOR, 'div[id="hoverable-outlet-experience-level-filter-value"] button[data-control-name="filter_show_results"]')
-show_results_button.click()
-time.sleep(3)
+    internship_checkbox = driver.find_element(By.CSS_SELECTOR, 'label[for=experience-1]')
+    entry_checkbox = driver.find_element(By.CSS_SELECTOR, 'label[for=experience-2]')
+    internship_checkbox.click()
+    entry_checkbox.click()
+    time.sleep(3)
 
-
-# LOAD FIRST PAGE JOB LISTINGS
-job_list = driver.find_element(By.CSS_SELECTOR, 'ul.scaffold-layout__list-container')
-job_titles = load_job_listing()
-driver.execute_script("arguments[0].scrollIntoView();", job_titles[0])
+    show_results_button = driver.find_element(By.CSS_SELECTOR, 'div[id="hoverable-outlet-experience-level-filter-value"] button[data-control-name="filter_show_results"]')
+    show_results_button.click()
+    time.sleep(3)
 
 
-# GRAB JOB REQUIREMENTS OF EACH JOB TITLE IN THE LIST
-job_requirements = ''
-for job_title in job_titles:
-    job_title.click()
-    time.sleep(1)
-    job_description = driver.find_element(By.CSS_SELECTOR, 'div#job-details span')
-    job_description_elements = job_description.find_elements(By.CSS_SELECTOR, 'span')
+    # LOAD FIRST PAGE JOB LISTINGS
+    job_list = driver.find_element(By.CSS_SELECTOR, 'ul.scaffold-layout__list-container')
+    job_titles = load_job_listing()
+    driver.execute_script("arguments[0].scrollIntoView();", job_titles[0])
 
-    for i, element in enumerate(job_description_elements):
-        html_object = element.get_attribute('innerHTML')
-        if any(keyword in html_object for keyword in negative_keywords):
-            pass
-        elif '<li>' in html_object:
-            html_pattern = re.compile('<.*?>')
-            html_object_text_only = re.sub(html_pattern, '', html_object).strip()
-            line = str(i) + ': ' + html_object_text_only + '\n'
-            job_requirements += line 
-        
-with open(r'Day 93 - Webscraping job requirements\.misc\job_descriptions.txt', "w", encoding="utf-8") as f:
-    f.write(job_requirements)
+
+    # GRAB JOB REQUIREMENTS OF EACH JOB TITLE IN THE LIST
+    job_requirements = ''
+    for job_title in job_titles:
+        job_title.click()
+        time.sleep(1)
+        job_description = driver.find_element(By.CSS_SELECTOR, 'div#job-details span')
+        job_description_elements = job_description.find_elements(By.CSS_SELECTOR, 'span')
+
+        for element in job_description_elements:
+            try:
+                html_object = element.get_attribute('innerHTML')
+            except StaleElementReferenceException:
+                break
+            if any(keyword in html_object for keyword in negative_keywords):
+                pass
+            elif '<li>' in html_object:
+                html_pattern = re.compile('<.*?>')
+                html_object_text_only = re.sub(html_pattern, '', html_object).strip()
+                line = html_object_text_only.lower() + '\n'
+                job_requirements += line 
+            
+    with open(r'Day 93 - Webscraping job requirements\.misc\job_descriptions.txt', "a", encoding="utf-8") as f:
+        f.write(job_requirements)
+    time.sleep(2)
