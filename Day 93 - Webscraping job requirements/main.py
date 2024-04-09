@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import *
-from keywords_list import negative_keywords
+# from keywords_list import negative_keywords
 
 email = 'rtyrtyqweqwe39@gmail.com'
 password = os.environ.get('D32_gmail_pass')
@@ -53,17 +53,19 @@ time.sleep(20)
 
 # FILTER FOR INTERNSHIP AND ENTRY LEVEL POSITIONS
 analyzed_job_titles = [
+    '"data science"'
+
     # # data related
-    '"machine learning"', '"data science"', '"data engineer"', '"data analyst"', '"AI engineer"', 
-    # web development related
-    '"back end developer"', '"front end developer"', '"web developer"', '"full stack developer"', 
-    # # software related
-    '"software engineer"', '"software developer"', '"software architect"', 
-    # # mobile app related
-    '"android developer"', '"ios developer"', '"mobile app developer"', 
-    # # other
-    '"game developer"', '"solutions architect"', '"blockchain"', '"automation rpa"', 
-    '"systems analyst"', '"network engineer"', '"cloud engineer"', '"devops"'
+    # '"machine learning"', '"data science"', '"data engineer"', '"data analyst"', '"AI engineer"', 
+    # # web development related
+    # '"back end developer"', '"front end developer"', '"web developer"', '"full stack developer"', 
+    # # # software related
+    # '"software engineer"', '"software developer"', '"software architect"', 
+    # # # mobile app related
+    # '"android developer"', '"ios developer"', '"mobile app developer"', 
+    # # # other
+    # '"game developer"', '"solutions architect"', '"blockchain"', '"automation rpa"', 
+    # '"systems analyst"', '"network engineer"', '"cloud engineer"', '"devops"'
     # '"_______"', 
 ]
 
@@ -112,17 +114,20 @@ for analyzed_job_title in analyzed_job_titles:
 
         for element in job_description_elements:
             try:
-                html_object = element.get_attribute('innerHTML')
+                html_object = element.get_attribute('innerHTML').lower()
             except StaleElementReferenceException:
                 break
-            if any(keyword in html_object for keyword in negative_keywords):
-                pass
-            elif '<li>' in html_object:
+            # if any(keyword in html_object for keyword in negative_keywords):
+            #     pass
+            if '<li>' in html_object:
                 html_pattern = re.compile('<.*?>')
                 html_object_text_only = re.sub(html_pattern, '', html_object).strip()
-                line = html_object_text_only.lower() + '\n'
+                line = html_object_text_only + '\n'
                 job_requirements += line 
             
     with open(r'Day 93 - Webscraping job requirements\.misc\job_descriptions.txt', "a", encoding="utf-8") as f:
         f.write(job_requirements)
     time.sleep(2)
+
+#TODO
+    # Get counts of each keyword
