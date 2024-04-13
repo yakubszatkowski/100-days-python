@@ -17,8 +17,8 @@ negative_keywords = [
 positive_keywords = [
     # data related
     'python', 'sql', 'azure', 'aws', 'tensorflow', 'pytorch', 'pandas', 'numpy', 'etl', 'matplotlib', 'excel',
-    'google', 'gcp', 'power bi', 'snowflake', 'keras', 'bigquery', 'apache', 'scala', 'spark', 'kafka', 'hadoop',
-    'tableau', 'docker', 'kubernetes', 'sap', 'api', 'oracle', 'postgres', 'mysql', 'mongodb', 'looker', 'seo', 'dwh',
+    'gcp', 'power bi', 'snowflake', 'keras', 'bigquery', 'apache', 'scala', 'spark', 'kafka', 'hadoop',
+    'tableau', 'docker', 'kubernetes', 'sap', 'api', 'oracle', 'postgres', 'mysql', 'mongodb', 'looker', 'dwh',
     'llm', 'bert', 'mlflow', 
     # web development related
     'css', 'javascript', 'typescript', 'html', 'react', 'java', 'php', 'frontend', '.net', 'angular', 'node.js', 
