@@ -1,6 +1,6 @@
 from keywords_list import positive_keywords
 from collections import Counter 
-import re
+import re, os
 
 with open(r'Day 93 - Webscraping job requirements\.misc\job_descriptions.txt', 'r', encoding="utf-8") as f:
     job_desctiptions = f.read()
@@ -22,11 +22,11 @@ def keyword_count(analyzed_descriptions):
 
     # COUNTING WORDS
     keyword_counts = Counter(tech_words_list)
-    most_common_words = keyword_counts.most_common(100)
+    most_common_words = keyword_counts.most_common(150)
 
     return most_common_words
 
 words = keyword_count(job_desctiptions)
-
-for x in words:
-    print(x)
+# for x in words:
+#     print(x)
+print(words)

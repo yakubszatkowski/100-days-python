@@ -53,19 +53,16 @@ time.sleep(20)
 
 # FILTER FOR INTERNSHIP AND ENTRY LEVEL POSITIONS
 analyzed_job_titles = [
-    '"data science"'
-
-    # # data related
-    # '"machine learning"', '"data science"', '"data engineer"', '"data analyst"', '"AI engineer"', 
-    # # web development related
-    # '"back end developer"', '"front end developer"', '"web developer"', '"full stack developer"', 
-    # # # software related
-    # '"software engineer"', '"software developer"', '"software architect"', 
-    # # # mobile app related
-    # '"android developer"', '"ios developer"', '"mobile app developer"', 
-    # # # other
-    # '"game developer"', '"solutions architect"', '"blockchain"', '"automation rpa"', 
-    # '"systems analyst"', '"network engineer"', '"cloud engineer"', '"devops"'
+    # data related
+    '"machine learning"', '"data science"', '"data engineer"', '"data analyst"'
+    # web development related
+    '"back end developer"', '"front end developer"', '"web developer"', '"full stack developer"', 
+    # software related
+    '"software engineer"', '"software developer"'
+    # mobile app related
+    '"android developer"', '"ios developer"', '"mobile app developer"', 
+    # other
+    '"game developer"', '"blockchain"', '"rpa"', '"cloud engineer"', '"devops"'
     # '"_______"', 
 ]
 
@@ -97,12 +94,10 @@ for analyzed_job_title in analyzed_job_titles:
     show_results_button.click()
     time.sleep(3)
 
-
     # LOAD FIRST PAGE JOB LISTINGS
     job_list = driver.find_element(By.CSS_SELECTOR, 'ul.scaffold-layout__list-container')
     job_titles = load_job_listing()
     driver.execute_script("arguments[0].scrollIntoView();", job_titles[0])
-
 
     # GRAB JOB REQUIREMENTS OF EACH JOB TITLE IN THE LIST
     job_requirements = ''
@@ -127,7 +122,9 @@ for analyzed_job_title in analyzed_job_titles:
             
     with open(r'Day 93 - Webscraping job requirements\.misc\job_descriptions.txt', "a", encoding="utf-8") as f:
         f.write(job_requirements)
+
     time.sleep(2)
 
 #TODO
     # Get counts of each keyword
+    # Save results in google spreadsheets - https://www.youtube.com/watch?v=Mz9JG9CUXXY

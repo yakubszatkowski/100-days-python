@@ -29,5 +29,5 @@ positive_keywords = [
     'powershell', 'kotlin',
     # other
     'terraform', 'jenkins', 'grafana', 'helm', 'ospf', 'bgp', 'tcp/ip', 'scrum', 'agile', 'kanban', 'lean', 
-    'slack', 'git', 'github', 'gitlab', 'jira', 'windows', 'linux', 'saas', 'paas', 'iaas'
+    'slack', 'git', 'github', 'gitlab', 'jira', 'windows', 'linux', 'saas', 'paas', 'iaas', 'uipath', 'vba'
 ]
