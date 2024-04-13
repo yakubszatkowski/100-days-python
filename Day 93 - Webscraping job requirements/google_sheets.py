@@ -1,4 +1,4 @@
-import gspread, os
+import gspread, os, datetime
 from google.oauth2.service_account import Credentials
 
 scopes = ["https://www.googleapis.com/auth/spreadsheets"]
@@ -7,22 +7,36 @@ client = gspread.authorize(creds)
 sheet_id = os.environ.get('google_sheets_id')
 sheet = client.open_by_key(sheet_id)
 
-analyzed_job_titles = [
-    # data related
-    '"machine learning"', '"data science"', '"data engineer"', '"data analyst"',
-    # web development related
-    '"back end developer"', '"front end developer"', '"web developer"', '"full stack developer"', 
-    # software related
-    '"software engineer"', '"software developer"',
-    # mobile app related
-    '"android developer"', '"ios developer"', '"mobile app developer"', 
-    # other
-    '"game developer"', '"blockchain"', '"rpa"', '"cloud engineer"', '"devops"'
-    # '"_______"', 
+
+# Example
+analyzed_job_title = 'Machine Learning'
+words_machine_learning = [
+    ('python', 22), ('tensorflow', 16), ('pytorch', 16), ('seo', 15), ('numpy', 14), 
+    ('pandas', 14), ('matplotlib', 14), ('snowflake', 8), ('google', 8), ('gcp', 6), 
+    ('docker', 6), ('kubernetes', 6), ('sql', 5), ('azure', 4), ('terraform', 4), 
+    ('excel', 4), ('aws', 2), ('keras', 2), ('linux', 2), ('tableau', 2), ('html', 2), 
 ]
 
-# Creating worksheets
-for job in analyzed_job_titles:
-    job_title_no_quotation = job.strip('"').title()
-    sheet.add_worksheet(title=job_title_no_quotation, rows=50, cols=2000)
-    sheet.add_worksheet(title=f'{job_title_no_quotation} graph', rows=20, cols=40)
+
+def update_worksheet(job_title, technologies_count):
+    todays_date = datetime.date.today()
+    worksheet = sheet.worksheet(analyzed_job_title)
+
+    # Checking if new technology appeared - if yes fill it in first empty cell in first column
+    technologies = set([technology[0] for technology in technologies_count])
+    worksheet_technologies = set(worksheet.col_values(1)[1:])
+    if worksheet_technologies != technologies:
+        # print('difference detected')
+        odd_values = list(technologies.difference(worksheet_technologies))
+        first_empty_row = len(worksheet_technologies) + 2
+
+        odd_value_index = 0
+        while worksheet_technologies != technologies:
+            worksheet.update_cell(row=first_empty_row, col=1, value=odd_values[odd_value_index])
+            first_empty_row += 1
+            odd_value_index += 1
+            worksheet_technologies = set(worksheet.col_values(1)[1:])
+
+
+
+update_worksheet(analyzed_job_title, words_machine_learning)
