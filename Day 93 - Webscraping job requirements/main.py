@@ -5,7 +5,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import *
-# from keywords_list import negative_keywords
+from keyword_analysis import keyword_count
+from google_sheets import update_worksheet
 
 email = 'rtyrtyqweqwe39@gmail.com'
 password = os.environ.get('D32_gmail_pass')
@@ -30,9 +31,9 @@ def load_job_listing():
     return job_titles
 
 
-# INITIALIZE DRIVER
+# Initialize driver
 options = Options()
-# options.add_argument('-headless=new')
+options.add_argument('-headless=new')
 options.add_experimental_option("detach", True)
 driver = webdriver.Chrome(options=options, service=Service(executable_path=chrome_driver_path, log_path="NUL"))
 
@@ -41,32 +42,31 @@ driver.maximize_window()
 time.sleep(3)
 
 
-# LOGIN
+# Login
 mail_input = driver.find_element(By.CSS_SELECTOR, '#session_key')
 password_input = driver.find_element(By.CSS_SELECTOR, '#session_password')
 submit_button = driver.find_element(By.CSS_SELECTOR, r'div[data-test-id="hero__content"] form[data-id="sign-in-form"] button[data-id="sign-in-form__submit-btn"]')
 mail_input.send_keys(email)
 password_input.send_keys(password)
 submit_button.click()
-time.sleep(20)
 
-
-# FILTER FOR INTERNSHIP AND ENTRY LEVEL POSITIONS
 analyzed_job_titles = [
     # data related
-    '"machine learning"', '"data science"', '"data engineer"', '"data analyst"'
+    '"machine learning"', '"data science"', '"data engineer"', '"data analyst"',
     # web development related
     '"back end developer"', '"front end developer"', '"web developer"', '"full stack developer"', 
     # software related
-    '"software engineer"', '"software developer"'
+    '"software engineer"', '"software developer"',
     # mobile app related
     '"android developer"', '"ios developer"', '"mobile app developer"', 
     # other
     '"game developer"', '"blockchain"', '"rpa"', '"cloud engineer"', '"devops"'
-    # '"_______"', 
 ]
 
 for analyzed_job_title in analyzed_job_titles:
+    print(analyzed_job_title)
+    # Searching for job title
+    time.sleep(30)
     jobs = driver.find_element(By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')
     jobs.click()
     time.sleep(3)
@@ -94,12 +94,12 @@ for analyzed_job_title in analyzed_job_titles:
     show_results_button.click()
     time.sleep(3)
 
-    # LOAD FIRST PAGE JOB LISTINGS
+    # Load all the job listings by scrolling down as much as possible
     job_list = driver.find_element(By.CSS_SELECTOR, 'ul.scaffold-layout__list-container')
     job_titles = load_job_listing()
     driver.execute_script("arguments[0].scrollIntoView();", job_titles[0])
 
-    # GRAB JOB REQUIREMENTS OF EACH JOB TITLE IN THE LIST
+    # Scrape job requirements
     job_requirements = ''
     for job_title in job_titles:
         job_title.click()
@@ -112,19 +112,15 @@ for analyzed_job_title in analyzed_job_titles:
                 html_object = element.get_attribute('innerHTML').lower()
             except StaleElementReferenceException:
                 break
-            # if any(keyword in html_object for keyword in negative_keywords):
-            #     pass
             if '<li>' in html_object:
                 html_pattern = re.compile('<.*?>')
                 html_object_text_only = re.sub(html_pattern, '', html_object).strip()
                 line = html_object_text_only + '\n'
                 job_requirements += line 
             
-    with open(r'Day 93 - Webscraping job requirements\.misc\job_descriptions.txt', "a", encoding="utf-8") as f:
-        f.write(job_requirements)
-
     time.sleep(2)
-
-#TODO
-    # Get counts of each keyword
-    # Save results in google spreadsheets - https://www.youtube.com/watch?v=Mz9JG9CUXXY
+    # Filtering and counting technology keywords
+    most_common_words = keyword_count(job_requirements)
+    print(most_common_words)
+    # Saving technology keywords in google sheets
+    update_worksheet(analyzed_job_title, most_common_words)
