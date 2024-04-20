@@ -19,7 +19,6 @@ analyzed_job_titles = [
     '"android developer"', '"ios developer"', '"mobile app developer"', 
     # other
     '"game developer"', '"blockchain"', '"rpa"', '"cloud engineer"', '"devops"'
-    # '"_______"', 
 ]
 
 # Creating worksheets
