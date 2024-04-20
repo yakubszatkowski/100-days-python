@@ -7,16 +7,16 @@ client = gspread.authorize(creds)
 sheet_id = os.environ.get('google_sheets_id')
 sheet = client.open_by_key(sheet_id)
 
-# analyzed_job_title = "Data engineer"
-# words = [
-#     ('azure', 41), ('python', 37), ('sql', 30), ('etl', 27), ('aws', 21), ('spark', 15), 
-#     ('agile', 14), ('sap', 12), ('git', 9), ('gcp', 9), ('docker', 8), ('oracle', 8), 
-#     ('kafka', 8), ('api', 7), ('apache', 6), ('scrum', 6), ('scala', 6), ('saas', 6), 
-#     ('kubernetes', 5), ('looker', 5), ('terraform', 5), ('hadoop', 4), ('kanban', 4), 
-#     ('paas', 4), ('java', 4), ('mongodb', 4), ('pandas', 4), ('dwh', 4), ('bigquery', 3), 
-#     ('frontend', 2), ('excel', 2), ('tableau', 2), ('go', 2), ('llm', 2), ('typescript', 2), 
-#     ('snowflake', 2), ('helm', 2), ('gitlab', 2), ('jira', 2)
-# ]     
+analyzed_job_title = "Machine Learning"
+words = [
+    ('azure', 41), ('python', 37), ('sql', 30), ('etl', 27), ('aws', 21), ('spark', 15), 
+    ('agile', 14), ('sap', 12), ('git', 9), ('gcp', 9), ('docker', 8), ('oracle', 8), 
+    ('kafka', 8), ('api', 7), ('apache', 6), ('scrum', 6), ('scala', 6), ('saas', 6), 
+    ('kubernetes', 5), ('looker', 5), ('terraform', 5), ('hadoop', 4), ('kanban', 4), 
+    ('paas', 4), ('java', 4), ('mongodb', 4), ('pandas', 4), ('dwh', 4), ('bigquery', 3), 
+    ('frontend', 2), ('excel', 2), ('tableau', 2), ('go', 2), ('llm', 2), ('typescript', 2), 
+    ('snowflake', 2), ('helm', 2), ('gitlab', 2), ('jira', 2)
+]     
 
 
 def update_worksheet(job_title, technologies_count):
@@ -46,7 +46,7 @@ def update_worksheet(job_title, technologies_count):
                 first_empty_row_in_first_column += 1
                 odd_value_index += 1
                 set_worksheet_technologies = set(worksheet.col_values(1)[1:])
-            time.sleep(60)
+            time.sleep(30)
 
     # Insert datetime 
     first_row = worksheet.row_values(1)
@@ -66,3 +66,4 @@ def update_worksheet(job_title, technologies_count):
 
 
 # update_worksheet(analyzed_job_title, words)
+

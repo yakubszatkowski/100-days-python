@@ -51,17 +51,16 @@ password_input.send_keys(password)
 submit_button.click()
 
 analyzed_job_titles = [
-    '"machine learning"'
     # data related
-    # '"machine learning"', '"data science"', '"data engineer"', '"data analyst"',
-    # # web development related
-    # '"back end developer"', '"front end developer"', '"web developer"', '"full stack developer"', 
-    # # software related
-    # '"software engineer"', '"software developer"',
-    # # mobile app related
-    # '"android developer"', '"ios developer"', '"mobile app developer"', 
-    # # other
-    # '"game developer"', '"blockchain"', '"rpa"', '"cloud engineer"', '"devops"'
+    '"machine learning"', '"data science"', '"data engineer"', '"data analyst"',
+    # web development related
+    '"back end developer"', '"front end developer"', '"web developer"', '"full stack developer"', 
+    # software related
+    '"software engineer"', '"software developer"',
+    # mobile app related
+    '"android developer"', '"ios developer"', '"mobile app developer"', 
+    # other
+    '"game developer"', '"blockchain"', '"rpa"', '"cloud engineer"', '"devops"'
 ]
 
 for analyzed_job_title in analyzed_job_titles:
@@ -111,7 +110,6 @@ for analyzed_job_title in analyzed_job_titles:
         for element in job_description_elements:
             try:
                 html_object = element.get_attribute('innerHTML').lower()
-                print(html_object)
             except StaleElementReferenceException:
                 break
             if '<li>' in html_object:
