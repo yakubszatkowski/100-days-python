@@ -33,7 +33,7 @@ def load_job_listing():
 
 # Initialize driver
 options = Options()
-options.add_argument('-headless=new')
+# options.add_argument('-headless=new')
 options.add_experimental_option("detach", True)
 driver = webdriver.Chrome(options=options, service=Service(executable_path=chrome_driver_path, log_path="NUL"))
 
@@ -51,16 +51,17 @@ password_input.send_keys(password)
 submit_button.click()
 
 analyzed_job_titles = [
+    '"machine learning"'
     # data related
-    '"machine learning"', '"data science"', '"data engineer"', '"data analyst"',
-    # web development related
-    '"back end developer"', '"front end developer"', '"web developer"', '"full stack developer"', 
-    # software related
-    '"software engineer"', '"software developer"',
-    # mobile app related
-    '"android developer"', '"ios developer"', '"mobile app developer"', 
-    # other
-    '"game developer"', '"blockchain"', '"rpa"', '"cloud engineer"', '"devops"'
+    # '"machine learning"', '"data science"', '"data engineer"', '"data analyst"',
+    # # web development related
+    # '"back end developer"', '"front end developer"', '"web developer"', '"full stack developer"', 
+    # # software related
+    # '"software engineer"', '"software developer"',
+    # # mobile app related
+    # '"android developer"', '"ios developer"', '"mobile app developer"', 
+    # # other
+    # '"game developer"', '"blockchain"', '"rpa"', '"cloud engineer"', '"devops"'
 ]
 
 for analyzed_job_title in analyzed_job_titles:
@@ -104,12 +105,13 @@ for analyzed_job_title in analyzed_job_titles:
     for job_title in job_titles:
         job_title.click()
         time.sleep(1)
-        job_description = driver.find_element(By.CSS_SELECTOR, 'div#job-details span')
+        job_description = driver.find_element(By.CSS_SELECTOR, 'div#job-details div.mt4')
         job_description_elements = job_description.find_elements(By.CSS_SELECTOR, 'span')
 
         for element in job_description_elements:
             try:
                 html_object = element.get_attribute('innerHTML').lower()
+                print(html_object)
             except StaleElementReferenceException:
                 break
             if '<li>' in html_object:
@@ -117,6 +119,7 @@ for analyzed_job_title in analyzed_job_titles:
                 html_object_text_only = re.sub(html_pattern, '', html_object).strip()
                 line = html_object_text_only + '\n'
                 job_requirements += line 
+
             
     time.sleep(2)
     # Filtering and counting technology keywords
