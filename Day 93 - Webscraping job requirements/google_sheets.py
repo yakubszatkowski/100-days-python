@@ -7,17 +7,6 @@ client = gspread.authorize(creds)
 sheet_id = os.environ.get('google_sheets_id')
 sheet = client.open_by_key(sheet_id)
 
-analyzed_job_title = "Machine Learning"
-words = [
-    ('azure', 41), ('python', 37), ('sql', 30), ('etl', 27), ('aws', 21), ('spark', 15), 
-    # ('agile', 14), ('sap', 12), ('git', 9), ('gcp', 9), ('docker', 8), ('oracle', 8), 
-    # ('kafka', 8), ('api', 7), ('apache', 6), ('scrum', 6), ('scala', 6), ('saas', 6), 
-    # ('kubernetes', 5), ('looker', 5), ('terraform', 5), ('hadoop', 4), ('kanban', 4), 
-    # ('paas', 4), ('java', 4), ('mongodb', 4), ('pandas', 4), ('dwh', 4), ('bigquery', 3), 
-    # ('frontend', 2), ('excel', 2), ('tableau', 2), ('go', 2), ('llm', 2), ('typescript', 2), 
-    # ('snowflake', 2), ('helm', 2), ('gitlab', 2), ('jira', 2)
-]     
-
 
 def update_worksheet(job_title, technologies_count):
     todays_date = datetime.date.today().strftime('%d-%m-%Y')
@@ -32,13 +21,12 @@ def update_worksheet(job_title, technologies_count):
         else:
             formatted_technologies_list.append(technology[0].title())
 
-    # Checking if new technology appeared - if yes fill it in first empty cell in first column
+    # Checking if new technology appeared - if yes fill it in first empty cell in first row
     set_technologies = set(formatted_technologies_list)
     set_worksheet_technologies = set(first_row)
     if set_worksheet_technologies != set_technologies:
         odd_values = list(set_technologies.difference(set_worksheet_technologies))
         first_empty_col_in_first_row= len(set_worksheet_technologies) + 2  # "+ 2" because we don't overwrite "Date"
-        print(first_empty_col_in_first_row)
 
         odd_value_index = 0
         if odd_values:
@@ -47,7 +35,7 @@ def update_worksheet(job_title, technologies_count):
                 first_empty_col_in_first_row += 1
                 odd_value_index += 1
                 set_worksheet_technologies = set(worksheet.row_values(1)[1:])
-            # time.sleep(30)
+            time.sleep(30)
 
 
     # Insert datetime 
@@ -56,7 +44,7 @@ def update_worksheet(job_title, technologies_count):
         first_empty_row_in_first_col = len(first_column) + 1
         worksheet.update_cell(row=first_empty_row_in_first_col, col=1, value=todays_date)
 
-        # Insert count values based on technologies in first column
+        # Insert count values based on technologies in the rows
         worksheet_technologies = worksheet.row_values(1)[1:]
         for technology in worksheet_technologies:
             technology_cell = worksheet.find(technology)
@@ -64,7 +52,4 @@ def update_worksheet(job_title, technologies_count):
             for technology_name, count in technologies_count:
                 if technology.lower() == technology_name:
                     worksheet.update_cell(first_empty_row_in_first_col, technology_cell_col, count)
-
-
-update_worksheet(analyzed_job_title, words)
 

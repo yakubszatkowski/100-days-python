@@ -33,7 +33,7 @@ def load_job_listing():
 
 # Initialize driver
 options = Options()
-# options.add_argument('-headless=new')
+options.add_argument('-headless=new')
 options.add_experimental_option("detach", True)
 driver = webdriver.Chrome(options=options, service=Service(executable_path=chrome_driver_path, log_path="NUL"))
 
@@ -51,21 +51,12 @@ password_input.send_keys(password)
 submit_button.click()
 
 analyzed_job_titles = [
-    # data related
     '"machine learning"', '"data science"', '"data engineer"', '"data analyst"',
-    # web development related
-    '"back end developer"', '"front end developer"', '"web developer"', '"full stack developer"', 
-    # software related
-    '"software engineer"', '"software developer"',
-    # mobile app related
-    '"android developer"', '"ios developer"', '"mobile app developer"', 
-    # other
-    '"game developer"', '"blockchain"', '"rpa"', '"cloud engineer"', '"devops"'
 ]
 
 for analyzed_job_title in analyzed_job_titles:
     print(analyzed_job_title)
-    # Searching for job title
+    # Searching for analyzed job title
     time.sleep(30)
     jobs = driver.find_element(By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')
     jobs.click()
@@ -125,3 +116,9 @@ for analyzed_job_title in analyzed_job_titles:
     print(most_common_words)
     # Saving technology keywords in google sheets
     update_worksheet(analyzed_job_title, most_common_words)
+
+
+#TODO
+    # sort columns/set
+    # what to do if selenium object can't be found by the selector, how to repeat searching for selector?
+    # figure a way to schedule this script once a day on any cloud service
