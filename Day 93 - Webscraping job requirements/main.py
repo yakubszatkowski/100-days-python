@@ -1,9 +1,12 @@
 import os, time, re
+start_time = time.time()
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import *
 from keyword_analysis import keyword_count
 from google_sheets import update_worksheet
@@ -11,6 +14,7 @@ from google_sheets import update_worksheet
 email = 'rtyrtyqweqwe39@gmail.com'
 password = os.environ.get('D32_gmail_pass')
 chrome_driver_path = os.environ.get('D48_chrome_driver_path')
+
 
 
 def find_job_titles():
@@ -33,13 +37,13 @@ def load_job_listing():
 
 # Initialize driver
 options = Options()
-options.add_argument('-headless=new')
+# options.add_argument('-headless=new')
 options.add_experimental_option("detach", True)
 driver = webdriver.Chrome(options=options, service=Service(executable_path=chrome_driver_path, log_path="NUL"))
-
+wait = WebDriverWait(driver, 10)
 driver.get('https://linkedin.com')
 driver.maximize_window()
-time.sleep(3)
+time.sleep(5)
 
 
 # Login
@@ -51,39 +55,42 @@ password_input.send_keys(password)
 submit_button.click()
 
 analyzed_job_titles = [
-    '"machine learning"', '"data science"', '"data engineer"', '"data analyst"',
+    '"machine learning"', '"data science"', '"data engineer"', '"data analyst"', 
+    '"software engineer"', '"web developer"', '"devops engineer"', '"mobile app developer"', 
+    '"automation engineer"'
 ]
 
 for analyzed_job_title in analyzed_job_titles:
     print(analyzed_job_title)
     # Searching for analyzed job title
-    time.sleep(30)
+    # time.sleep(30)
     jobs = driver.find_element(By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')
     jobs.click()
-    time.sleep(3)
+    time.sleep(2)
 
     search_bar = driver.find_element(By.XPATH, '//*[@id="global-nav-search"]/div/div[2]')
     search_bar.click()
-    time.sleep(3)
+    time.sleep(2)
 
     search_bar_input = driver.find_element(By.CSS_SELECTOR, 'div.jobs-search-box__inner input.jobs-search-box__keyboard-text-input')
     search_bar_input.send_keys(analyzed_job_title)
     search_bar_input.send_keys(Keys.ENTER)
-    time.sleep(3)
+    time.sleep(2)
 
-    experience_level_options = driver.find_element(By.CSS_SELECTOR, 'button[id="searchFilter_experience"]')
+    experience_level_options = wait.until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'button[id="searchFilter_experience"]')))
     experience_level_options.click()
-    time.sleep(3)
+    time.sleep(2)
 
     internship_checkbox = driver.find_element(By.CSS_SELECTOR, 'label[for=experience-1]')
     entry_checkbox = driver.find_element(By.CSS_SELECTOR, 'label[for=experience-2]')
     internship_checkbox.click()
     entry_checkbox.click()
-    time.sleep(3)
+    time.sleep(2)
 
     show_results_button = driver.find_element(By.CSS_SELECTOR, 'div[id="hoverable-outlet-experience-level-filter-value"] button[data-control-name="filter_show_results"]')
     show_results_button.click()
-    time.sleep(3)
+    time.sleep(2)
 
     # Load all the job listings by scrolling down as much as possible
     job_list = driver.find_element(By.CSS_SELECTOR, 'ul.scaffold-layout__list-container')
@@ -94,7 +101,6 @@ for analyzed_job_title in analyzed_job_titles:
     job_requirements = ''
     for job_title in job_titles:
         job_title.click()
-        time.sleep(1)
         job_description = driver.find_element(By.CSS_SELECTOR, 'div#job-details div.mt4')
         job_description_elements = job_description.find_elements(By.CSS_SELECTOR, 'span')
 
@@ -119,6 +125,8 @@ for analyzed_job_title in analyzed_job_titles:
 
 
 #TODO
-    # sort columns/set
-    # what to do if selenium object can't be found by the selector, how to repeat searching for selector?
+    # job search interface changed when 2nd loop of job search starts
+    # what to do if selenium object can't be found by the selector, how to repeat searching for selector? - WebDriverWait.until()
     # figure a way to schedule this script once a day on any cloud service
+
+print("--- %s seconds ---" % (time.time() - start_time))

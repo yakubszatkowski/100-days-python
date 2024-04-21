@@ -26,7 +26,7 @@ def update_worksheet(job_title, technologies_count):
     set_worksheet_technologies = set(first_row)
     if set_worksheet_technologies != set_technologies:
         odd_values = list(set_technologies.difference(set_worksheet_technologies))
-        first_empty_col_in_first_row= len(set_worksheet_technologies) + 2  # "+ 2" because we don't overwrite "Date"
+        first_empty_col_in_first_row= len(set_worksheet_technologies) + 2  # "+ 2" so we don't overwrite "Date"
 
         odd_value_index = 0
         if odd_values:
@@ -35,8 +35,8 @@ def update_worksheet(job_title, technologies_count):
                 first_empty_col_in_first_row += 1
                 odd_value_index += 1
                 set_worksheet_technologies = set(worksheet.row_values(1)[1:])
-            time.sleep(30)
-
+    time.sleep(20)
+    
 
     # Insert datetime 
     first_column = worksheet.col_values(1)

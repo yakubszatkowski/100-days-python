@@ -10,8 +10,8 @@ sheet = client.open_by_key(sheet_id)
 
 analyzed_job_titles = [
     '"machine learning"', '"data science"', '"data engineer"', '"data analyst"', 
-    '"software engineer"', '"web developer"', '"game developer"', '"devops engineer"', 
-    '"mobile app developer"', '"automation engineer"'
+    '"software engineer"', '"web developer"', '"devops engineer"', '"mobile app developer"', 
+    '"automation engineer"'
 ]
 
 # Creating worksheets
@@ -19,7 +19,5 @@ for job in analyzed_job_titles:
     job_title_no_quotation = job.strip('"').title()
     sheet.add_worksheet(title=job_title_no_quotation, rows=1000, cols=100)
     worksheet = sheet.worksheet(job_title_no_quotation)
-    worksheet.update('A1', 'Date')
-    worksheet.format
-
-    # sheet.add_worksheet(title=f'{job_title_no_quotation} graph', rows=50, cols=50)
+    worksheet.update_cell(1, 1, 'Date')
+    worksheet.format('1:1', {"textFormat": {'bold': True}})
