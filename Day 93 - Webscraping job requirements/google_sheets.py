@@ -1,5 +1,4 @@
-import gspread, os, datetime, time
-import numpy as np
+import gspread, os, datetime
 from google.oauth2.service_account import Credentials
 import xlsxwriter 
 
@@ -9,18 +8,10 @@ client = gspread.authorize(creds)
 sheet_id = os.environ.get('google_sheets_id')
 sheet = client.open_by_key(sheet_id)
 
-jb = 'Machine Learning'
-tech = [
-    ('python', 27), ('aws', 21), ('tensorflow', 20), ('pytorch', 20), ('numpy', 15), ('pandas', 14), 
-    ('azure', 9), ('slack', 8), ('matplotlib', 8), ('git', 7), ('keras', 7), ('jira', 6), ('java', 6), 
-    ('hadoop', 6), ('llm', 6), ('php', 4), ('terraform', 4), ('docker', 4), ('mlflow', 4), ('spark', 4), 
-    ('kubernetes', 3), ('linux', 3), ('scala', 3), ('sql', 3), ('gcp', 3), ('tableau', 2), ('bash', 2), 
-    ('gitlab', 2), ('bert', 2), ('kafka', 2), ('api', 2), ('flask', 2), ('etl', 2)
-]
 
 def update_worksheet(job_title, technologies_count):
 
-    # 
+    # Today's date and selecting worksheet
     todays_date = datetime.date.today().strftime('%d-%m-%Y')
     no_quotation_job_title = job_title.strip('"').title()
     worksheet = sheet.worksheet(no_quotation_job_title)
@@ -55,6 +46,3 @@ def update_worksheet(job_title, technologies_count):
         technologies_count_dict = {k:v for k, v in technologies_count}
         ordered_count_values = [[technologies_count_dict.get(technology.lower(), 0) for technology in worksheet_technologies]]
         worksheet.update(range_name=f'B{first_empty_row_in_first_col}', values=ordered_count_values)
-
-
-update_worksheet(jb, tech)
