@@ -72,8 +72,8 @@ except TimeoutException:
 
 analyzed_job_titles = [
     '"machine learning"', '"data science"', '"data engineer"', '"data analyst"', 
-    '"software engineer"', '"web developer"', '"devops engineer"', 
-    '"mobile app developer"', '"automation engineer"'
+    '"software engineer"', '"web developer"', '"devops engineer"', '"mobile app developer"',
+    '"automation engineer"'
 ]
 
 for analyzed_job_title in analyzed_job_titles:
@@ -140,7 +140,6 @@ for analyzed_job_title in analyzed_job_titles:
 
 
 #TODO
-    # Quota exceeded for gspread write requests issue
     # figure a way to schedule this script once a day on AWS Lambda
 
 print("--- %s seconds ---" % (time.time() - start_time))
