@@ -50,7 +50,7 @@ def login_credentials(wait):
 def main_script(error_count):
     # Initialize driver
     options = Options()
-    # options.add_argument('-headless=new')
+    # options.add_argument('-headless=new')  # REMEMBER TO UNCOMMENT
     options.add_experimental_option("detach", True)
     driver = webdriver.Chrome(options=options, service=Service(executable_path=chrome_driver_path, log_path="NUL"))
 
@@ -70,15 +70,13 @@ def main_script(error_count):
     try:  # Rare login interface handling
         login_credentials(wait)
     except TimeoutException:
-        driver.save_screenshot(filename=r'Day 93 - Webscraping job requirements\.keys')
         error_count += 1
         driver.close()
         main_script(error_count)
-
+    except Exception as e:
+        print('Error appeared: ', e)
 
     for analyzed_job_title in analyzed_job_titles:
-        
-        print(analyzed_job_titles)
         # Searching for analyzed job title
         jobs = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')))
         jobs.click()
@@ -87,7 +85,8 @@ def main_script(error_count):
         search_bar = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="global-nav-search"]/div/div[2]')))
         try:  # Rare jobs interface handling
             search_bar.click()
-        except ElementNotInteractableException:
+        except Exception as e:
+            print('Error appeared: ', e)
             error_count += 1
             driver.close()
             main_script(error_count)
@@ -120,11 +119,7 @@ def main_script(error_count):
         # Scrape job requirements
         job_requirements = ''
         for job_title in job_titles:
-            try:
-                job_title.click()
-            except Exception as e:
-                print(e)
-                break
+            job_title.click()
             time.sleep(1)
 
             job_description = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div#job-details div.mt4')))
@@ -143,7 +138,6 @@ def main_script(error_count):
             
         # Filtering and counting technology keywords
         most_common_words = keyword_count(job_requirements)
-        print(analyzed_job_title, most_common_words, '\n')
 
         # Saving technology keywords in google sheets
         update_worksheet(analyzed_job_title, most_common_words)
@@ -153,3 +147,7 @@ def main_script(error_count):
 
 if __name__ == '__main__':
     main_script(error_count)
+
+#TODO - improvements ideas:
+# investigate errors
+# deploy on AWS Lambda
