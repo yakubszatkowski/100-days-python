@@ -19,10 +19,13 @@ tech = [
 ]
 
 def update_worksheet(job_title, technologies_count):
+
+    # 
     todays_date = datetime.date.today().strftime('%d-%m-%Y')
     no_quotation_job_title = job_title.strip('"').title()
     worksheet = sheet.worksheet(no_quotation_job_title)
 
+    # Formatting technologies list letter case
     first_row = worksheet.row_values(1)[1:]  # This doesn't include "Date" value in spreadsheet
     formatted_technologies_list = []
     for technology in technologies_count:
@@ -50,7 +53,7 @@ def update_worksheet(job_title, technologies_count):
         # Insert count values based on technologies in the first row
         worksheet_technologies = worksheet.row_values(1)[1:]
         technologies_count_dict = {k:v for k, v in technologies_count}
-        ordered_count_values = [[technologies_count_dict[technology.lower()] for technology in worksheet_technologies]]
+        ordered_count_values = [[technologies_count_dict.get(technology.lower(), 0) for technology in worksheet_technologies]]
         worksheet.update(range_name=f'B{first_empty_row_in_first_col}', values=ordered_count_values)
 
 
