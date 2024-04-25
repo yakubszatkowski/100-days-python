@@ -35,8 +35,8 @@ def main_script(error_count, analyzed_job_titles):
 
     # Initialize driver
     options = Options()
-    # options.add_argument('-headless=new')  # Uncomment in prod
-    # options.add_experimental_option("detach", True)
+    # options.add_argument('-headless=new')  # uncomment in dev
+    # options.add_experimental_option("detach", True) # uncomment in dev
     driver = webdriver.Chrome(options=options, service=Service(executable_path=chrome_driver_path, log_path="NUL"))
     exceptions_to_ignore = (NoSuchElementException, StaleElementReferenceException)
     wait = WebDriverWait(driver, 5, ignored_exceptions=exceptions_to_ignore)
@@ -117,6 +117,7 @@ def main_script(error_count, analyzed_job_titles):
 
 
 if __name__ == '__main__':
+
     # Variables
     email = 'rtyrtyqweqwe39@gmail.com'
     password = os.environ.get('D32_gmail_pass')
@@ -124,18 +125,19 @@ if __name__ == '__main__':
     error_count = 0
     analyzed_job_titles = [
         '"machine learning"', '"data science"', '"data engineer"', '"data analyst"',  '"software engineer"', 
-        '"web developer"', '"devops engineer"', '"mobile app"','"automation engineer"']
+        '"web developer"', '"devops engineer"', '"automation engineer"', '"mobile app"',
+        ]
     
     # Handling rare errors; running main script
-    try:
-        if error_count <= 5:
-            main_script(error_count, analyzed_job_titles)
+    while error_count <= 5:
+        if not analyzed_job_titles:
+            break
         else:
-            sys.exit()
-    except Exception as e:  
-        print('Error occured:', e)
-        error_count += 1
-        main_script(error_count, analyzed_job_titles)
+            try:
+                main_script(error_count, analyzed_job_titles)
+            except Exception as e:  
+                print('Error occured:', e)
+                error_count += 1
 
 # TODO
     # Try deploying to cloud service to run once a day - AWS Lambda
