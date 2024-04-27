@@ -11,14 +11,16 @@ from ctypes import windll
 from PIL import Image
 
 def jump():
-    win32api.PostMessage(hwnd, win32con.WM_KEYDOWN, win32con.VK_UP, 0)
-    win32api.PostMessage(hwnd, win32con.WM_KEYUP, win32con.VK_UP, 0)
+    if not win32api.GetAsyncKeyState(win32con.VK_UP):
+        win32api.PostMessage(hwnd, win32con.WM_KEYDOWN, win32con.VK_UP, 0)
+        win32api.PostMessage(hwnd, win32con.WM_KEYUP, win32con.VK_UP, 0)
 
 
 def squat():
-    win32api.PostMessage(hwnd, win32con.WM_KEYDOWN, win32con.VK_DOWN, 0)
-    time.sleep(0.333)
-    win32api.PostMessage(hwnd, win32con.WM_KEYUP, win32con.VK_DOWN, 0)
+    if not win32api.GetAsyncKeyState(win32con.VK_DOWN):
+        win32api.PostMessage(hwnd, win32con.WM_KEYDOWN, win32con.VK_DOWN, 0)
+        time.sleep(0.333)
+        win32api.PostMessage(hwnd, win32con.WM_KEYUP, win32con.VK_DOWN, 0)
 
 
 def get_game_screen():
@@ -32,8 +34,6 @@ def get_game_screen():
     result = windll.user32.PrintWindow(hwnd, saveDC.GetSafeHdc(), 2)
     bmpinfo = saveBitMap.GetInfo()
     bmpstr = saveBitMap.GetBitmapBits(True)
-    print(bmpstr)
-    print(len(bmpstr))
     im = Image.frombuffer('RGB', (bmpinfo['bmWidth'], bmpinfo['bmHeight']), bmpstr, 'raw', 'BGRX', 0, 1)
     
     win32gui.DeleteObject(saveBitMap.GetHandle())
@@ -45,22 +45,19 @@ def get_game_screen():
     
 
 def main_script():
-
     # Entering the game
-    time.sleep(1)
     privacy_popout_window_agree_button = wait.until(ec.presence_of_element_located((By.CSS_SELECTOR, 'button.css-47sehv')))
     privacy_popout_window_agree_button.click()
+    time.sleep(1)
     jump()
     game_on = True
-    time.sleep(3)
+    time.sleep(1)
+    while game_on:
+        jump()
+        time.sleep(0.05)
 
-    # Automation
-    game_screen = get_game_screen()
-    # game_screen.save('pic.png')
-    
 
 if __name__ == '__main__':
-
     # Initialize the driver
     WINDOW_NAME = 'Play Chrome Dinosaur Game Online - elgooG - Google Chrome'
     chrome_driver_path = os.environ.get('D48_chrome_driver_path')
@@ -69,11 +66,12 @@ if __name__ == '__main__':
     driver = webdriver.Chrome(options=options, service=Service(executable_path=chrome_driver_path, log_path="NUL"))
     driver.get('https://elgoog.im/dinosaur-game/')
     driver.maximize_window()
-    wait = WebDriverWait(driver, 5)
+    wait = WebDriverWait(driver, 10)
+    time.sleep(1)
     hwnd = win32gui.FindWindow(None, WINDOW_NAME)
-    win32gui.SetForegroundWindow(hwnd)
-
-    print(driver.get_window_size)
 
     # Initialize main script
     main_script()
+
+#TODO
+    # adress the issue when browser game freezes when unfocused - this may also fix the issue when initial keystroke freezes
