@@ -1,4 +1,4 @@
-import os, time, win32gui, win32con, win32api, win32ui
+import os, time, win32gui, win32ui
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -10,17 +10,15 @@ from selenium.webdriver.support import expected_conditions as ec
 from ctypes import windll
 from PIL import Image
 
+
 def jump():
-    if not win32api.GetAsyncKeyState(win32con.VK_UP):
-        win32api.PostMessage(hwnd, win32con.WM_KEYDOWN, win32con.VK_UP, 0)
-        win32api.PostMessage(hwnd, win32con.WM_KEYUP, win32con.VK_UP, 0)
+    actions.send_keys(Keys.UP).perform()
 
 
 def squat():
-    if not win32api.GetAsyncKeyState(win32con.VK_DOWN):
-        win32api.PostMessage(hwnd, win32con.WM_KEYDOWN, win32con.VK_DOWN, 0)
-        time.sleep(0.333)
-        win32api.PostMessage(hwnd, win32con.WM_KEYUP, win32con.VK_DOWN, 0)
+    actions.key_down(Keys.DOWN).perform()
+    time.sleep(0.333)
+    actions.key_up(Keys.DOWN).perform()
 
 
 def get_game_screen():
@@ -45,6 +43,7 @@ def get_game_screen():
     
 
 def main_script():
+
     # Entering the game
     privacy_popout_window_agree_button = wait.until(ec.presence_of_element_located((By.CSS_SELECTOR, 'button.css-47sehv')))
     privacy_popout_window_agree_button.click()
@@ -52,12 +51,11 @@ def main_script():
     jump()
     game_on = True
     time.sleep(1)
-    while game_on:
-        jump()
-        time.sleep(0.05)
+    squat()
 
 
 if __name__ == '__main__':
+
     # Initialize the driver
     WINDOW_NAME = 'Play Chrome Dinosaur Game Online - elgooG - Google Chrome'
     chrome_driver_path = os.environ.get('D48_chrome_driver_path')
@@ -69,9 +67,8 @@ if __name__ == '__main__':
     wait = WebDriverWait(driver, 10)
     time.sleep(1)
     hwnd = win32gui.FindWindow(None, WINDOW_NAME)
+    actions = ActionChains(driver)
 
     # Initialize main script
     main_script()
 
-#TODO
-    # adress the issue when browser game freezes when unfocused - this may also fix the issue when initial keystroke freezes
