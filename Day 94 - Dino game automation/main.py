@@ -8,7 +8,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
-
+from PIL import Image
 
 def jump():
     actions.send_keys(Keys.UP).perform()
@@ -50,12 +50,15 @@ def main_script():
     privacy_popout_window_agree_button.click()
     jump()
     game_on = True
-    while game_on:
-        game_screen = get_game_screen(370, 820 , 80, 1000)
-        cv2.imshow('screen', game_screen)
 
-        if cv2.waitKey(1) == ord('q'):
-            break
+    time.sleep(6)
+    pil_img = Image.fromarray(get_game_screen(370, 820 , 60, 1920))
+    pil_img.save('omg.png')
+    # while game_on:
+    #     game_screen = get_game_screen(370, 820 , 60, 1000)
+    #     cv2.imshow('screen', game_screen)
+    #     if cv2.waitKey(1) == ord('q'):
+    #         break
 
 
 
@@ -76,5 +79,4 @@ if __name__ == '__main__':
 
     # Initialize main script
     main_script()
-
 
