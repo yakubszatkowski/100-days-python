@@ -1,4 +1,5 @@
 import os, time, win32gui, win32ui
+import numpy as np
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -22,24 +23,28 @@ def squat():
 
 
 def get_game_screen():
+    w, h = win32gui.GetWindowRect(hwnd)[2:]
     hwndDC = win32gui.GetWindowDC(hwnd)
     mfcDC  = win32ui.CreateDCFromHandle(hwndDC)
     saveDC = mfcDC.CreateCompatibleDC()
-   
+
     saveBitMap = win32ui.CreateBitmap()
-    saveBitMap.CreateCompatibleBitmap(mfcDC, 1936, 1056)  # figure a way to capture only a part of the screen instead
+    saveBitMap.CreateCompatibleBitmap(mfcDC, w, h)
     saveDC.SelectObject(saveBitMap)    
     result = windll.user32.PrintWindow(hwnd, saveDC.GetSafeHdc(), 2)
-    bmpinfo = saveBitMap.GetInfo()
     bmpstr = saveBitMap.GetBitmapBits(True)
-    im = Image.frombuffer('RGB', (bmpinfo['bmWidth'], bmpinfo['bmHeight']), bmpstr, 'raw', 'BGRX', 0, 1)
-    
+      
     win32gui.DeleteObject(saveBitMap.GetHandle())
     saveDC.DeleteDC()
     mfcDC.DeleteDC()
     win32gui.ReleaseDC(hwnd, hwndDC)
 
-    return im
+    img = np.frombuffer(bmpstr, dtype='uint8')
+    img.shape = (h, w, 4)
+    capture_game_screen = img[370:800]
+    pil_img = Image.fromarray(capture_game_screen)
+
+    return pil_img
     
 
 def main_script():
@@ -50,8 +55,10 @@ def main_script():
     time.sleep(1)
     jump()
     game_on = True
-    time.sleep(1)
+    time.sleep(3)
     squat()
+
+    get_game_screen().show()
 
 
 if __name__ == '__main__':
@@ -72,3 +79,5 @@ if __name__ == '__main__':
     # Initialize main script
     main_script()
 
+#TODO
+    # dynamic screen capture allowing to capture specific area 
