@@ -1,5 +1,5 @@
-import os, time, win32gui, win32ui
-import numpy as np
+import os, time, win32gui, win32ui, numpy as np, cv2
+from ctypes import windll
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -8,8 +8,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
-from ctypes import windll
-from PIL import Image
 
 
 def jump():
@@ -22,7 +20,7 @@ def squat():
     actions.key_up(Keys.DOWN).perform()
 
 
-def get_game_screen():
+def get_game_screen(top, bottom, left, right):
     w, h = win32gui.GetWindowRect(hwnd)[2:]
     hwndDC = win32gui.GetWindowDC(hwnd)
     mfcDC  = win32ui.CreateDCFromHandle(hwndDC)
@@ -31,7 +29,7 @@ def get_game_screen():
     saveBitMap = win32ui.CreateBitmap()
     saveBitMap.CreateCompatibleBitmap(mfcDC, w, h)
     saveDC.SelectObject(saveBitMap)    
-    result = windll.user32.PrintWindow(hwnd, saveDC.GetSafeHdc(), 2)
+    windll.user32.PrintWindow(hwnd, saveDC.GetSafeHdc(), 2)
     bmpstr = saveBitMap.GetBitmapBits(True)
       
     win32gui.DeleteObject(saveBitMap.GetHandle())
@@ -41,24 +39,24 @@ def get_game_screen():
 
     img = np.frombuffer(bmpstr, dtype='uint8')
     img.shape = (h, w, 4)
-    capture_game_screen = img[370:800]
-    pil_img = Image.fromarray(capture_game_screen)
+    game_screen_array = img[top:bottom, left:right]
 
-    return pil_img
+    return game_screen_array
     
 
 def main_script():
-
     # Entering the game
     privacy_popout_window_agree_button = wait.until(ec.presence_of_element_located((By.CSS_SELECTOR, 'button.css-47sehv')))
     privacy_popout_window_agree_button.click()
-    time.sleep(1)
     jump()
     game_on = True
-    time.sleep(3)
-    squat()
+    while game_on:
+        game_screen = get_game_screen(370, 820 , 80, 1000)
+        cv2.imshow('screen', game_screen)
 
-    get_game_screen().show()
+        if cv2.waitKey(1) == ord('q'):
+            break
+
 
 
 if __name__ == '__main__':
@@ -79,5 +77,4 @@ if __name__ == '__main__':
     # Initialize main script
     main_script()
 
-#TODO
-    # dynamic screen capture allowing to capture specific area 
+
