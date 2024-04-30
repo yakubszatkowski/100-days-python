@@ -11,6 +11,8 @@ from selenium.webdriver.support import expected_conditions as ec
 from screen_capture import get_game_screen
 from game_object import GameObject
 from utils import find_img
+import numpy as np
+from PIL import Image
 
 def jump():
     actions.send_keys(Keys.UP).perform()
@@ -25,15 +27,22 @@ def squat():
 def main_script():
 
     # Entering the game
+    time.sleep(1)
     privacy_popout_window_agree_button = wait.until(ec.presence_of_element_located((By.CSS_SELECTOR, 'button.css-47sehv')))
     privacy_popout_window_agree_button.click()
+    
     jump()
     game_on = True
-    region = (370, 820 , 60, 1000)
     
     # Game loop
     while game_on:
+        # Update game screen
         game_screen = get_game_screen(hwnd, region)
+
+        if player.match(game_screen):
+            cv2.rectangle(game_screen, player.location[0], player.location[1], (0,0,255), 2)
+
+
         cv2.imshow('screen', game_screen)
         if cv2.waitKey(1) == ord('q'):
             break
@@ -52,16 +61,19 @@ if __name__ == '__main__':
     wait = WebDriverWait(driver, 10)
     hwnd = win32gui.FindWindow(None, WINDOW_NAME)
     actions = ActionChains(driver)
+    region = (370, 820 , 60, 1000)
 
-    player = [
-        GameObject(find_img('dino_day.png')), GameObject(find_img('dino_night.png'))
-        ]
-    enemies = [
-        GameObject(find_img('big_cacti_day.png')), GameObject(find_img('big_cacti_night.png')), 
-        GameObject(find_img('small_cacti_day.png')), GameObject(find_img('small_cacti_night.png')), 
-        GameObject(find_img('bird_day.png')), GameObject(find_img('bird_night.png'))
-        ]
+    player = GameObject(find_img('dino_day.png'))
+
+    # player = [GameObject(find_img('dino_day.png')), GameObject(find_img('dino_night.png'))]
+    # dodge_objects = [
+    #     [GameObject(find_img('big_cacti_night.png')), GameObject(find_img('small_cacti_night.png')), GameObject(find_img('bird_night.png'))],
+    #     [GameObject(find_img('big_cacti_day.png')), GameObject(find_img('small_cacti_day.png')), GameObject(find_img('bird_day.png'))]
+    # ]
+    
 
     # Initialize main script
     main_script()
 
+#TODO
+    # detect object within picture frame - https://www.youtube.com/watch?v=mIojvoMRerU

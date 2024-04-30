@@ -1,5 +1,6 @@
-import win32gui, win32ui, numpy as np
+import win32gui, win32ui, numpy as np, cv2
 from ctypes import windll
+
 
 def get_game_screen(hwnd, region):
     top, bottom, left, right = region
@@ -23,4 +24,6 @@ def get_game_screen(hwnd, region):
     img.shape = (h, w, 4)
     game_screen_array = img[top:bottom, left:right]
 
-    return game_screen_array
+    gray_game_screen_array = cv2.cvtColor(game_screen_array, cv2.COLOR_BGR2GRAY)
+    
+    return gray_game_screen_array
