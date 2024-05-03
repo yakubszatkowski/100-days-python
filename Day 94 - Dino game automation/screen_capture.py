@@ -24,5 +24,4 @@ def get_game_screen(hwnd, region):
     img.shape = (h, w, 4)
     game_screen_array = img[top:bottom, left:right]
 
-    
     return cv2.cvtColor(game_screen_array, cv2.COLOR_BGR2GRAY)
