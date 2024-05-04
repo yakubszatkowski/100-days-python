@@ -14,8 +14,7 @@ def main_script():
 
     # Start the game    
     jump(actions)
-    region = (625, 750, 250, 700)
-    action_threshold = 300
+    region = (625, 750, 250, 800)
 
     # Game loop
     while 1:
@@ -23,16 +22,19 @@ def main_script():
         # Update game screen
         game_screen = get_game_screen(hwnd, region)
 
-        # Detection of cacti and birds
-        for dodge_object in dodge_objects:
+        # Detection of objects to dodge
+        for key in dodge_objects:
+            dodge_object = dodge_objects[key][0]
+            action_threshold = dodge_objects[key][1]
             if dodge_object.match(game_screen):
                 dodge_object_left_x = dodge_object.location[0][0]
                 cv2.rectangle(game_screen, dodge_object.location[0], dodge_object.location[1], (0,0,255), 2)
 
                 # Action
                 if dodge_object_left_x < action_threshold:
-                    print('jump', dodge_object_left_x)
+                    print('jump over', key, dodge_object_left_x)
                     jump(actions)
+
 
         # Show recorded region
         cv2.imshow('screen', game_screen)
@@ -63,11 +65,22 @@ if __name__ == '__main__':
     hwnd = win32gui.FindWindow(None, WINDOW_NAME)
     actions = ActionChains(driver)
     rect = win32gui.GetWindowRect(hwnd)
-    dodge_objects = [
-        GameObject(find_img('big_cacti_day.png')), GameObject(find_img('small_cacti_day.png')), 
-        GameObject(find_img('bird_day.png')), GameObject(find_img('big_cacti_night.png')), 
-        GameObject(find_img('small_cacti_night.png')), GameObject(find_img('bird_night.png'))
-    ]
+    dodge_objects = {
+        'big_cacti_day': [GameObject(find_img('big_cacti_day.png')), 360],
+        'big_cacti_night': [GameObject(find_img('big_cacti_night.png')), 300],
+        'big_double_cacti_day': [GameObject(find_img('big_double_cacti_day.png')), 350],
+        'big_quadruple_cacti_day': [GameObject(find_img('big_quadruple_cacti_day.png')), 300],
+        'bird_day': [GameObject(find_img('bird_day.png')), 400],
+        'bird_night': [GameObject(find_img('bird_night.png')), 400],
+        'small_cacti_day': [GameObject(find_img('small_cacti_day.png')), 520],
+        'small_cacti_night': [GameObject(find_img('small_cacti_night.png')), 300],
+        'small_double_cacti_day': [GameObject(find_img('small_double_cacti_day.png')), 350],
+        'small_triple_cacti': [GameObject(find_img('small_triple_cacti.png')), 350]
+    }
+    
 
     # Initialize main script
     main_script()
+
+#TODO
+    # Get back to old pictures and trim the dodge_objects dict to the revelant picture
