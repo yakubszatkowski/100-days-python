@@ -1,4 +1,4 @@
-import os, time, re, sys
+import os, time, re
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -31,12 +31,12 @@ def load_job_listing(driver, job_list):
 
 def main_script(error_count, analyzed_job_titles):
     # Check error count
-    print('Current error count: ', error_count)
+    print('Current error count: ', error_count)  # for dev
 
     # Initialize driver
     options = Options()
-    # options.add_argument('-headless=new')  # uncomment in dev
-    # options.add_experimental_option("detach", True) # uncomment in dev
+    options.add_argument('-headless=new')  # for prod
+    # options.add_experimental_option("detach", True) # for dev
     driver = webdriver.Chrome(options=options, service=Service(executable_path=chrome_driver_path, log_path="NUL"))
     exceptions_to_ignore = (NoSuchElementException, StaleElementReferenceException)
     wait = WebDriverWait(driver, 5, ignored_exceptions=exceptions_to_ignore)
@@ -55,8 +55,8 @@ def main_script(error_count, analyzed_job_titles):
     # Start scraping listed job titles
     while analyzed_job_titles:
         analyzed_job_title = analyzed_job_titles[0]
-        print('Job titles to analyze left:', analyzed_job_titles)
-        print('Started scraping:', analyzed_job_title)
+        print('Job titles to analyze left:', analyzed_job_titles)  # for dev
+        print('Started scraping:', analyzed_job_title)  # for dev
 
         # Getting to job listing
         jobs = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')))
@@ -106,14 +106,14 @@ def main_script(error_count, analyzed_job_titles):
             
         # Filtering and counting technology keywords
         most_common_words = keyword_count(job_requirements)
-        print('Technologies scraped:', most_common_words)
+        print('Technologies scraped:', most_common_words)  # for dev
 
         # Saving technology keywords in google sheets
         update_worksheet(analyzed_job_title, most_common_words)
 
         # Removing job title from the list after finishing scraping it
         analyzed_job_titles.pop(0)
-        print(analyzed_job_title, 'finished.\n\n')
+        print(analyzed_job_title, 'finished.\n\n')  # for dev
 
 
 if __name__ == '__main__':
@@ -125,8 +125,8 @@ if __name__ == '__main__':
     error_count = 0
     analyzed_job_titles = [
         '"machine learning"', '"data science"', '"data engineer"', '"data analyst"',  '"software engineer"', 
-        '"web developer"', '"devops engineer"', '"automation engineer"', '"mobile app"',
-        ]
+        '"web developer"', '"devops engineer"', '"automation engineer"', '"mobile developer"',
+    ]
     
     # Handling rare errors; running main script
     while error_count <= 5:
@@ -136,7 +136,7 @@ if __name__ == '__main__':
             try:
                 main_script(error_count, analyzed_job_titles)
             except Exception as e:  
-                print('Error occured:', e)
+                print('Error occured:', e)  # for dev
                 error_count += 1
 
 # TODO
