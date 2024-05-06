@@ -1,4 +1,4 @@
-import os, time, win32gui, cv2
+import os, win32gui, cv2
 from ctypes import windll
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -15,6 +15,7 @@ def main_script():
     # Start the game    
     jump(actions)
     region = (625, 750, 250, 800)
+    action_threshold = 300
 
     # Game loop
     while 1:
@@ -24,8 +25,7 @@ def main_script():
 
         # Detection of objects to dodge
         for key in dodge_objects:
-            dodge_object = dodge_objects[key][0]
-            action_threshold = dodge_objects[key][1]
+            dodge_object = dodge_objects[key]
             if dodge_object.match(game_screen):
                 dodge_object_left_x = dodge_object.location[0][0]
                 cv2.rectangle(game_screen, dodge_object.location[0], dodge_object.location[1], (0,0,255), 2)
@@ -33,13 +33,14 @@ def main_script():
                 # Action
                 if dodge_object_left_x < action_threshold:
                     print('jump over', key, dodge_object_left_x)
+                    action_threshold += 2
                     jump(actions)
-
+                    
 
         # Show recorded region
         cv2.imshow('screen', game_screen)
         if cv2.waitKey(1) == ord('q'):
-            break
+            break    
 
 
 if __name__ == '__main__':
@@ -66,18 +67,13 @@ if __name__ == '__main__':
     actions = ActionChains(driver)
     rect = win32gui.GetWindowRect(hwnd)
     dodge_objects = {
-        'big_cacti_day': [GameObject(find_img('big_cacti_day.png')), 360],
-        'big_cacti_night': [GameObject(find_img('big_cacti_night.png')), 300],
-        'big_double_cacti_day': [GameObject(find_img('big_double_cacti_day.png')), 350],
-        'big_quadruple_cacti_day': [GameObject(find_img('big_quadruple_cacti_day.png')), 300],
-        'bird_day': [GameObject(find_img('bird_day.png')), 400],
-        'bird_night': [GameObject(find_img('bird_night.png')), 400],
-        'small_cacti_day': [GameObject(find_img('small_cacti_day.png')), 520],
-        'small_cacti_night': [GameObject(find_img('small_cacti_night.png')), 300],
-        'small_double_cacti_day': [GameObject(find_img('small_double_cacti_day.png')), 350],
-        'small_triple_cacti': [GameObject(find_img('small_triple_cacti.png')), 350]
+        'big_cacti_day': GameObject(find_img('big_cacti_day.png')),
+        'big_cacti_night': GameObject(find_img('big_cacti_night.png')),
+        'bird_day': GameObject(find_img('bird_day.png')),
+        'bird_night': GameObject(find_img('bird_night.png')),
+        'small_cacti_day': GameObject(find_img('small_cacti_day.png')),
+        'small_cacti_night': GameObject(find_img('small_cacti_night.png')),
     }
-    
 
     # Initialize main script
     main_script()
