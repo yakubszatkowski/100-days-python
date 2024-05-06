@@ -19,7 +19,7 @@ positive_keywords = [
     'python', 'sql', 'azure', 'aws', 'tensorflow', 'pytorch', 'pandas', 'numpy', 'etl', 'matplotlib', 'excel',
     'gcp', 'power bi', 'snowflake', 'keras', 'bigquery', 'apache', 'scala', 'spark', 'kafka', 'hadoop',
     'tableau', 'docker', 'kubernetes', 'sap', 'api', 'oracle', 'postgres', 'mysql', 'mongodb', 'looker', 'dwh',
-    'llm', 'bert', 'mlflow', 'seaborn', 'plotly'
+    'llm', 'bert', 'mlflow', 'seaborn', 'plotly', 'opencv'
     # web development related
     'css', 'javascript', 'typescript', 'html', 'react', 'java', 'php', 'frontend', '.net', 'angular', 'node.js', 
     'restful', 'scss', 'flask', 'spring', 'netlify', 'vue', 'elasticsearch', 'redis', 'rabbitmq', 'dockerization', 
