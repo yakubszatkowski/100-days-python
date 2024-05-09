@@ -22,8 +22,8 @@ positive_keywords = [
     'llm', 'bert', 'mlflow', 'seaborn', 'plotly', 'opencv'
     # web development related
     'css', 'javascript', 'typescript', 'html', 'react', 'java', 'php', 'frontend', '.net', 'angular', 'node.js', 
-    'restful', 'scss', 'flask', 'spring', 'netlify', 'vue', 'elasticsearch', 'redis', 'rabbitmq', 'dockerization', 
-    'reactjs', 'cms', 'next.js', 'symfony', 'laravel', 'graphql',
+    'restful', 'scss', 'flask', 'spring', 'netlify', 'vue', 'elasticsearch', 'redis', 'rabbitmq', 'reactjs',
+    'cms', 'next.js', 'symfony', 'laravel', 'graphql',
     # software related
     'c#', 'c++', 'ruby', 'swift', 'go', 'R', 'C', 'rust', 'perl', 'bash', 'lua', 'matlab', 'groovy', 
     'powershell', 'kotlin',
