@@ -1,4 +1,4 @@
-import os, win32gui, cv2
+import os, win32gui, cv2, time, numpy as np
 from ctypes import windll
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -15,10 +15,21 @@ def main_script():
     # Start the game    
     jump(actions)
     region = (625, 750, 250, 800)
-    action_threshold = 300
+    action_threshold = 350
 
+    loop_time = 0.00001
+    fps_list =[]
     # Game loop
     while 1:
+        
+        # Testing FPS
+        try:
+            fps = round(1/(time.time() - loop_time), 2)
+            fps_list.append(fps)
+            print(f'Average FPS: {round(np.mean(fps_list), 2)}')
+            loop_time = time.time()
+        except ZeroDivisionError:
+            pass
 
         # Update game screen
         game_screen = get_game_screen(hwnd, region)
@@ -32,10 +43,9 @@ def main_script():
 
                 # Action
                 if dodge_object_left_x < action_threshold:
-                    print('jump over', key, dodge_object_left_x)
-                    action_threshold += 2
+                    print('jump over', key, action_threshold)
+                    action_threshold += 1
                     jump(actions)
-                    
 
         # Show recorded region
         cv2.imshow('screen', game_screen)
