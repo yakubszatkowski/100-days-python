@@ -36,7 +36,7 @@ def main_script(error_count, analyzed_job_titles):
     # Initialize driver
     options = Options()
     options.add_argument('-headless=new')  # for prod
-    options.add_experimental_option("detach", True) # for dev
+    # options.add_experimental_option("detach", True) # for dev
     driver = webdriver.Chrome(options=options, service=Service(executable_path=chrome_driver_path, log_path="NUL"))
     exceptions_to_ignore = (NoSuchElementException, StaleElementReferenceException)
     wait = WebDriverWait(driver, 5, ignored_exceptions=exceptions_to_ignore)
