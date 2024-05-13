@@ -36,7 +36,7 @@ def main_script(error_count, analyzed_job_titles):
     # Initialize driver
     options = Options()
     options.add_argument('-headless=new')  # for prod
-    # options.add_experimental_option("detach", True) # for dev
+    options.add_experimental_option("detach", True) # for dev
     driver = webdriver.Chrome(options=options, service=Service(executable_path=chrome_driver_path, log_path="NUL"))
     exceptions_to_ignore = (NoSuchElementException, StaleElementReferenceException)
     wait = WebDriverWait(driver, 5, ignored_exceptions=exceptions_to_ignore)
@@ -76,7 +76,7 @@ def main_script(error_count, analyzed_job_titles):
         internship_checkbox.click()
         entry_checkbox.click()
         time.sleep(1)
-        show_results_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[id="hoverable-outlet-experience-level-filter-value"] button[data-control-name="filter_show_results"]')))
+        show_results_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[id="hoverable-outlet-experience-level-filter-value"] div.reusable-search-filters-buttons button[aria-label*="Apply current filter to show"]')))
         show_results_button.click()
         time.sleep(1)
 
