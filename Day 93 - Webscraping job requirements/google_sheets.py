@@ -3,7 +3,8 @@ from google.oauth2.service_account import Credentials
 import xlsxwriter 
 
 scopes = ["https://www.googleapis.com/auth/spreadsheets"]
-creds = Credentials.from_service_account_file(r'Day 93 - Webscraping job requirements\.keys\credentials.json', scopes=scopes)
+main_directory = os.path.dirname(os.path.realpath(__file__))
+creds = Credentials.from_service_account_file(f'{main_directory}/.keys/credentials.json', scopes=scopes)
 client = gspread.authorize(creds)
 sheet_id = os.environ.get('google_sheets_id')
 sheet = client.open_by_key(sheet_id)
