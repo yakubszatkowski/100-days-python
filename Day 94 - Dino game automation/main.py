@@ -7,7 +7,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from game_object import GameObject
 from screen_capture import get_game_screen
-from utils import find_img, privacy_button_press, jump, squat
+from utils import find_img, privacy_button_press, jump, squat, print_fps
 
 
 def main_script():
@@ -21,15 +21,9 @@ def main_script():
     fps_list =[]
     # Game loop
     while 1:
-        
-        # Testing FPS
-        try:
-            fps = round(1/(time.time() - loop_time), 2)
-            fps_list.append(fps)
-            print(f'Average FPS: {round(np.mean(fps_list), 2)}')
-            loop_time = time.time()
-        except ZeroDivisionError:
-            pass
+
+        print_fps(fps_list, loop_time)
+        loop_time = time.time()
 
         # Update game screen
         game_screen = get_game_screen(hwnd, region)
