@@ -16,12 +16,13 @@ def privacy_button_press(wait):
     privacy_popout_window_agree_button.click()
 
 def jump(actions):
-    actions.send_keys(Keys.UP).perform()
-
+    actions.key_down(Keys.UP).perform()
+    time.sleep(0.1)
+    actions.key_up(Keys.UP).perform()
 
 def squat(actions):
     actions.key_down(Keys.DOWN).perform()
-    time.sleep(0.333)
+    time.sleep(0.5)
     actions.key_up(Keys.DOWN).perform()
 
 def print_fps(fps_list, loop_time):

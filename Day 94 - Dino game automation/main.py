@@ -1,52 +1,53 @@
-import os, win32gui, cv2, time, dxcam
-from ctypes import windll
+import os, win32gui, cv2, time, mss, numpy
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from game_object import GameObject
-from screen_capture import get_game_screen
-from utils import find_img, privacy_button_press, jump, print_fps
+from utils import find_img, privacy_button_press, jump, squat, print_fps
 
 
 def main_script():
 
     # Local variables
     loop_time = 0.00001
-    region = (250, 625, 800, 750)  # for [top:bottom, left:right] -> (625, 750, 250, 800)
     fps_list = []
-    action_threshold = 300
-
+    action_threshold = 280
     # Start the game
     jump(actions)
     
     # Game loop
-    while 1:
-        # FPS print for testing
-        print_fps(fps_list, loop_time)
-        loop_time = time.time()
+    with mss.mss() as sct:
+        monitor = {"top": 600, "left": 250, "width": 550, "height": 150}
+        while 1:
+            # FPS print for testing
+            print_fps(fps_list, loop_time)
+            loop_time = time.time()
 
-        # Update game screen
-        game_screen = get_game_screen(hwnd, region)
+            # Update game screen
+            img = numpy.array(sct.grab(monitor))
+            game_screen = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-        # Detection of objects to dodge
-        for key in dodge_objects:
-            dodge_object = dodge_objects[key]
-            if dodge_object.match(game_screen):
-                dodge_object_left_x = dodge_object.location[0][0]
-                cv2.rectangle(game_screen, dodge_object.location[0], dodge_object.location[1], (0,0,255), 2)
+            for key in dodge_objects:
+                dodge_object = dodge_objects[key]
+                if dodge_object.match(game_screen):
+                    dodge_object_left_x = dodge_object.location[0][0]
+                    dodge_object_left_y = dodge_object.location[0][1]
+                    cv2.rectangle(game_screen, dodge_object.location[0], dodge_object.location[1], (0,0,255), 2)
 
-                # Action
-                if dodge_object_left_x < action_threshold:
-                    print('jump over', key, action_threshold)
-                    action_threshold += 1
-                    jump(actions)
+                    # Action
+                    if dodge_object_left_y == 20:
+                        print(key, 'x:', dodge_object_left_x, 'y:', dodge_object_left_y)
+                        squat(actions)
+                    elif dodge_object_left_x < action_threshold:
+                        print(key, 'x:', dodge_object_left_x, 'y:', dodge_object_left_y)
+                        jump(actions)
 
-        # Show recorded region
-        cv2.imshow('screen', game_screen)
-        if cv2.waitKey(1) == ord('q'):
-            break    
+            # Show recorded region
+            cv2.imshow('screen', game_screen)
+            if cv2.waitKey(1) == ord('q'):
+                break
 
 
 if __name__ == '__main__':
@@ -83,3 +84,9 @@ if __name__ == '__main__':
 
     # Initialize main script
     main_script()
+
+
+
+# from screen_capture import get_game_screen
+# region = (250, 625, 800, 750)
+# game_screen = get_game_screen(hwnd, region)
