@@ -1,4 +1,4 @@
-import os, win32gui, cv2, time, numpy as np
+import os, win32gui, cv2, time, dxcam
 from ctypes import windll
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -7,21 +7,23 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from game_object import GameObject
 from screen_capture import get_game_screen
-from utils import find_img, privacy_button_press, jump, squat, print_fps
+from utils import find_img, privacy_button_press, jump, print_fps
 
 
 def main_script():
 
-    # Start the game    
-    jump(actions)
-    region = (625, 750, 250, 800)
-    action_threshold = 350
-
+    # Local variables
     loop_time = 0.00001
-    fps_list =[]
+    region = (250, 625, 800, 750)  # for [top:bottom, left:right] -> (625, 750, 250, 800)
+    fps_list = []
+    action_threshold = 300
+
+    # Start the game
+    jump(actions)
+    
     # Game loop
     while 1:
-
+        # FPS print for testing
         print_fps(fps_list, loop_time)
         loop_time = time.time()
 
@@ -54,7 +56,7 @@ if __name__ == '__main__':
     chrome_driver_path = os.environ.get('D48_chrome_driver_path')
     options = Options()
     driver = webdriver.Chrome(options=options, service=Service(executable_path=chrome_driver_path, log_path="NUL"))
-    
+
     # Open browser
     while 1:
         try:
@@ -81,6 +83,3 @@ if __name__ == '__main__':
 
     # Initialize main script
     main_script()
-
-#TODO
-    # Get back to old pictures and trim the dodge_objects dict to the revelant picture

@@ -1,14 +1,19 @@
 import cv2
+from threading import Thread, Lock
 
 class GameObject:
 
+    location = None
+    screenshot = None
+    action_threshold = 350
+
     def __init__(self, path):
         img = cv2.imread(path, 0)
-        # img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+        self.lock = Lock()
         self.img = img
         self.width = img.shape[1]
         self.height = img.shape[0]
-        self.location = None
+
 
     def match(self, screen):
         res = cv2.matchTemplate(screen, self.img, cv2.TM_CCOEFF_NORMED)
@@ -22,3 +27,4 @@ class GameObject:
         else:
             self.location = None
             return False
+

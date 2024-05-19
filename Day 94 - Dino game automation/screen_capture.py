@@ -3,8 +3,8 @@ from ctypes import windll
 
 
 def get_game_screen(hwnd, region):
-    top, bottom, left, right = region
-    w, h = 1928, 1048  # win32gui.GetWindowRect(hwnd)[2:]
+    left, top, right, bottom = region
+    w, h = win32gui.GetWindowRect(hwnd)[2:]
     hwndDC = win32gui.GetWindowDC(hwnd)
     mfcDC  = win32ui.CreateDCFromHandle(hwndDC)
     saveDC = mfcDC.CreateCompatibleDC()
