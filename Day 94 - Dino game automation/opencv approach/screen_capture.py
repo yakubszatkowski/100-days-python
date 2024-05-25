@@ -1,4 +1,3 @@
-# not used in the main code due to bad performance - good for capturing covered window capture
 import win32gui, win32ui, numpy as np, cv2
 from ctypes import windll
 
