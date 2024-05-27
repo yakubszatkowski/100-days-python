@@ -1,13 +1,15 @@
-import os, cv2, time, numpy as np
+import os, cv2, time, numpy as np, pyautogui
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from utils import privacy_button_press, jump, print_fps
-from screen_capture import WindowCaputre
+from screen_capture import WindowCapture
 
-def main_script(actions, wincap):
+
+def main_script():
+    
     # Local variables
     loop_time = 0.00001
     fps_list = []
@@ -38,12 +40,11 @@ def main_script(actions, wincap):
 
         # Actions
         if night_bg in most_common_vector:
-            if night_object in wincap.screenshot:
+            if night_object in wincap.screenshot[:action_threshold]:
                 jump(actions)
         elif day_bg in most_common_vector:
-            if day_object in wincap.screenshot:
+            if day_object in wincap.screenshot[:action_threshold]:
                 jump(actions)
-
 
         cv2.imshow('screen', wincap.screenshot)
         if cv2.waitKey(1) == ord('q'):
@@ -67,22 +68,12 @@ if __name__ == '__main__':
             privacy_button_press(wait)
             break
         except:
-            driver.quit()
+            driver.quit() 
 
     # Core variables
+    region = (250, 710, 950, 711)
     actions = ActionChains(driver)
-    wincap = WindowCaputre('Play Chrome Dinosaur Game Online - elgooG - Google Chrome')
+    wincap = WindowCapture('Play Chrome Dinosaur Game Online - elgooG - Google Chrome', region)
     
     # Initialize main script
-    main_script(actions, wincap)
-
-
-# # FPS print for testing
-#         print_fps(fps_list, loop_time)
-#         loop_time = time.time()
-
-#         cv2.imshow('screen', wincap.screenshot)
-#         if cv2.waitKey(1) == ord('q'):
-#             wincap.stop()
-#             cv2.destroyAllWindows()
-#             break
+    main_script()

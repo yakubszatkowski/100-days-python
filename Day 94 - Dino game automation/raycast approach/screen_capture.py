@@ -1,14 +1,15 @@
-import numpy as np, win32gui, win32ui, win32con
+import numpy as np, win32gui, win32ui, dxcam
 from ctypes import windll
 from threading import Thread, Lock
 
-class WindowCaputre():
+class WindowCapture():
 
     screenshot = None
 
-    def __init__(self, window_name):
+    def __init__(self, window_name, region):
         self.lock = Lock()
         self.hwnd = win32gui.FindWindow(None, window_name)
+        self.leftc, self.topc, self.rightc, self.bottomc = region
         self.left, self.top, self.right, self.bottom = win32gui.GetWindowRect(self.hwnd)
         self.w = self.right
         self.h = self.bottom
@@ -32,10 +33,10 @@ class WindowCaputre():
 
         img = np.frombuffer(bmpstr, dtype='uint8')
         img.shape = (self.h, self.w, 4)
-        img = img[...,:3]
-        img = img[710:711, 250:550]
+        img = img[..., :3]
+        img = img[self.topc:self.bottomc, self.leftc:self.rightc]
 
-        return img  # [0]
+        return img[0]
     
 
     def start(self):
