@@ -1,32 +1,47 @@
-import pygame
-from menu import *
+import pygame, os
+from interface import *
 
 class Core:
 
-    WIDTH = 1000
-    HEIGHT = 800
+    WIDTH = 800
+    HEIGHT = 1000
     FPS = 60
-    BLACK = (40, 40, 43)
+
 
     def __init__(self):
-        pygame.init()
-        pygame.display.set_caption('Space Invaders by yakubszatkowski')
 
+        pygame.init()
+        pygame.display.set_caption('Cosmic Assault by yakubszatkowski')
         self.core_run = True
         
-        self.clock = pygame.time.Clock()
-        self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-        self.main_menu = MainMenu(self)
         
+        self.clock = pygame.time.Clock()
+        self.main_menu = MainMenu(self)
+        self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+
         self.current_display = self.main_menu
 
 
-    def game_loop(self):
+    def core_game_loop(self):
+
         while self.core_run:
-            self.check_events()
+            self.clock.tick(self.FPS)
+            self.check_core_events()
 
+            self.current_display.display()
 
-    def check_events(self):
+            pygame.display.update()
+            
+
+    def check_core_events(self):
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.core_run = False
+
+
+    def find_img(self, path):
+        main_directory = os.path.dirname(os.path.realpath(__file__))
+        img_path = os.path.join(main_directory, path)
+        loaded_img = pygame.image.load(os.path.join(img_path))
+        return loaded_img
