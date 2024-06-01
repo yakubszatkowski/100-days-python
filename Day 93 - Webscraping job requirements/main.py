@@ -29,53 +29,28 @@ def load_job_listing(driver, job_list):
     return job_titles
 
 
-def login_option_1(wait):
-    mail_input = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#session_key')))
-    password_input = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#session_password')))
-    submit_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, r'div[data-test-id="hero__content"] form[data-id="sign-in-form"] button[data-id="sign-in-form__submit-btn"]')))
-    mail_input.send_keys(email)
-    password_input.send_keys(password)
-    submit_button.click()
-
-
-def login_option_2(wait):
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="main-content"]/section[1]/div/div/a')))
-    button.click()
-
-    mail_input = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#username')))
-    password_input = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#password')))
-    submit_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, r'button[aria-label="Sign in"]')))
-
-    mail_input.send_keys(email)
-    password_input.send_keys(password)
-    submit_button.click()
-
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="main-content"]/section[1]/div/div/a')))
-    print(button.text)
-
-
-
-
 def main_script(error_count, analyzed_job_titles):
     # Check error count
     print('Current error count: ', error_count)
 
     # Initialize driver
     options = Options()
-    options.add_argument('-headless=new')  # for prod
+    # options.add_argument('-headless=new')  # for prod
     # options.add_experimental_option("detach", True) # for dev
     driver = webdriver.Chrome(options=options, service=Service(executable_path=chrome_driver_path, log_path="NUL"))
     exceptions_to_ignore = (NoSuchElementException, StaleElementReferenceException)
     wait = WebDriverWait(driver, 5, ignored_exceptions=exceptions_to_ignore)
-    driver.get('https://linkedin.com')
+    driver.get('https://www.linkedin.com/login')
     driver.maximize_window()
     time.sleep(2)
 
     # Login
-    try:
-        login_option_1(wait)
-    except TimeoutException:
-        login_option_2(wait)
+    mail_input = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#username')))
+    password_input = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#password')))
+    submit_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, r'button[aria-label="Sign in"]')))
+    mail_input.send_keys(email)
+    password_input.send_keys(password)
+    submit_button.click()
 
     # Getting to job listing
     jobs = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')))
