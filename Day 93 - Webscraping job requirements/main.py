@@ -29,9 +29,36 @@ def load_job_listing(driver, job_list):
     return job_titles
 
 
+def login_option_1(wait):
+    mail_input = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#session_key')))
+    password_input = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#session_password')))
+    submit_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, r'div[data-test-id="hero__content"] form[data-id="sign-in-form"] button[data-id="sign-in-form__submit-btn"]')))
+    mail_input.send_keys(email)
+    password_input.send_keys(password)
+    submit_button.click()
+
+
+def login_option_2(wait):
+    button = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="main-content"]/section[1]/div/div/a')))
+    button.click()
+
+    mail_input = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#username')))
+    password_input = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#password')))
+    submit_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, r'button[aria-label="Sign in"]')))
+
+    mail_input.send_keys(email)
+    password_input.send_keys(password)
+    submit_button.click()
+
+    button = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="main-content"]/section[1]/div/div/a')))
+    print(button.text)
+
+
+
+
 def main_script(error_count, analyzed_job_titles):
     # Check error count
-    print('Current error count: ', error_count)  # for dev
+    print('Current error count: ', error_count)
 
     # Initialize driver
     options = Options()
@@ -45,18 +72,23 @@ def main_script(error_count, analyzed_job_titles):
     time.sleep(2)
 
     # Login
-    mail_input = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#session_key')))
-    password_input = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#session_password')))
-    submit_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, r'div[data-test-id="hero__content"] form[data-id="sign-in-form"] button[data-id="sign-in-form__submit-btn"]')))
-    mail_input.send_keys(email)
-    password_input.send_keys(password)
-    submit_button.click()
+    try:
+        login_option_1(wait)
+    except TimeoutException:
+        login_option_2(wait)
+
+    # Getting to job listing
+    jobs = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')))
+    jobs.click()
+    time.sleep(1)
+    search_bar = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="global-nav-search"]/div/div[2]')))
+    search_bar.click()
 
     # Start scraping listed job titles
     while analyzed_job_titles:
         analyzed_job_title = analyzed_job_titles[0]
-        print('Job titles to analyze left:', analyzed_job_titles)  # for dev
-        print('Started scraping:', analyzed_job_title)  # for dev
+        print('Job titles to analyze left:', analyzed_job_titles)
+        print('Started scraping:', analyzed_job_title)
 
         # Getting to job listing
         jobs = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')))
@@ -106,14 +138,14 @@ def main_script(error_count, analyzed_job_titles):
             
         # Filtering and counting technology keywords
         most_common_words = keyword_count(job_requirements)
-        print('Technologies scraped:', most_common_words)  # for dev
+        print('Technologies scraped:', most_common_words)
 
         # Saving technology keywords in google sheets
         update_worksheet(analyzed_job_title, most_common_words)
 
         # Removing job title from the list after finishing scraping it
         analyzed_job_titles.pop(0)
-        print(analyzed_job_title, 'finished.\n\n')  # for dev
+        print(analyzed_job_title, 'finished.\n\n')
 
 
 if __name__ == '__main__':
@@ -136,8 +168,9 @@ if __name__ == '__main__':
             try:
                 main_script(error_count, analyzed_job_titles)
             except Exception as e:  
-                print('Error occured:', e)  # for dev
+                print('Error occured:', e)
                 error_count += 1
 
 # TODO
+    # Change script to use https://www.linkedin.com/login link instead
     # Try deploying to cloud service to run once a day - AWS Lambda
