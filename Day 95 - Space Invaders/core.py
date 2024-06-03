@@ -1,10 +1,11 @@
 import pygame, os
 from interface import *
+from game import *
 
 class Core:
 
     WIDTH = 800
-    HEIGHT = 1000
+    HEIGHT = 900
     FPS = 60
 
     def __init__(self):
@@ -18,27 +19,22 @@ class Core:
         self.main_menu = MainMenu(self)
         self.credit_menu = CreditsMenu(self)
         self.options_menu = OptionsMenu(self)
-        
+        self.game = Game(self)
         self.current_display = self.main_menu
 
 
     def core_game_loop(self):
         while self.core_run:
             self.clock.tick(self.FPS)
-            # self.check_core_events()
             self.current_display.check_events()
             self.current_display.display()
+
             pygame.display.update()
             
-
-    # def check_core_events(self):
-    #     for event in pygame.event.get():
-    #         if event.type == pygame.QUIT:
-    #             self.core_run = False
-
 
     def find_img(self, path):
         main_directory = os.path.dirname(os.path.realpath(__file__))
         img_path = os.path.join(main_directory, path)
         loaded_img = pygame.image.load(os.path.join(img_path))
         return loaded_img
+    

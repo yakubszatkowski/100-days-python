@@ -92,7 +92,7 @@ class MainMenu(Interface):
                 if event.key == pygame.K_RETURN:
                     if self.menu_hover == 'Start':
                         pass
-                        # self.core.current_display = 
+                        self.core.current_display = self.core.game
                     elif self.menu_hover == 'Credits':
                         self.core.current_display = self.core.credit_menu
                     elif self.menu_hover == 'Options':
@@ -127,15 +127,19 @@ class CreditsMenu(Interface):
     
     def __init__(self, core):
         super().__init__(core)
-        self.credit_x, self.credit_y = self.mid_w, self.mid_h - 150
+        self.credit_1_x, self.credit_1_y = self.mid_w, self.mid_h - 150
+        self.credit_2_x, self.credit_2_y = self.mid_w, self.mid_h - 50
+        self.name_y_offset = 35
 
 
     def display(self):
         self.core.window.blit(self.scaled_bg, (0,0))
         self.draw_transparent_rect(self.mid_w, self.mid_h-30, 500, 600)
         self.draw_text_outline('Credits', 60, self.title_x, self.title_y)
-        self.draw_text_outline('Main developer', 20, self.credit_x, self.credit_y)
-        self.draw_text_outline('yakubszatkowski', 40, self.credit_x, self.credit_y + 35)
+        self.draw_text_outline('Main developer:', 20, self.credit_1_x, self.credit_1_y)
+        self.draw_text_outline('yakubszatkowski', 30, self.credit_1_x, self.credit_1_y + self.name_y_offset)
+        self.draw_text_outline('Game background image:', 20, self.credit_2_x, self.credit_2_y)
+        self.draw_text_outline('@phaelnogueira (Unsplash)', 30, self.credit_2_x, self.credit_2_y+ self.name_y_offset)
 
 
     def check_events(self):
