@@ -23,13 +23,13 @@ class Core:
         self.current_display = self.main_menu
 
 
-    def core_game_loop(self):
+    def game_loop(self):
         while self.core_run:
-            self.clock.tick(self.FPS)
             self.current_display.check_events()
             self.current_display.display()
 
             pygame.display.update()
+            self.clock.tick(self.FPS)
             
 
     def find_img(self, path):

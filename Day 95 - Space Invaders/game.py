@@ -9,9 +9,7 @@ class Game:
         self.scaled_bg = pygame.transform.scale(self.background_img, (self.core.WIDTH, self.core.HEIGHT))
 
         self.sprites = pygame.sprite.Group()
-        self.player = PlayerShip(self.core)
-
-        self.sprites.add(self.player)
+        self.init_level()
 
 
     def display(self):
@@ -27,3 +25,27 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.core.current_display = self.core.main_menu
+
+
+    def init_level(self):
+        self.player = PlayerShip(self.core)
+        self.enemy_ships = self.init_enemy_ships()
+        self.sprites.add(self.player, self.enemy_ships)
+
+
+    def init_enemy_ships(self):
+        x, y = 50, 50
+        enemy_ships = pygame.sprite.Group()
+
+        for n in range(1):
+            enemy_ship = EnemyShip(self.core, x, y, (-5, 5))
+            enemy_ships.add(enemy_ship)
+
+            x += 72
+            if len(enemy_ships) % 10 == 0:
+                print(len(enemy_ships), 'total')
+                y += 72
+                x = 50
+            
+        return enemy_ships
+    
