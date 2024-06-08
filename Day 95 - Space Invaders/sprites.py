@@ -3,7 +3,7 @@ import pygame
 
 class Missle(pygame.sprite.Sprite):
 
-    WIDTH, HEIGHT = 3, 6
+    WIDTH, HEIGHT = 3, 3
 
     def __init__(self, start_x, start_y, missle_velocity):
         pygame.sprite.Sprite.__init__(self)
@@ -36,7 +36,6 @@ class PlayerShip(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.START_X, self.START_Y = (self.core.WIDTH/2 - self.SHIP_WIDTH/2), 820
         self.rect.topleft = (self.START_X, self.START_Y)
-        self.player_missles = []
 
 
     def update(self):
@@ -45,6 +44,7 @@ class PlayerShip(pygame.sprite.Sprite):
 
     def move(self):
         keys = pygame.key.get_pressed()
+        
         if keys[pygame.K_LEFT] and self.rect.left > 10:
             self.rect.x -= self.MOVEMENT_VELOCITY
         if keys[pygame.K_RIGHT] and self.rect.right < 790:
@@ -56,7 +56,6 @@ class EnemyShip(pygame.sprite.Sprite):
     SHIP_WIDTH, SHIP_HEIGHT = 53, 53
     ROTATION_VELOCITY, MISSLE_VELOCITY = 8, 2
     
-
     def __init__(self, core, start_x, start_y, rotation_dir):
         pygame.sprite.Sprite.__init__(self)
         self.core = core
@@ -77,7 +76,8 @@ class EnemyShip(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(round(center.x), round(center.y)))
         self.angle = (self.angle + self.ROTATION_VELOCITY) % 360 
 
+
 # TODO:
-    # Handle bullets
-    # Ease out player spaceship movement
-    # Advanced bullets rebound mechanic
+    # Player spaceship acceleration, deceleration movement
+    # Enemy ship mask
+    # Advanced bullets rebound mechanic of enemy ship mask
