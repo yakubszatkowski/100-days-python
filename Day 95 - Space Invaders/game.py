@@ -17,6 +17,7 @@ class Game:
         self.sprites.update()
         self.sprites.draw(self.core.window)
 
+        # print(len(self.sprites))
 
     def check_events(self):
         for event in pygame.event.get():
@@ -26,7 +27,9 @@ class Game:
                 if event.key == pygame.K_ESCAPE:
                     self.core.current_display = self.core.main_menu
                 if event.key == pygame.K_UP:
-                    self.player.shoot()
+                    missle = Missle(self.player.rect.centerx, self.player.rect.centery - 35, self.player.MISSLE_VELOCITY)
+                    self.sprites.add(missle)
+                    
 
 
     def init_level(self):

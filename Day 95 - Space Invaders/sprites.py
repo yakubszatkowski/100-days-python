@@ -1,6 +1,25 @@
-from typing import Any
 import pygame
-from time import sleep
+
+
+class Missle(pygame.sprite.Sprite):
+
+    WIDTH, HEIGHT = 3, 6
+
+    def __init__(self, start_x, start_y, missle_velocity):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((self.WIDTH, self.HEIGHT))
+        self.image.fill('yellow')
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (start_x, start_y)
+        self.missle_velocity = missle_velocity
+
+
+    def update(self):
+        self.rect.y -= self.missle_velocity
+
+        if self.rect.y <= 0:
+            self.kill()
+
 
 class PlayerShip(pygame.sprite.Sprite):
 
@@ -17,13 +36,11 @@ class PlayerShip(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.START_X, self.START_Y = (self.core.WIDTH/2 - self.SHIP_WIDTH/2), 820
         self.rect.topleft = (self.START_X, self.START_Y)
+        self.player_missles = []
 
 
     def update(self):
         self.move()
-
-
-    # def shoot(self):
 
 
     def move(self):
@@ -32,7 +49,6 @@ class PlayerShip(pygame.sprite.Sprite):
             self.rect.x -= self.MOVEMENT_VELOCITY
         if keys[pygame.K_RIGHT] and self.rect.right < 790:
             self.rect.x += self.MOVEMENT_VELOCITY
-
 
 
 class EnemyShip(pygame.sprite.Sprite):
@@ -61,3 +77,7 @@ class EnemyShip(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(round(center.x), round(center.y)))
         self.angle = (self.angle + self.ROTATION_VELOCITY) % 360 
 
+# TODO:
+    # Handle bullets
+    # Ease out player spaceship movement
+    # Advanced bullets rebound mechanic
