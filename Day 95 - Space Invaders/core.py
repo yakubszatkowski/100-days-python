@@ -16,11 +16,15 @@ class Core:
         self.clock = pygame.time.Clock()
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
 
+        
+
         self.main_menu = MainMenu(self)
         self.credit_menu = CreditsMenu(self)
         self.options_menu = OptionsMenu(self)
         self.game = Game(self)
         self.current_display = self.main_menu
+
+        self.event_list = pygame.event.get()
 
 
     def game_loop(self):

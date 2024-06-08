@@ -1,4 +1,4 @@
-import pygame
+import pygame, time
 from sprites import *
 
 class Game:
@@ -25,6 +25,8 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.core.current_display = self.core.main_menu
+                if event.key == pygame.K_UP:
+                    self.player.shoot()
 
 
     def init_level(self):
@@ -34,18 +36,18 @@ class Game:
 
 
     def init_enemy_ships(self):
-        x, y = 50, 50
+        x, y = 60, 50
         enemy_ships = pygame.sprite.Group()
+        rotation_dir = 1
 
         for n in range(1):
-            enemy_ship = EnemyShip(self.core, x, y, (-5, 5))
+            enemy_ship = EnemyShip(self.core, x, y, rotation_dir)
             enemy_ships.add(enemy_ship)
-
-            x += 72
-            if len(enemy_ships) % 10 == 0:
-                print(len(enemy_ships), 'total')
+            x += 85
+            if len(enemy_ships) % 9 == 0:
                 y += 72
-                x = 50
+                x = 60
+            rotation_dir *= -1
             
         return enemy_ships
     
