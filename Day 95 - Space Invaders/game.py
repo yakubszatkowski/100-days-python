@@ -27,18 +27,18 @@ class Game:
                     self.core.current_display = self.core.main_menu
                 if event.key == pygame.K_UP:
                     missle = Missle(self.player.rect.centerx, self.player.rect.centery - 35, self.player.MISSLE_VELOCITY)
-                    self.missiles.add(missle)
-                    self.sprites.add(self.missiles)
+                    self.player_missiles.add(missle)
+                    self.sprites.add(self.player_missiles)
 
 
     def missle_collision(self):
-        pygame.sprite.groupcollide(self.missiles, self.enemy_ships, False, True)
+        pygame.sprite.groupcollide(self.player_missiles, self.enemy_ships, True, True)
 
 
     def init_level(self):
         self.sprites = pygame.sprite.Group()
         self.enemy_ships = pygame.sprite.Group()
-        self.missiles = pygame.sprite.Group()
+        self.player_missiles = pygame.sprite.Group()
 
         self.player = PlayerShip(self.core)
         self.enemy_ships.add(self.init_enemy_ships())
@@ -51,7 +51,7 @@ class Game:
         enemy_ships = pygame.sprite.Group()
         rotation_dir = 1
 
-        for _ in range(18):
+        for _ in range(9):
             enemy_ship = EnemyShip(self.core, x, y, rotation_dir)
             enemy_ships.add(enemy_ship)
             x += 85

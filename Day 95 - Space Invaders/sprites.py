@@ -1,5 +1,5 @@
 import pygame
-
+from random import randint
 
 class Missle(pygame.sprite.Sprite):
 
@@ -15,7 +15,7 @@ class Missle(pygame.sprite.Sprite):
 
 
     def update(self):
-        self.rect.y -= self.missle_velocity
+        self.rect.y += self.missle_velocity
 
         if self.rect.y <= 0:
             self.kill()
@@ -24,7 +24,7 @@ class Missle(pygame.sprite.Sprite):
 class PlayerShip(pygame.sprite.Sprite):
 
     SHIP_WIDTH, SHIP_HEIGHT = 61, 50
-    MISSLE_VELOCITY = 6
+    MISSLE_VELOCITY = -6
 
 
     def __init__(self, core):
@@ -39,7 +39,7 @@ class PlayerShip(pygame.sprite.Sprite):
         self.rect.topleft = (self.START_X, self.START_Y)
 
         self.friction = -0.1
-        self.position, self.velocity, self.acceleration, self.posx = 0, 0, 0, 0
+        self.position, self.velocity, self.acceleration, self.posx = 0, 0, 0, self.START_X
 
 
     def update(self):
@@ -59,6 +59,11 @@ class PlayerShip(pygame.sprite.Sprite):
         self.velocity += self.acceleration
         self.posx += self.velocity + self.acceleration*0.8
         self.rect.x = self.posx
+
+        if self.rect.right >= 790:
+            self.posx = 790 - self.SHIP_WIDTH
+        elif self.rect.left <= 10:
+            self.posx = 10
 
 
 class EnemyShip(pygame.sprite.Sprite):
@@ -82,9 +87,18 @@ class EnemyShip(pygame.sprite.Sprite):
 
 
     def update(self):
+        self.rotation()
+        
+
+    def rotation(self):
         center = self.pos + pygame.math.Vector2(0, self.radius).rotate(self.angle*self.rotation_dir) 
         self.rect = self.image.get_rect(center=(round(center.x), round(center.y)))
         self.angle = (self.angle + self.ROTATION_VELOCITY) % 360 
+
+
+    def random_shooting(self):
+        rng = 'x'
+        missle = Missle(self.rect.centerx, self.rect.centery)
 
 
 # TODO:
