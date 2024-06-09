@@ -5,10 +5,10 @@ class Missle(pygame.sprite.Sprite):
 
     WIDTH, HEIGHT = 3, 3
 
-    def __init__(self, start_x, start_y, missle_velocity):
+    def __init__(self, start_x, start_y, missle_velocity, missle_color):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((self.WIDTH, self.HEIGHT))
-        self.image.fill('yellow')
+        self.image.fill(missle_color)
         self.rect = self.image.get_rect()
         self.rect.topleft = (start_x, start_y)
         self.missle_velocity = missle_velocity
@@ -19,13 +19,14 @@ class Missle(pygame.sprite.Sprite):
 
         if self.rect.y <= 0:
             self.kill()
+        elif self.rect.y >= 900:
+            self.kill()
 
 
 class PlayerShip(pygame.sprite.Sprite):
 
     SHIP_WIDTH, SHIP_HEIGHT = 61, 50
     MISSLE_VELOCITY = -6
-
 
     def __init__(self, core):
         pygame.sprite.Sprite.__init__(self)
@@ -38,6 +39,7 @@ class PlayerShip(pygame.sprite.Sprite):
         self.START_X, self.START_Y = (self.core.WIDTH/2 - self.SHIP_WIDTH/2), 820
         self.rect.topleft = (self.START_X, self.START_Y)
 
+        self.hitpoints = 5
         self.friction = -0.1
         self.position, self.velocity, self.acceleration, self.posx = 0, 0, 0, self.START_X
 
@@ -83,12 +85,12 @@ class EnemyShip(pygame.sprite.Sprite):
         self.pos = self.rect.topleft
         self.rotation_dir = rotation_dir
         self.angle = 0
-        self.radius = 2
+        self.radius = 4
 
 
     def update(self):
         self.rotation()
-        
+       
 
     def rotation(self):
         center = self.pos + pygame.math.Vector2(0, self.radius).rotate(self.angle*self.rotation_dir) 
@@ -96,10 +98,16 @@ class EnemyShip(pygame.sprite.Sprite):
         self.angle = (self.angle + self.ROTATION_VELOCITY) % 360 
 
 
-    def random_shooting(self):
-        rng = 'x'
-        missle = Missle(self.rect.centerx, self.rect.centery)
-
-
-# TODO:
-    # Enemy spaceship shooting at random times
+    def random_shoot(self):
+        rng = randint(0, 500)
+        
+        if rng == 0:
+            missle = Missle(
+                self.rect.centerx, 
+                self.rect.centery, 
+                self.MISSLE_VELOCITY, 
+                'green'
+            )
+            return missle
+        else:
+            return None
