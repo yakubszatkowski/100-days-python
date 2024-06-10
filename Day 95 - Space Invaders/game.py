@@ -7,10 +7,11 @@ class Game:
         self.core = core
         self.background_img = self.core.find_img('img/game_background.png')
         self.scaled_bg = pygame.transform.scale(self.background_img, (self.core.WIDTH, self.core.HEIGHT))
+        self.mid_w, self.mid_h = self.core.WIDTH/2, self.core.HEIGHT/2
         self.init_display_bool = True
         self.game_on = False
         
-
+        
     def display(self):
         if self.init_display_bool:
             self.init_level()
@@ -52,17 +53,16 @@ class Game:
 
         if self.player.hitpoints <= 0:
             self.game_on = False
-            # self.draw_text_outline('You\'ve lost!', 60, self.core.WIDTH, self.core.HEIGHT)
-            # self.draw_text_outline('Press esc to return to menu', 60, self.core.WIDTH, self.core.HEIGHT + 50)
+            self.core.draw_text_outline('You\'ve lost!', 60, self.mid_w, self.mid_h)
+            self.core.draw_text_outline('Press esc to return to menu.', 20, self.mid_w, self.mid_h + 50)
         elif len(self.enemy_ships) == 0:
             self.game_on = False
-            # self.draw_text_outline('You\'ve won!', 60, self.core.WIDTH, self.core.HEIGHT)
-            # self.draw_text_outline('Press esc to return to menu', 60, self.core.WIDTH, self.core.HEIGHT + 50)
+            self.core.draw_text_outline('You\'ve won!', 60, self.mid_w, self.mid_h)
+            self.core.draw_text_outline('Press esc to return to menu.', 20, self.mid_w, self.mid_h + 50)
 
 
     def missle_collision(self):
         pygame.sprite.groupcollide(self.player_missiles, self.enemy_ships, True, True)
-
         if pygame.sprite.spritecollide(self.player, self.enemy_missles, True):
             self.player.hitpoints -= 1
 
@@ -104,7 +104,6 @@ class HealthBar:
         self.core = core
         self.surface = self.core.window
         self.x, self.y = self.core.WIDTH/2 + 100, 860
-
         self.hp = 5
         self.max_hp = 5
 
@@ -119,6 +118,4 @@ class HealthBar:
         pygame.draw.rect(self.surface, "darkgreen", (self.x, self.y, self.WIDTH * ratio, self.HEIGHT))
 
 
-# TODO
-    # continue winning/losing condition
     
