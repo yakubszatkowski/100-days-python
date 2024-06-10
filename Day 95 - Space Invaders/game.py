@@ -120,6 +120,5 @@ class HealthBar:
 
 
 # TODO
-    # move draw_text_outline from interface.py to core.py and refactor it in code
     # continue winning/losing condition
     

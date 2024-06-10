@@ -2,9 +2,10 @@ import pygame
 
 class Interface():
 
-    BLACK = (40, 40, 43)
+    
     TRANSPARERT_BLACK = (0, 0, 0, 180)
     WHITE = (240, 240, 255)
+    BLACK = (40, 40, 43)
 
     def __init__(self, core):
         self.core = core
@@ -14,26 +15,12 @@ class Interface():
         self.background_img = self.core.find_img('img/menu_background.png')
         self.scaled_bg = pygame.transform.scale(self.background_img, (self.core.WIDTH, self.core.HEIGHT))
 
-    def draw_text(self, text, size, x, y, color):
-        font = pygame.font.SysFont('comicsans', size)
-        text_surface = font.render(text, 1, color)
-        text_rect = text_surface.get_rect()
-        text_rect.center = (x, y)
-        self.core.window.blit(text_surface, text_rect)
-
     def draw_cursor_w_outline(self):
-        self.draw_text('>', 30, self.cursor_rect.x-3, self.cursor_rect.y-3, self.BLACK)
-        self.draw_text('>', 30, self.cursor_rect.x+3, self.cursor_rect.y-3, self.BLACK)
-        self.draw_text('>', 30, self.cursor_rect.x-3, self.cursor_rect.y+3, self.BLACK)
-        self.draw_text('>', 30, self.cursor_rect.x+3, self.cursor_rect.y+3, self.BLACK)
-        self.draw_text('>', 30, self.cursor_rect.x, self.cursor_rect.y, self.WHITE)
-
-    def draw_text_outline(self, text, size, x, y):
-        self.draw_text(text, size, x-3, y-3, self.BLACK)
-        self.draw_text(text, size, x+3, y-3, self.BLACK)
-        self.draw_text(text, size, x-3, y+3, self.BLACK)
-        self.draw_text(text, size, x+3, y+3, self.BLACK)
-        self.draw_text(text, size, x, y, self.WHITE)
+        self.core.draw_text('>', 30, self.cursor_rect.x-3, self.cursor_rect.y-3, self.BLACK)
+        self.core.draw_text('>', 30, self.cursor_rect.x+3, self.cursor_rect.y-3, self.BLACK)
+        self.core.draw_text('>', 30, self.cursor_rect.x-3, self.cursor_rect.y+3, self.BLACK)
+        self.core.draw_text('>', 30, self.cursor_rect.x+3, self.cursor_rect.y+3, self.BLACK)
+        self.core.draw_text('>', 30, self.cursor_rect.x, self.cursor_rect.y, self.WHITE)
 
     def draw_transparent_rect(self, x, y, width, height):
         rect = (x - width/2, y - height/2, width, height)
@@ -57,10 +44,10 @@ class MainMenu(Interface):
     def display(self):
         self.core.window.blit(self.scaled_bg, (0,0))
         self.draw_transparent_rect(self.mid_w, self.mid_h-30, 500, 600)
-        self.draw_text_outline('Cosmic Assault', 60, self.title_x, self.title_y)
-        self.draw_text_outline('Start Game', 40, self.start_x, self.start_y)
-        self.draw_text_outline('Options', 40, self.options_x, self.options_y)
-        self.draw_text_outline('Credits', 40, self.credits_x, self.credits_y)
+        self.core.draw_text_outline('Cosmic Assault', 60, self.title_x, self.title_y)
+        self.core.draw_text_outline('Start Game', 40, self.start_x, self.start_y)
+        self.core.draw_text_outline('Options', 40, self.options_x, self.options_y)
+        self.core.draw_text_outline('Credits', 40, self.credits_x, self.credits_y)
         self.draw_cursor_w_outline()
 
 
@@ -110,9 +97,9 @@ class OptionsMenu(Interface):
     def display(self):
         self.core.window.blit(self.scaled_bg, (0,0))
         self.draw_transparent_rect(self.mid_w, self.mid_h-30, 500, 600)
-        self.draw_text_outline('Options', 60, self.title_x, self.title_y)
-        self.draw_text_outline('Music volume', 20, self.music_vol_option_x, self.music_vol_option_y)
-        self.draw_text_outline('Effects volume', 20, self.effect_vol_option_x, self.effect_vol_option_y)
+        self.core.draw_text_outline('Options', 60, self.title_x, self.title_y)
+        self.core.draw_text_outline('Music volume', 20, self.music_vol_option_x, self.music_vol_option_y)
+        self.core.draw_text_outline('Effects volume', 20, self.effect_vol_option_x, self.effect_vol_option_y)
 
 
     def check_events(self):
@@ -135,11 +122,11 @@ class CreditsMenu(Interface):
     def display(self):
         self.core.window.blit(self.scaled_bg, (0,0))
         self.draw_transparent_rect(self.mid_w, self.mid_h-30, 500, 600)
-        self.draw_text_outline('Credits', 60, self.title_x, self.title_y)
-        self.draw_text_outline('Main developer:', 20, self.credit_1_x, self.credit_1_y)
-        self.draw_text_outline('yakubszatkowski', 30, self.credit_1_x, self.credit_1_y + self.name_y_offset)
-        self.draw_text_outline('Game background image:', 20, self.credit_2_x, self.credit_2_y)
-        self.draw_text_outline('@phaelnogueira (Unsplash)', 30, self.credit_2_x, self.credit_2_y+ self.name_y_offset)
+        self.core.draw_text_outline('Credits', 60, self.title_x, self.title_y)
+        self.core.draw_text_outline('Main developer:', 20, self.credit_1_x, self.credit_1_y)
+        self.core.draw_text_outline('yakubszatkowski', 30, self.credit_1_x, self.credit_1_y + self.name_y_offset)
+        self.core.draw_text_outline('Game background image:', 20, self.credit_2_x, self.credit_2_y)
+        self.core.draw_text_outline('@phaelnogueira (Unsplash)', 30, self.credit_2_x, self.credit_2_y+ self.name_y_offset)
 
 
     def check_events(self):
