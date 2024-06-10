@@ -3,12 +3,12 @@ from random import randint
 
 class Missle(pygame.sprite.Sprite):
 
-    WIDTH, HEIGHT = 3, 3
+    WIDTH, HEIGHT = 6, 6
 
-    def __init__(self, start_x, start_y, missle_velocity, missle_color):
+    def __init__(self, start_x, start_y, missle_velocity, missile_color):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((self.WIDTH, self.HEIGHT))
-        self.image.fill(missle_color)
+        self.image = pygame.Surface((self.WIDTH, self.HEIGHT), pygame.SRCALPHA)
+        pygame.draw.circle(self.image, missile_color, (self.WIDTH // 2, self.HEIGHT // 2), self.WIDTH // 2)
         self.rect = self.image.get_rect()
         self.rect.topleft = (start_x, start_y)
         self.missle_velocity = missle_velocity
@@ -36,7 +36,7 @@ class PlayerShip(pygame.sprite.Sprite):
         self.image = pygame.Surface((self.SHIP_WIDTH, self.SHIP_HEIGHT), pygame.SRCALPHA)
         self.image.blit(self.spaceship_img, (0,0))
         self.rect = self.image.get_rect()
-        self.START_X, self.START_Y = (self.core.WIDTH/2 - self.SHIP_WIDTH/2), 820
+        self.START_X, self.START_Y = (self.core.WIDTH/2 - self.SHIP_WIDTH/2), 780
         self.rect.topleft = (self.START_X, self.START_Y)
 
         self.hitpoints = 5
