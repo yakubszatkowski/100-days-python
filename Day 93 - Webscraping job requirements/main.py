@@ -120,7 +120,7 @@ def main_script(error_count, analyzed_job_titles):
 
         # Removing job title from the list after finishing scraping it
         analyzed_job_titles.pop(0)
-        print(analyzed_job_title, 'finished.\n\n')
+        print('Scraping', analyzed_job_title, 'finished.\n\n')
 
 
 if __name__ == '__main__':
@@ -147,5 +147,4 @@ if __name__ == '__main__':
                 error_count += 1
 
 # TODO
-    # Change script to use https://www.linkedin.com/login link instead
     # Try deploying to cloud service to run once a day - AWS Lambda
