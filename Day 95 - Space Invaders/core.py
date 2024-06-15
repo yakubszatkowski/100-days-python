@@ -13,7 +13,7 @@ class Core:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption('Cosmic Assault by yakubszatkowski')
-        mixer.init()
+        
         self.core_run = True
         self.clock = pygame.time.Clock()
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
@@ -22,10 +22,8 @@ class Core:
         self.draw_text_outline("Loading...", 50, self.WIDTH // 2, self.HEIGHT // 2)
         pygame.display.update()
 
-        self.menu_music = mixer.Sound(os.path.join(self.main_directory, 'sound/menu_music.mp3'))
-        self.game_music = mixer.Sound(os.path.join(self.main_directory, 'sound/game_music.mp3'))
-        self.shoot_sound = mixer.Sound(os.path.join(self.main_directory, 'sound/shoot_sound.mp3'))
-        self.being_shoot_sound = mixer.Sound(os.path.join(self.main_directory, 'sound/being_shoot_sound.mp3'))
+        mixer.init()
+        self.init_sound_settings()
 
         self.main_menu = MainMenu(self)
         self.credit_menu = CreditsMenu(self)
@@ -63,3 +61,14 @@ class Core:
         self.draw_text(text, size, x-3, y+3, self.BLACK)
         self.draw_text(text, size, x+3, y+3, self.BLACK)
         self.draw_text(text, size, x, y, self.WHITE)
+
+    def init_sound_settings(self):
+        self.menu_music = mixer.Sound(os.path.join(self.main_directory, 'sound/menu_music.mp3'))
+        self.game_music = mixer.Sound(os.path.join(self.main_directory, 'sound/game_music.mp3'))
+        self.shoot_sound = mixer.Sound(os.path.join(self.main_directory, 'sound/shoot_sound.mp3'))
+        self.being_shoot_sound = mixer.Sound(os.path.join(self.main_directory, 'sound/being_shoot_sound.mp3'))
+        self.background_music_volume, self.special_effect_volume = 0.5, 0.5
+        # set up the base volume
+
+#TODO
+    # SOUND settings

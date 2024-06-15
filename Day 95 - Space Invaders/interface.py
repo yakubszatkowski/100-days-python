@@ -40,11 +40,13 @@ class MainMenu(Interface):
         self.menu_hover = 'Start'
         self.cursor_offset = -125
         self.cursor_rect.midtop = (self.start_x + self.cursor_offset, self.start_y)
-        
-        self.core.shoot_sound.play()
-        
+        self.init_display_bool = True        
 
     def display(self):
+        if self.init_display_bool == True:
+            self.core.menu_music.play(-1)
+            self.init_display_bool = False
+
         self.core.window.blit(self.scaled_bg, (0,0))
         self.draw_transparent_rect(self.mid_w, self.mid_h-30, 500, 600)
         self.core.draw_text_outline('Cosmic Assault', 60, self.title_x, self.title_y)
@@ -82,6 +84,8 @@ class MainMenu(Interface):
                 if event.key == pygame.K_RETURN:
                     if self.menu_hover == 'Start':
                         self.core.current_display = self.core.game
+                        self.init_display_bool = True
+                        self.core.menu_music.stop()
                     elif self.menu_hover == 'Credits':
                         self.core.current_display = self.core.credit_menu
                     elif self.menu_hover == 'Options':

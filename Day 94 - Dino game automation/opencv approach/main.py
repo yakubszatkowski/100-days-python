@@ -15,11 +15,11 @@ def main_script():
     loop_time = 0.00001
     fps_list = []
     action_threshold = 280
+
     # Start the game
     jump(actions)
     
     # Game loop
-
     while 1:
         # FPS print for testing
         print_fps(fps_list, loop_time)

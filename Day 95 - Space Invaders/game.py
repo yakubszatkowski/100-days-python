@@ -17,6 +17,7 @@ class Game:
             self.init_level()
             self.init_display_bool = False
             self.game_on = True
+            self.core.game_music.play()
 
         if self.game_on:
             self.core.window.blit(self.scaled_bg, (0,0))
@@ -39,6 +40,7 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.core.current_display = self.core.main_menu
+                    self.core.game_music.stop()
                     self.init_display_bool = True
                     self.sprites = None
                 if event.key == pygame.K_UP:
@@ -48,6 +50,7 @@ class Game:
                         self.player.MISSLE_VELOCITY,
                         'yellow'
                     )
+                    self.core.shoot_sound.play()
                     self.player_missiles.add(player_missle)
                     self.sprites.add(self.player_missiles)
 
@@ -62,8 +65,10 @@ class Game:
 
 
     def missle_collision(self):
-        pygame.sprite.groupcollide(self.player_missiles, self.enemy_ships, True, True)
+        if pygame.sprite.groupcollide(self.player_missiles, self.enemy_ships, True, True):
+            self.core.being_shoot_sound.play()
         if pygame.sprite.spritecollide(self.player, self.enemy_missles, True):
+            self.core.being_shoot_sound.play()
             self.player.hitpoints -= 1
 
 
