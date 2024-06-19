@@ -52,12 +52,6 @@ def main_script(error_count, analyzed_job_titles):
     password_input.send_keys(password)
     submit_button.click()
 
-    # Getting to job listing
-    jobs = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')))
-    jobs.click()
-    time.sleep(1)
-    search_bar = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="global-nav-search"]/div/div[2]')))
-    search_bar.click()
 
     # Start scraping listed job titles
     while analyzed_job_titles:
@@ -68,9 +62,11 @@ def main_script(error_count, analyzed_job_titles):
         # Getting to job listing
         jobs = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="global-nav"]/div/nav/ul/li[3]/a')))
         jobs.click()
+
         time.sleep(1)
-        search_bar = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="global-nav-search"]/div/div[2]')))
+        search_bar = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="global-nav-search"]/div/div[2]')))
         search_bar.click()
+
         time.sleep(1)
         search_bar_input = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.jobs-search-box__inner input.jobs-search-box__keyboard-text-input')))
         search_bar_input.send_keys(analyzed_job_title)
