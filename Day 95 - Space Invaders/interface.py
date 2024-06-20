@@ -135,7 +135,6 @@ class OptionsMenu(Interface):
             if event.type == pygame.QUIT:
                 self.core.core_run = False
             elif event.type == pygame.KEYDOWN:
-
                 if event.key == pygame.K_DOWN or event.key == pygame.K_UP:
                     if self.opton_hover == 'music':
                         self.opton_hover = 'effects'
@@ -143,7 +142,6 @@ class OptionsMenu(Interface):
                     elif self.opton_hover == 'effects':
                         self.opton_hover = 'music'
                         self.cursor_rect.midtop = (self.music_vol_slider_x + self.cursor_offset, self.music_vol_slider_y)
-
                 elif event.key == pygame.K_LEFT:
                     if self.opton_hover == 'music' and self.core.background_music_volume > 0:
                         self.core.background_music_volume -= self.vol_interval
@@ -151,7 +149,6 @@ class OptionsMenu(Interface):
                     elif self.opton_hover == 'effects' and self.core.special_effect_volume > 0:
                         self.core.special_effect_volume -= self.vol_interval
                         self.effect_vol_changer_x -= self.changer_interval_x
-
                 elif event.key == pygame.K_RIGHT:
                     if self.opton_hover == 'music' and self.core.background_music_volume < 1:
                         self.core.background_music_volume += self.vol_interval
@@ -159,7 +156,6 @@ class OptionsMenu(Interface):
                     elif self.opton_hover == 'effects' and self.core.special_effect_volume < 1:
                         self.core.special_effect_volume += self.vol_interval
                         self.effect_vol_changer_x += self.changer_interval_x
-
                 elif event.key == pygame.K_ESCAPE:
                     self.core.current_display = self.core.main_menu
 
@@ -173,7 +169,7 @@ class CreditsMenu(Interface):
     def __init__(self, core):
         super().__init__(core)
         self.credit_x, self.credit_y = self.mid_w, self.mid_h - 180
-        self.name_y_offset, self.spacing = 30, 80
+        self.name_y_offset, self.spacing = 30, 100
 
 
     def display(self):
