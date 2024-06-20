@@ -13,7 +13,6 @@ class Core:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption('Cosmic Assault by yakubszatkowski')
-        
         self.core_run = True
         self.clock = pygame.time.Clock()
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
@@ -23,7 +22,12 @@ class Core:
         pygame.display.update()
 
         mixer.init()
-        self.init_sound_settings()
+        self.background_music_volume, self.special_effect_volume = 0.5, 0.5
+        self.menu_music = mixer.Sound(os.path.join(self.main_directory, 'sound/menu_music.mp3'))
+        self.game_music = mixer.Sound(os.path.join(self.main_directory, 'sound/game_music.mp3'))
+        self.shoot_sound = mixer.Sound(os.path.join(self.main_directory, 'sound/shoot_sound.mp3'))
+        self.being_shoot_sound = mixer.Sound(os.path.join(self.main_directory, 'sound/being_shoot_sound.mp3'))
+        self.set_volume()
 
         self.main_menu = MainMenu(self)
         self.credit_menu = CreditsMenu(self)
@@ -62,13 +66,9 @@ class Core:
         self.draw_text(text, size, x+3, y+3, self.BLACK)
         self.draw_text(text, size, x, y, self.WHITE)
 
-    def init_sound_settings(self):
-        self.menu_music = mixer.Sound(os.path.join(self.main_directory, 'sound/menu_music.mp3'))
-        self.game_music = mixer.Sound(os.path.join(self.main_directory, 'sound/game_music.mp3'))
-        self.shoot_sound = mixer.Sound(os.path.join(self.main_directory, 'sound/shoot_sound.mp3'))
-        self.being_shoot_sound = mixer.Sound(os.path.join(self.main_directory, 'sound/being_shoot_sound.mp3'))
-        self.background_music_volume, self.special_effect_volume = 0.5, 0.5
-        # set up the base volume
 
-#TODO
-    # SOUND settings
+    def set_volume(self):
+        self.menu_music.set_volume(self.background_music_volume)
+        self.game_music.set_volume(self.background_music_volume)
+        self.shoot_sound.set_volume(self.special_effect_volume)
+        self.being_shoot_sound.set_volume(self.special_effect_volume)

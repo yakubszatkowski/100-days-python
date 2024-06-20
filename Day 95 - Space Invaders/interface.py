@@ -15,6 +15,7 @@ class Interface():
         self.background_img = self.core.find_img('img/menu_background.png')
         self.scaled_bg = pygame.transform.scale(self.background_img, (self.core.WIDTH, self.core.HEIGHT))
 
+
     def draw_cursor_w_outline(self):
         self.core.draw_text('>', 30, self.cursor_rect.x-3, self.cursor_rect.y-3, self.BLACK)
         self.core.draw_text('>', 30, self.cursor_rect.x+3, self.cursor_rect.y-3, self.BLACK)
@@ -41,6 +42,7 @@ class MainMenu(Interface):
         self.cursor_offset = -125
         self.cursor_rect.midtop = (self.start_x + self.cursor_offset, self.start_y)
         self.init_display_bool = True        
+
 
     def display(self):
         if self.init_display_bool == True:
@@ -97,15 +99,35 @@ class OptionsMenu(Interface):
     def __init__(self, core):
         super().__init__(core)
         self.music_vol_option_x, self.music_vol_option_y = self.mid_w, self.mid_h-100
-        self.effect_vol_option_x, self.effect_vol_option_y = self.mid_w, self.mid_h
+        self.music_vol_slider_x, self.music_vol_slider_y = self.music_vol_option_x, self.music_vol_option_y+50
+        self.music_vol_changer_x, self.music_vol_changer_y = self.music_vol_slider_x, self.music_vol_slider_y-13
+
+        self.effect_vol_option_x, self.effect_vol_option_y = self.mid_w, self.mid_h+50
+        self.effect_vol_slider_x, self.effect_vol_slider_y = self.effect_vol_option_x, self.effect_vol_option_y+50
+        self.effect_vol_changer_x, self.effect_vol_changer_y = self.effect_vol_slider_x, self.effect_vol_slider_y-13
+
+        self.cursor_offset = -145
+        self.cursor_rect.midtop = (self.music_vol_slider_x + self.cursor_offset, self.music_vol_slider_y)
+
+        self.opton_hover = 'music'
+        self.changer_interval_x = 12
+        self.vol_interval = 0.05
+        
 
 
     def display(self):
         self.core.window.blit(self.scaled_bg, (0,0))
         self.draw_transparent_rect(self.mid_w, self.mid_h-30, 500, 600)
         self.core.draw_text_outline('Options', 60, self.title_x, self.title_y)
-        self.core.draw_text_outline('Music volume', 20, self.music_vol_option_x, self.music_vol_option_y)
-        self.core.draw_text_outline('Effects volume', 20, self.effect_vol_option_x, self.effect_vol_option_y)
+        self.core.draw_text_outline(f'Music volume: {round(self.core.background_music_volume*100)}', 20, self.music_vol_option_x, self.music_vol_option_y)
+        self.core.draw_text_outline('____________________', 20, self.music_vol_slider_x, self.music_vol_slider_y)
+        self.core.draw_text_outline('.', 60, self.music_vol_changer_x, self.music_vol_changer_y)
+
+        self.core.draw_text_outline(f'Effects volume: {round(self.core.special_effect_volume*100)}', 20, self.effect_vol_option_x, self.effect_vol_option_y)
+        self.core.draw_text_outline('____________________', 20, self.effect_vol_slider_x, self.effect_vol_slider_y)
+        self.core.draw_text_outline('.', 60, self.effect_vol_changer_x, self.effect_vol_changer_y)
+
+        self.draw_cursor_w_outline()
 
 
     def check_events(self):
@@ -113,7 +135,37 @@ class OptionsMenu(Interface):
             if event.type == pygame.QUIT:
                 self.core.core_run = False
             elif event.type == pygame.KEYDOWN:
-                self.core.current_display = self.core.main_menu
+
+                if event.key == pygame.K_DOWN or event.key == pygame.K_UP:
+                    if self.opton_hover == 'music':
+                        self.opton_hover = 'effects'
+                        self.cursor_rect.midtop = (self.effect_vol_slider_x + self.cursor_offset, self.effect_vol_slider_y)
+                    elif self.opton_hover == 'effects':
+                        self.opton_hover = 'music'
+                        self.cursor_rect.midtop = (self.music_vol_slider_x + self.cursor_offset, self.music_vol_slider_y)
+
+                elif event.key == pygame.K_LEFT:
+                    if self.opton_hover == 'music' and self.core.background_music_volume > 0:
+                        self.core.background_music_volume -= self.vol_interval
+                        self.music_vol_changer_x -= self.changer_interval_x
+                    elif self.opton_hover == 'effects' and self.core.special_effect_volume > 0:
+                        self.core.special_effect_volume -= self.vol_interval
+                        self.effect_vol_changer_x -= self.changer_interval_x
+
+                elif event.key == pygame.K_RIGHT:
+                    if self.opton_hover == 'music' and self.core.background_music_volume < 1:
+                        self.core.background_music_volume += self.vol_interval
+                        self.music_vol_changer_x += self.changer_interval_x
+                    elif self.opton_hover == 'effects' and self.core.special_effect_volume < 1:
+                        self.core.special_effect_volume += self.vol_interval
+                        self.effect_vol_changer_x += self.changer_interval_x
+
+                elif event.key == pygame.K_ESCAPE:
+                    self.core.current_display = self.core.main_menu
+
+                self.core.background_music_volume = round(self.core.background_music_volume, 2)
+                self.core.special_effect_volume = round(self.core.special_effect_volume, 2)
+                self.core.set_volume()
 
 
 class CreditsMenu(Interface):
