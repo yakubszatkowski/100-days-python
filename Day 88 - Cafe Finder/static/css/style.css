@@ -1,0 +1,239 @@
+@font-face {
+    font-family: Medio;
+    src: url('../font/medio.otf');
+}
+
+body {
+    font-family: 'Medio';
+    text-align: center;
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    color: #967259;
+}
+
+.main_background {
+    position: fixed;
+    width: 100%;
+    inset: 0;
+    background: radial-gradient(ellipse, #38220f 1%, black 100%);
+    padding-bottom: 50px;
+    overflow-y: auto;
+}
+
+.title {
+    color: #967259;
+    margin-top: 60px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    width: 50%;
+    margin: 0 auto;
+}
+
+#autocomplete {
+    width: 30%;
+    background-color: rgba(219, 193, 172, 0.5);
+    color: #ece0d1;
+}
+
+#autocomplete::placeholder {
+    color: #ece0d1;
+}
+
+.search-button {
+    text-decoration: none;
+    background-color: #ece0d1;
+    color: #38220f;
+    margin-inline: 6px;
+    padding: 1px 12px;
+    font-size: small;
+    font-family: inherit;
+}
+
+.pac-container {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.pac-item:hover {
+    background-color: rgba(255,255,255,0.6);
+}
+
+.pac-item-query {
+    color: #ece0d1;
+}
+
+.pac-item {
+    color: rgba(255,255,255,0.6);
+}
+
+.coffe-icon-shoutout {
+    position: fixed;
+    bottom: 4%;
+    right: 1%;
+    text-decoration: none;
+    color: #ece0d1
+}
+
+.card {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(236, 224, 209, 0.5);
+    border-radius: 30px/20px;
+    width: 50%;
+    height: 40%;
+    margin-bottom: 15px;
+}
+
+.card-top-left {
+    position: relative;
+    float: left;
+    width: 50%;
+    height: 40%;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-top-right {
+    position: relative;
+    float: right;
+    width: 50%;
+    height: 60%;
+    top: 0;
+}
+
+.card-bottom-left {
+    position: relative;
+    float: left;
+    width: 50%;
+    height: 60%;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-bottom-right {
+    position: relative;
+    float: right;
+    width: 50%;
+    height: 40%;
+}
+
+.card h1, h2, h3, p {
+    color: #38220f;
+}
+
+.card h1 {
+    font-size: 30px;
+    padding-top: 0px;
+    margin-bottom: 5px;
+    margin-inline: 15px;
+}
+
+.card a {
+    text-decoration-color: #38220f;
+}
+
+.card-top-left h3 {
+    margin-bottom: 0px;
+}
+
+.card-top-left p {
+    margin-top: 0px;
+}
+
+.rating {
+    margin: 0 auto;
+}
+
+.rating-2 {
+    margin-top: 20px;
+}
+
+.weekday {
+    margin: 0;
+}
+
+.waves {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 4vh;
+    margin-bottom: -7px;
+    min-height: 50px;
+    max-height: 75px;
+}
+
+.waves-bottom {
+    bottom: 0;
+}
+
+.waves-top {
+    top: 0;
+    transform: rotate(180deg);
+}
+
+.parallax > use {
+    animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+}
+
+.parallax > use:nth-child(1) {
+    animation-delay: -2s;
+    animation-duration: 7s;
+}
+
+.parallax > use:nth-child(2) {
+    animation-delay: -3s;
+    animation-duration: 10s;
+}
+
+.parallax > use:nth-child(3) {
+    animation-delay: -4s;
+    animation-duration: 13s;
+}
+
+.parallax > use:nth-child(4) {
+    animation-delay: -5s;
+    animation-duration: 20s;
+}
+
+@keyframes move-forever {
+    0% {
+        transform: translate3d(-90px, 0, 0);
+    }
+
+    100% {
+        transform: translate3d(85px, 0, 0);
+    }
+}
+
+@media (max-width: 768px) {
+    .waves {
+        height: 40px;
+        min-height: 40px;
+    }
+
+    .content {
+        height: 30vh;
+    }
+
+    #autocomplete {
+        width: 35%;
+    }
+    .card {
+        width: 70%;
+    }
+    .card h1 {
+        font-size: 25px;
+    }
+    .card h3 {
+        font-size: 18px;
+    }
+}
+

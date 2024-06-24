@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Café finder by yakubszatkowski</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/coffee.png')}}">
+</head>
+
+<body>
+    <section class="main_background">
+        
+        <h2 class="title">Find Café in Poland</h2>
+        <form id="cafe-form" class="search-bar" method="post">
+            <input type="text" id="autocomplete" name="search_input" placeholder="Enter your location" >
+            <input type="hidden" id="geometry" name="geometry">
+            <button type="submit" class="search-button" onclick="handleSearch(event)">Search</button>
+        </form>
+        {% if location %}
+            <h1>Cafes nearby {{ location }}:</h1>
+        {% endif %}
+
+        {% if cafes %}
+            {% for cafe in cafes %}
+            <div class="card">
+                <div class="card-top-left">
+                    <h1>{{ cafe['name'] }}</h1> 
+                </div>
+                <div class="card-top-right">
+                    <h3>Opening hours:</h3>
+                    {% for weekday, hours in cafe['opening_hours']['weekdays_opening_hours'].items() %}
+                        <p class="weekday">{{ weekday }} : 
+                            {% if hours|length == 2 %}
+                                {{ hours[0] }} - {{ hours[1] }}
+                            {% else %}
+                                {{ hours}}
+                            {% endif %}
+                        </p>
+                    {% endfor %}
+                </div>
+                <div class="card-bottom-left">
+                    <h3 class="rating rating-2">Rating: {{ cafe['rating'] }}</h3>
+                    <p class="rating">Scored by {{ cafe['user_ratings_total'] }} users</p>
+                    {% if cafe['opening_hours']['is_open'] %}
+                        <h3>Currently open</h3>
+                    {% else %}
+                        <h3>Closed</h3>
+                    {% endif %}
+                    
+                    {% if cafe['website'] %}
+                        <a href="{{ cafe['website'] }}"><h3>Visit website</h3></a>
+                    {% endif %}
+                </div>
+                <div class="card-bottom-right">
+                    <h3>{{ cafe['address'] }}</h3>
+                    <h3>+48 {{ cafe['phone_number'] }}</h3>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <a href="https://www.flaticon.com/free-icons/coffee" title="coffee icons" class="coffe-icon-shoutout">Coffee icon by surang</a>
+        {% include "waves.html" %}
+    </section>
+    <script src="{{url_for('static', filename='js/place_autocomplete.js')}}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ API_KEY }}&libraries=places&callback=initAutocomplete"></script>
+</body>
+
+</html>
