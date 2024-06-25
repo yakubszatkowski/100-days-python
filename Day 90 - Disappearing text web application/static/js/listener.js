@@ -36,5 +36,7 @@ textArea.addEventListener('input', () => {
     if (!timerRunning) {
         timer();
         timerRunning = true;
-    }
+    } else {
+        textArea.style.boxShadow = `None`;
+    };
 });
