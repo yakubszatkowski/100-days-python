@@ -30,7 +30,7 @@ class VsComputerOption(Screen):
     pass
 
 
-class Game(Screen):
+class Game(Screen): 
     score_1 = NumericProperty()
     score_2 = NumericProperty()
     player_1_current_figure = StringProperty()
