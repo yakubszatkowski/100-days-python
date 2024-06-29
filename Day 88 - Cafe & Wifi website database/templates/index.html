@@ -28,7 +28,7 @@
                     <h1>{{ cafe['name'] }}</h1> 
                 </div>
                 <div class="card-top-right">
-                    <h3>Opening hours:</h3>
+                    <h3 class="opening-hours">Opening hours:</h3>
                     {% for weekday, hours in cafe['opening_hours']['weekdays_opening_hours'].items() %}
                         <p class="weekday">{{ weekday }} : 
                             {% if hours|length == 2 %}
