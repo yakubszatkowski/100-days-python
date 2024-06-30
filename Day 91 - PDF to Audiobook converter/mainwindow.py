@@ -48,7 +48,7 @@ class MainWidget(QWidget, Ui_MainWidget):
             self.language_combo_box.addItem(language)
         self.engine.runAndWait()
 
-        self.splashscreen = SplashScreen()
+        
 
 
     def eventFilter(self, obj, ev):  # QObject hover
@@ -85,26 +85,16 @@ class MainWidget(QWidget, Ui_MainWidget):
         language = self.language_combo_box.currentText()
 
         if self.save_path:
+            self.splashscreen = SplashScreen()
             self.directory_file_button.setEnabled(False)
             self.convert_button.setEnabled(False)
             self.title_label.setText('Currently converting...')
+            QApplication.processEvents()
             self.splashscreen.read_pdf(self.pdf_to_convert)
-            self.splashscreen.convert_to_audio(language, self.save_path)
-        self.title_label.setText('PDF to Audiobook converter')
+            self.splashscreen.convert_to_mp3(language, self.save_path)
+
+        # self.splashscreen.progres_label.setText('Finished')
+        self.title_label.setText('PDF to audiobook converter')
         self.directory_file_button.setEnabled(True)
         self.convert_button.setEnabled(True)
-
-
-    def closeEvent(self, event):
-        self.splashscreen.terminate = True
-        try:
-            conversion_thread = self.splashscreen.conversion
-        except AttributeError:
-            pass
-        else:
-            conversion_thread.quit()
-            conversion_thread.wait(3000) 
-            if conversion_thread.isRunning():
-                conversion_thread.terminate()
-
-            
+        self.splashscreen.close()
