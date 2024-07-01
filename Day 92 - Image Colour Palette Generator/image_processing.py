@@ -2,9 +2,8 @@ import numpy as np
 
 def dominant_colors_extraction(pil_image):
     image_array = np.array(pil_image)
-    print(image_array.shape)
+    image_array = image_array[...,:3]
     pixels_array = image_array.reshape((-1, 3))
-    print(pixels_array.shape)
     unique_values, count = np.unique(pixels_array, axis=0, return_counts=True)
     total_pixels = sum(count)
     top_10_indices = np.argsort(count)[-10:][::-1]
