@@ -4,7 +4,8 @@ from threading import Thread
 from image_processing import dominant_colors_extraction
 import os, time
 
-UPLOAD_FOLDER = ".\static\\temp_file"
+main_directory = os.path.dirname(os.path.realpath(__file__))
+UPLOAD_FOLDER = f"{main_directory}\static\\temp_file"
 
 app = Flask(__name__)
 app.config["IMAGE_UPLOADS"] = UPLOAD_FOLDER
@@ -26,13 +27,15 @@ def index():
         filename = os.path.join(app.config["IMAGE_UPLOADS"], image.filename)
         pil_image = Image.open(filename)
         dominant_colors = dominant_colors_extraction(pil_image)
-        filename = filename.replace(' ', '%20')
+        
+        image_wo_file_directory = filename.replace(main_directory, '.')
+        formatted_image = image_wo_file_directory.replace(' ','%20')
 
         # workaround with threading because after_this_request decorator doesn't work on windows
         thread = Thread(target=delete_file, args=(filename,)) 
         thread.start()
 
-        return render_template('index.html', colors_list=dominant_colors, image=filename)
+        return render_template('index.html', colors_list=dominant_colors, image=formatted_image)
     return render_template('index.html')
 
 if __name__ == '__main__':
