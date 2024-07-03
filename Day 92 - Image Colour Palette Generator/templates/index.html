@@ -33,17 +33,16 @@
 
     {% if colors_list %} 
         <div class="analyzis-card">
+            
             <div class="left-side-card">
                 <img src={{image}} class="analyzed-image">
             </div>
             
             <div class="right-side-card">
-
                 {% for color in colors_list %}
-                    <div style="background-color: {{ color[0] }};">
+                    <div class="color-block" style="background-color: {{ color[0] }};">
                         <h4 style="color: {{ color[0] }}; filter: invert(100%);">{{ color[0] }} - {{ color[1] }}%</h4>
                     </div>
-                    
                 {% endfor %}
             </div>
 

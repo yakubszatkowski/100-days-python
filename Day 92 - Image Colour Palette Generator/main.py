@@ -43,3 +43,5 @@ if __name__ == '__main__':
     
 
 # reference: https://www.coolphptools.com/color_extract#demo
+#TODO
+    # make responsible for mobile

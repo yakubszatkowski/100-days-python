@@ -115,7 +115,7 @@ input[type="file"] {
     width: 70%;
     box-shadow: 0 0px 20px 10px rgba(10,10,10,.6);
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
 }
 
 .left-side-card {
@@ -124,9 +124,42 @@ input[type="file"] {
 
 .right-side-card {
     width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
 }
 
 .analyzed-image {
-    max-width: 600px;
-    max-height: 600px;
+    max-width: 100%;
+    height: auto;
+}
+
+.color-block {
+    flex-grow: 1;
+    margin: 1px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+@media (max-width: 1500px) {
+    .analyzis-card {
+        width: 80%;
+    }
+}
+
+@media (max-width: 1000px) {
+    .analyzis-card {
+        width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .title-card {
+        width: 80%;
+    }
+    .analyzis-card h4 {
+        font-size: 0.5em;
+    }
 }
