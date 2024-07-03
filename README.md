@@ -1,4 +1,4 @@
-<style>
+<!-- <style>
     .img {
         display: block;
         margin-left: auto;
@@ -10,7 +10,7 @@
         padding: 0px 20px;
         text-align: justify;
     }
-</style>
+</style> -->
 
 <h1>Hello world!</h1>
 
