@@ -68,6 +68,8 @@ class SplashScreen(QSplashScreen, Ui_progress_widget):
         self.conversion.finished.connect(self.finalizing)
         self.conversion.start()
 
+        self.progres_label.setText('Conversion from text to audio')
+
         for second in range(est_conversion_time+1):
             progress_percent = math.floor((second/est_conversion_time)*max_percent) - 1
             total_progress = progress_percent+20
