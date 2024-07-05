@@ -19,7 +19,7 @@ This is my repository where I track my progress throughout <strong>[100 Days of 
 The goal of the course was to take me from understanding basic Python concepts, to exploring libraries specializing in GUI, game development, APIs, web develompent, relational databases, automation, data science. Finally making my own portfolio projects where I decided I want to go an extra mile and make something special in more than one day!
 
 <h3 style='color:crimson; text-align: center;'>Only projects from day 82-100 are done entirely by me!</h3>
-<p style='font-style: italic;'>Projects ordered from the most recent to the latest.</p>
+<p style='font-style: italic;'>Projects below are ordered from the most recent to the latest.</p>
 
 
 <h2>Day 95 - Space Invaders Game</h2>
@@ -48,7 +48,7 @@ The goal of the course was to take me from understanding basic Python concepts, 
 <p>Web application that allows users to find the most common colors in an uploaded image. The file user uploaded gets temporarily saved in dedicated folder then deleted after 10 seconds using threading, this is enough time for the application to view the image and process its pixels to find the top 10 most common color and display they hexcode with percentage of occurrence.</p>
 
 <h2>Day 91 - PDF to Audiobook Converter</h2>
-<p>Stack: <b>Pyside6</b></p>
+<p>Stack: <b>Pyside6, pyttsx3, pymupdf</b></p>
 <img class="img" src="readmegifs/pdfconverter.gif">
 <p>Desktop application that lets you load any pdf file of your liking and convert it into audiobook using system's registry voice. User is greet with the small interface where they have option open their pdf, then after clicking convert the loading bar appears which depending on pdf file size can take up to couple of minutes to create an audiobook in mp3 extension.</p>
 
