@@ -6,7 +6,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from game_object import GameObject
 from utils import find_img, privacy_button_press, jump, squat, print_fps
-from screen_capture import get_game_screen
+from screen_capture import WindowCapture
 
 
 def main_script():
@@ -18,24 +18,25 @@ def main_script():
 
     # Start the game
     jump(actions)
+    wincap.start()
     
     # Game loop
     while 1:
         # FPS print for testing
         print_fps(fps_list, loop_time)
         loop_time = time.time()
-        region = (250, 625, 800, 750)
-
 
         # Update game screen
-        game_screen = get_game_screen(hwnd, region)
+        if wincap.screenshot is None:
+            continue
 
+        # Detection
         for key in dodge_objects:
             dodge_object = dodge_objects[key]
-            if dodge_object.match(game_screen):
+            if dodge_object.match(wincap.screenshot):
                 dodge_object_left_x = dodge_object.location[0][0]
                 dodge_object_left_y = dodge_object.location[0][1]
-                cv2.rectangle(game_screen, dodge_object.location[0], dodge_object.location[1], (0,0,255), 2)
+                cv2.rectangle(wincap.screenshot, dodge_object.location[0], dodge_object.location[1], (0,0,255), 2)
 
                 # Action
                 if dodge_object_left_y == 20:
@@ -46,7 +47,7 @@ def main_script():
                     jump(actions)
 
         # Show recorded region
-        cv2.imshow('screen', game_screen)
+        cv2.imshow('screen', wincap.screenshot)
         if cv2.waitKey(1) == ord('q'):
             break
 
@@ -82,6 +83,10 @@ if __name__ == '__main__':
         'small_cacti_day': GameObject(find_img('small_cacti_day.png')),
         'small_cacti_night': GameObject(find_img('small_cacti_night.png')),
     }
+
+    
+    region = (250, 625, 800, 750)
+    wincap = WindowCapture('Play Chrome Dinosaur Game Online - elgooG - Google Chrome', region)
 
     # Initialize main script
     main_script()
