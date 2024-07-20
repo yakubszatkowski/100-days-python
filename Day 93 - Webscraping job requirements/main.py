@@ -130,7 +130,7 @@ if __name__ == '__main__':
         '"machine learning"', '"data science"', '"data engineer"', '"data analyst"',  '"software engineer"', 
         '"web developer"', '"devops engineer"', '"automation engineer"', '"mobile developer"',
     ]
-    
+
     # Handling rare errors; running main script
     while error_count <= 5:
         if not analyzed_job_titles:
