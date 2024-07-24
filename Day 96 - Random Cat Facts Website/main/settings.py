@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cat_facts_app'
+    'cat_facts_app',
+    'register'
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Added by me
+
+
+#TODO
+    # create main-card where contents are being viewed
+    # create registration form and login form
+    # create sidebar profile item (where registration date can be viewed), messages
+    # make sidebar responsive, move it to the bottom on smaller screen
