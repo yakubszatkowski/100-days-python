@@ -2,5 +2,22 @@
 {% block title %} Home Page {% endblock %} 
 
 {% block content %}
-    <h1>Welcome to CatCurios!</h1>
+    <div class="home-page">
+        <h1 class="header">Welcome to CatCurios!</h1>
+        <p>
+            The goal of this project was to develop a web application enabling users to register, log in, send messages to other users, and, naturally, enjoy random pictures of cats!
+        </p>
+        <p>
+            This project provided me with my first hands-on experience with the Django framework. You can view my project on my GitHub page: 
+            <a class="link" href="https://github.com/yakubszatkowski"> @yakubszatkowski</a>
+        </p>
+        {% if user.is_authenticated %}
+            <p class="footer">
+                To generate your first cap picture head out <a href="{% url 'start' %}" class="link">here!</a>
+        {% else %}
+            <p class="footer">
+                To start please head out to <a href="{% url 'login' %}" class="link">login</a> or <a href="{% url 'register' %}" class="link">register page</a>
+            </p>
+        {% endif %}
+    </div>
 {% endblock %}

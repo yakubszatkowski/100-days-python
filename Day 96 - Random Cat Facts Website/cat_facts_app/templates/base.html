@@ -20,24 +20,34 @@
                     <i class="lni lni-grid-alt"></i>
                 </button>
                 <div class="sidebar-logo">
-                    <a href="/">CatCurios</a>
+                    <a href="{% url 'home' %}">CatCurios</a>
                 </div>
             </div>
 
             <ul class="sidebar-nav">
+                {% if user.is_authenticated %}
                 <li class="sidebar-item">
-                    <a href="/" class="sidebar-link">
+                    <a href="/#" class="sidebar-link">
+                        <i class="lni lni-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                <li class="sidebar-item">
+                    <a href="{% url 'home' %}" class="sidebar-link">
                         <i class="lni lni-home"></i>
                         <span>About</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item">
-                    <a href="/" class="sidebar-link">
+                    <a href="{% url 'start' %}" class="sidebar-link">
                         <i class="lni lni-bolt"></i>
                         <span>Start</span>
                     </a>
                 </li>
+                
             </ul>
             
             {% if user.is_authenticated %}

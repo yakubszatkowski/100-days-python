@@ -132,8 +132,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-#TODO
-    # create main-card where contents are being viewed
-    # create registration form and login form
+#TODO Ideas
+    # Write introduction
+    # in registration check for existing user
     # create sidebar profile item (where registration date can be viewed), messages
     # make sidebar responsive, move it to the bottom on smaller screen

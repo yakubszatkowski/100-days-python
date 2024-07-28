@@ -140,5 +140,24 @@ a.sidebar-link:hover{
     border-radius: 40px;
     z-index: 2;
     padding: 20px 40px;
+    color: rgb(139,69,19);
 }
 
+.header {
+    text-align: center;
+}
+
+.link {
+    color: rgb(139,69,19);
+}
+
+.home-page {
+    margin: 0% 3%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer {
+    margin-top: auto;
+}
