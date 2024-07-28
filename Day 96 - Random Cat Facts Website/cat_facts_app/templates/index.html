@@ -8,16 +8,17 @@
             The goal of this project was to develop a web application enabling users to register, log in, send messages to other users, and, naturally, enjoy random pictures of cats!
         </p>
         <p>
-            This project provided me with my first hands-on experience with the Django framework. You can view my project on my GitHub page: 
-            <a class="link" href="https://github.com/yakubszatkowski"> @yakubszatkowski</a>
+            You can view my project on my GitHub page: 
+            <a class="link" href="https://github.com/yakubszatkowski"> yakubszatkowski</a>
         </p>
         {% if user.is_authenticated %}
-            <p class="footer">
-                To generate your first cap picture head out <a href="{% url 'start' %}" class="link">here!</a>
+            <p class="header">
+                <a href="{% url 'start' %}" class="link">Click here to view some cats!</a>
         {% else %}
             <p class="footer">
-                To start please head out to <a href="{% url 'login' %}" class="link">login</a> or <a href="{% url 'register' %}" class="link">register page</a>
+                To start please head out to <a href="{% url 'login' %}" class="link">login</a> or <a href="{% url 'register' %}" class="link">register</a> page.
             </p>
         {% endif %}
     </div>
+
 {% endblock %}

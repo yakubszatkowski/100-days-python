@@ -21,5 +21,6 @@ class RegisterForm(UserCreationForm):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email__iexact=email).exists():
             raise forms.ValidationError("An account with this email address already exists.")
+        
         return email
     

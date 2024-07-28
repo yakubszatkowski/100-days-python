@@ -10,6 +10,8 @@ def register(response):
             user = form.save()
             login(response, user)
             return redirect('/') 
+        else:
+            print('wrongform')
     else:
         form = RegisterForm()
     return render(response, "register.html", {'form': form})

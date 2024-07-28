@@ -133,7 +133,14 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 #TODO Ideas
-    # Write introduction
-    # in registration check for existing user
-    # create sidebar profile item (where registration date can be viewed), messages
+    # background link attribution on the bottom left side below card
+    # share and explore card - responsive 2x2 and 4x1 on mobile
+    # finish cat_api.py
+    # create sidebar profile link which when clicked will show:
+        # username
+        # e-mail
+        # registration date
+        # last login
+        # favourites
+    # chat between users
     # make sidebar responsive, move it to the bottom on smaller screen
