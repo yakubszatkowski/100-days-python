@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+{% block title %} Meow {% endblock %} 
+
+{% block content %}
+
+    <h1 class="header">{{ data.breeds.0.name }}</h1>
+
+    <div class="row row-60">
+        <div class="col-lg-5 container-center">
+            <img src="{{data.url}}" alt="catpic" class="cat-pic">
+        </div>
+        <div class="col-lg-7 description">
+            <h3 class="header">Description</h3>
+            <p>{{ data.breeds.0.description }}</p>
+            <p>Read more about {{ data.breeds.0.name }}s <a href="{{data.breeds.0.wikipedia_url}}" class="link">here</a>.</p>
+        </div>
+    </div>
+
+    <div class="row row-20">
+        <div class="col-lg-5 container-center refresh-button-container">
+            <a href="" class="">See more kitties!</a>
+        </div>
+        <div class="col-lg-7">
+            
+        </div>
+    </div>
+    
+{% endblock %}

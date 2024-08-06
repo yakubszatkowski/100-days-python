@@ -12,7 +12,7 @@ def get_random_cat_picture():  # in start.html
     response = requests.get(url='https://api.thecatapi.com/v1/images/search', headers=headers, params=params)
     response.raise_for_status()
     data = response.json()
-    
+
     return data
 
 
@@ -44,3 +44,4 @@ def get_favorite_cat_pictures():  # in profile.html
 
 def delete_favorite_cat_pictures():  # in saved.html
     pass
+

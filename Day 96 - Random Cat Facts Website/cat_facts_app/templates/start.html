@@ -5,7 +5,7 @@
     <h1 class="header">Explore & Share</h1>
     {% if user.is_authenticated %}
         <div class="share-explore-card">
-            <a href="#" class="top-left-card blur-on-hover">
+            <a href="{% url 'random_cat_picture' %}" class="top-left-card blur-on-hover">
                 <h3>Random cat</h3>
             </a>
             <a href="#" class="top-right-card blur-on-hover">
@@ -17,6 +17,7 @@
             <a href="#" class="bottom-right-card blur-on-hover">
                 <h3>View your posted cats</h3>
             </a>
+            
         </div>
         <a href="https://www.freepik.com/free-vector/cute-cat-cartoon-characters-illustrations-set-cats-with-heart-shaped-noses-happy-fluffy-kittens-smiling-orange-grey-kitties-sitting-white_20827610.htm#query=cat&position=3&from_view=keyword&track=sph&uuid=a773aec7-f06a-4c04-adab-bb0c826f9d12" 
         class="attribute-author-link">Images by pch.vector on Freepik</a>
