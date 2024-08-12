@@ -5,8 +5,8 @@
 
     <h1 class="header">{{ data.breeds.0.name }}</h1>
 
-    <div class="row row-60">
-        <div class="col-lg-5 container-center">
+    <div class="row">
+        <div class="col-lg-5 container-center cat-pic-container">
             <img src="{{data.url}}" alt="catpic" class="cat-pic">
         </div>
         <div class="col-lg-7 description">
@@ -16,12 +16,76 @@
         </div>
     </div>
 
-    <div class="row row-20">
-        <div class="col-lg-5 container-center refresh-button-container">
-            <a href="" class="">See more kitties!</a>
+    <div class="row">
+        <h5 class="header">Characteristics</h5>
+        <div class="col-lg-4 container-center">
+            <ul class="list-container">
+                <li>
+                    <span>Lifespan:</span>
+                    <span>{{ data.breeds.0.life_span }}</span>
+
+                </li>
+                <li>
+                    <span>Lap friendly:</span>
+                    <span>{{ data.breeds.0.lap }}</span>
+                </li>
+                <li>
+                    <span>Affectionate:</span>
+                    <span>{{ data.breeds.0.affection_level }}</span>
+                </li>
+                <li>
+                    <span>Energy level:</span>
+                    <span>{{ data.breeds.0.energy_level }}</span>
+                </li>
+            </ul>
         </div>
-        <div class="col-lg-7">
-            
+        
+        
+        <div class="col-lg-4 container-center">
+            <ul class="list-container">
+                <li>
+                    <span>Child friendly:</span>
+                    <span>{{ data.breeds.0.child_friendly }}</span>
+                </li>
+                <li>
+                    <span>Dog friendly:</span>
+                    <span>{{ data.breeds.0.dog_friendly }}</span>
+                </li>
+                <li>
+                    <span>Stranger friendly:</span>
+                    <span>{{ data.breeds.0.stranger_friendly }}</span>
+                </li>
+                <li>
+                    <span>Talkactive:</span>
+                    <span>{{ data.breeds.0.vocalisation }}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-4 container-center">
+            <ul class="list-container">
+                <li>
+                    <span>Grooming:</span>
+                    <span>{{ data.breeds.0.grooming }}</span>
+                </li>
+                <li>
+                    <span>Helth issues:</span>
+                    <span>{{ data.breeds.0.health_issues }}</span>
+                </li>
+                <li>
+                    <span>Intelligance:</span>
+                    <span>{{ data.breeds.0.intelligence }}</span>
+                </li>
+                <li>
+                    <span>Social needs:</span>
+                    <span>{{ data.breeds.0.social_needs }}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row bottom-row">
+        <div class="container-center refresh-button-container">
+            <a href="" class="cats-button">See more kitties!</a>
         </div>
     </div>
     

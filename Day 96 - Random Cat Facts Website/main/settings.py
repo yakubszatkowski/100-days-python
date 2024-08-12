@@ -133,11 +133,10 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 #TODO Ideas
-    # overflow: hidden hides the border of the picture
-    # 2nd row overlaps 1st one in smaller resolution
-
+    # replace characteristic number ratings with full stars and empty stars
     # implement grid system in start.html and other
     # make sidebar responsive, move it to the bottom on smaller screen
+    
     # finish cat_api.py
     # create sidebar profile link which when clicked will show:
         # username

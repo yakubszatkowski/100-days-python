@@ -10,6 +10,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
         <link rel="stylesheet" href="{% static 'css/style.css' %}?{% now 'U' %}">
+        <link rel="icon" type="image/x-icon" href="../static/img/cat-icon.png">
     {% endblock %}
 </head>
 <body>
@@ -78,8 +79,10 @@
             <div class="main-card container">
                 {% block content %} {% endblock %}
             </div>
-            <a href="https://www.freepik.com/free-vector/cat-lover-pattern-background-design_15080931.htm#fromView=image_search_similar&page=1&position=0&uuid=0f8aa6c6-f9d0-424c-92ce-39647e940426"
-            class="attritube-author-bottom-right-link">Background by rawpixel.com on Freepik</a>
+            <div class="attritube-author-bottom-right-link">
+                <a href="https://www.freepik.com/free-vector/cat-lover-pattern-background-design_15080931.htm#fromView=image_search_similar&page=1&position=0&uuid=0f8aa6c6-f9d0-424c-92ce-39647e940426" class="link">Background by rawpixel.com on Freepik</a>
+                <a href="https://www.flaticon.com/free-icons/cat" style='display:block;' title="cat icons" class="link">Cat icons created by Freepik - Flaticon</a>
+            </div>
         </section>
     </div>
 
