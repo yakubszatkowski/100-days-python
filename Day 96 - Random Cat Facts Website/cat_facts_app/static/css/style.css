@@ -189,12 +189,14 @@ a.sidebar-link:hover{
 }
 
 .attribute-author-link {
+    font-size: 8px;
     margin-left: auto;
     color: rgb(139,69,19);
 }
 
 .attritube-author-bottom-right-link { 
     position: fixed;
+    font-size: 8px;
     color: rgb(139,69,19);
     bottom: 8px;
     right: 16px;
@@ -291,7 +293,7 @@ a.sidebar-link:hover{
 }
 
 .list-container {
-    width: 200px;
+    width: 250px;
 }
 
 .list-container li {
@@ -300,4 +302,32 @@ a.sidebar-link:hover{
     margin-bottom: 5px;
 }
 
+.rating::after {
+    font-family: FontAwesome;
+    font-size: 10px;
+    padding-left: 10px;
+}
 
+.rating[data-rating=""]::after {
+    content: "u n k n o w n";
+}
+
+.rating[data-rating="1"]::after {
+    content: "\f005\f006\f006\f006\f006";
+}
+
+.rating[data-rating="2"]::after {
+    content: "\f005\f005\f006\f006\f006";
+}
+
+.rating[data-rating="3"]::after {
+    content: "\f005\f005\f005\f006\f006";
+}
+
+.rating[data-rating="4"]::after {
+    content: "\f005\f005\f005\f005\f006";
+}
+
+.rating[data-rating="5"]::after {
+    content: "\f005\f005\f005\f005\f005";
+}
