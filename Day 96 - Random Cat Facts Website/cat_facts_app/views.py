@@ -17,4 +17,10 @@ def random_cat_picture(response):
 
 
 def random_cat_picture_by_breed(response):
+    if response.method == 'POST':
+        search_breed = response.POST.get('search-breed')
+        print(search_breed)
+        
+
     return render(response, "random_cat_picture_by_breed.html", {})
+

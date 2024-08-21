@@ -282,10 +282,11 @@ a.sidebar-link:hover{
 }
 
 .cats-button {
-    padding: 10px;
-    text-decoration: none;
+    padding: 6px;
     color: rgb(139,69,19);
+    background-color: rgba(255,255,255,.6);
     border: rgb(139,69,19), solid, 1px;
+    border-radius: 4px;
 }
 
 .bottom-row {
@@ -330,4 +331,45 @@ a.sidebar-link:hover{
 
 .rating[data-rating="5"]::after {
     content: "\f005\f005\f005\f005\f005";
+}
+
+.form-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center; 
+}
+
+#search-breed-input {
+    flex-grow: 1; 
+    box-sizing: border-box; 
+    padding: 6px;
+    color: rgb(139,69,19);
+    background-color: rgba(255,255,255,.6);
+    border: rgb(139,69,19), solid, 1px;
+    border-radius: 4px;
+}
+
+.container-center, .form-wrapper {
+    overflow: visible;
+}
+
+.autocom-box {
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border-radius: 4px;
+}
+
+.autocom-box {
+    margin: 0;
+    padding-left: 5px;
+    max-height: 140px;
+    overflow-y: auto;
+}
+
+.autocom-box li {
+    list-style: none;
+    padding: 5px;
 }

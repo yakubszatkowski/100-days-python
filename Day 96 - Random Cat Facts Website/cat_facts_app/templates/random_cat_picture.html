@@ -41,7 +41,6 @@
                 </ul>
             </div>
             
-            
             <div class="col-lg-4 container-center">
                 <ul class="list-container">
                     <li>
@@ -85,19 +84,23 @@
         </div>
   
     {% else %}
-        <h1 class="header">Generate cat</h1>
+        <h1 class="header">Find cat by breed</h1>
     {% endif %}
 
-    <div class="row {% if data %} bottom-row {% else %} {% endif %}">
-        <div class="container-center refresh-button-container">
-            <form method="post">
-                {% csrf_token %}
-                {% block cat_search %} {% endblock %}
-                <a href="" class="cats-button" type="submit">See more cats!</a>
+    <div class="row {% if data %} bottom-row {% endif %}">
+        <div class="container-center ">
+            <form method="post" class="form-wrapper">
+                    {% csrf_token %}
+                    <input id="search-breed-input" type="text" name="search-breed" placeholder="Search cat breed" autocomplete="off" >
+                    <ul class="autocom-box" id="breed-list">
+                        <!-- <li>option a</li>
+                        <li>option b</li>
+                        <li>option c</li> -->
+                    </ul>
+                    <button class="cats-button" type="submit">See more cats!</button>
+                
             </form>
         </div>
     </div>
 
-    
-    
 {% endblock %}

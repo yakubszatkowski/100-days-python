@@ -132,8 +132,10 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-#TODO Ideas
-    # replace characteristic number ratings with full stars and empty stars
+#TODO 
+
+    # finish autocomplete feature
+
     # implement grid system in start.html and other
     # make sidebar responsive, move it to the bottom on smaller screen
     
