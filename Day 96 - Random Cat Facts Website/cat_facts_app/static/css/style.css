@@ -347,11 +347,18 @@ a.sidebar-link:hover{
     background-color: rgba(255,255,255,.6);
     border: rgb(139,69,19), solid, 1px;
     border-radius: 4px;
+    margin-right: 4px;
+    transition: 0.5s;
 }
 
-.container-center, .form-wrapper {
+/* .container-center, .form-wrapper {
     overflow: visible;
-}
+} */
+
+.container-center:has(#search-breed-input:focus),
+.form-wrapper:has(#search-breed-input:focus) {
+    overflow: visible;
+} 
 
 .autocom-box {
     position: absolute;
@@ -365,11 +372,35 @@ a.sidebar-link:hover{
 .autocom-box {
     margin: 0;
     padding-left: 5px;
-    max-height: 140px;
+    max-height: 135px;
     overflow-y: auto;
+}
+
+ul.autocom-box  {
+    padding: 0;
 }
 
 .autocom-box li {
     list-style: none;
-    padding: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#breed-list li:hover {
+    background-color: rgba(139,69,19,.1);
+}
+
+.autocom-box::-webkit-scrollbar {
+    width: 8px; 
+}
+
+.autocom-box::-webkit-scrollbar-track {
+    background: rgba(254, 242, 234);
+    border-radius: 10px; 
+}
+
+.autocom-box::-webkit-scrollbar-thumb {
+    background-color: rgb(139,69,19); 
+    border-radius: 10px; 
+    border: 3px solid rgba(254, 242, 234);; 
 }

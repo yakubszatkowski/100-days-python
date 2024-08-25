@@ -1,9 +1,11 @@
 let breeds = [];
+let fetchedBreedList = fetch('/static/json/breeds.json')
 const breedListElement = document.querySelector('#breed-list');
 const breedInputElement = document.querySelector('#search-breed-input');
 
+
 function fetchBreeds() {
-    fetch('/static/json/breeds.json')
+    fetchedBreedList
         .then((response) => response.json())
         .then((data) => {
             breeds = Object.values(data);
@@ -34,3 +36,4 @@ breedInputElement.addEventListener('input', function() {
     const filteredData = filterData(breeds, breedInputElement.value);
     loadData(filteredData, breedListElement)
 })
+
