@@ -1,39 +1,55 @@
-let breeds = [];
-let fetchedBreedList = fetch('/static/json/breeds.json')
-const breedListElement = document.querySelector('#breed-list');
 const breedInputElement = document.querySelector('#search-breed-input');
+const breedSuggestions = document.querySelector('#breed-list');
+const fetchedBreedList = ['apple', 'ananas'] //fetch('/static/json/breeds.json');
+const submitbutton = document.querySelector('.cats-button')
 
+function search(str) {
+    let results = [];
+    const val = str.toLowerCase();
 
-function fetchBreeds() {
-    fetchedBreedList
-        .then((response) => response.json())
-        .then((data) => {
-            breeds = Object.values(data);
-            breeds.sort()
-            loadData(breeds, breedListElement)
-        });
+	for (let i = 0; i < fetchedBreedList.length; i++) {
+		if (fetchedBreedList[i].toLowerCase().indexOf(val) > -1) {
+			results.push(fetchedBreedList[i]);
+		}
+	}
+	return results;
 };
 
-function loadData(data, element) {
-    if (data) {
-        element.innerHTML = "";
-        let innerElement = "";
-        data.forEach((item) => {
-            innerElement += `<li>${item}</li>`;
-        });
 
-        element.innerHTML = innerElement
-    };
-};
+function searchHandler(e) {
+	const inputVal = e.currentTarget.value;
+	let results = [];
+	if (inputVal.length > 0) {
+		results = search(inputVal);
+	}
+	showSuggestions(results, inputVal);
+}
 
-function filterData(data, searchText) {
-    return data.filter((x) => x.toLowerCase().includes(searchText.toLowerCase()));
-};
 
-fetchBreeds();
+function showSuggestions(results, inputVal) {
+    breedSuggestions.innerHTML = '';
 
-breedInputElement.addEventListener('input', function() {
-    const filteredData = filterData(breeds, breedInputElement.value);
-    loadData(filteredData, breedListElement)
-})
+	if (results.length > 0) {
+		for (let i = 0; i < results.length; i++) {
+			let item = results[i];
+			const match = item.match(new RegExp(inputVal, 'i'));
+			item = item.replace(match[0], `<strong>${match[0]}</strong>`);
+			breedSuggestions.innerHTML += `<li>${item}</li>`;
+		}
+	} else {
+		results = [];
+		breedSuggestions.innerHTML = '';
+	}
+}
 
+
+function useSuggestion(e) {
+	breedInputElement.value = e.target.innerText;
+	breedInputElement.focus();
+	breedSuggestions.innerHTML = '';
+	document.querySelector('.form-wrapper').submit();
+}
+
+
+breedInputElement.addEventListener('keyup', searchHandler);
+breedSuggestions.addEventListener('click', useSuggestion);

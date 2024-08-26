@@ -13,7 +13,7 @@ ul {
 .main {
     min-height: 100vh;
     width: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
     transition: all 0.35s ease-in-out;
     background: url(../img/cats.jpg) ;
     background-size: 100% 110%;
@@ -136,7 +136,7 @@ a.sidebar-link:hover{
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .main-card {
@@ -367,13 +367,11 @@ a.sidebar-link:hover{
     width: 100%;
     background-color: white;
     border-radius: 4px;
-}
-
-.autocom-box {
     margin: 0;
     padding-left: 5px;
     max-height: 135px;
     overflow-y: auto;
+    z-index: 1000;
 }
 
 ul.autocom-box  {
