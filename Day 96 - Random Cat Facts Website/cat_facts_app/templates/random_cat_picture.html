@@ -91,8 +91,7 @@
         <div class="container-center ">
             <form method="post" class="form-wrapper">
                 {% csrf_token %}
-                <input id="search-breed-input" type="text" name="search-breed" placeholder="Search cat breed" autocomplete="off" >
-                <ul class="autocom-box" id="breed-list"></ul>
+                {% block cat_search %} {% endblock %}
                 <button class="cats-button" type="button">See more cats!</button>
             </form>
         </div>
