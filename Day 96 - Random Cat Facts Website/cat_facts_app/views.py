@@ -25,3 +25,6 @@ def random_cat_picture_by_breed(response):
     
     return render(response, "random_cat_picture_by_breed.html", {'data': {}})
 
+def post_your_cat(response):
+
+    return render(response, 'post_your_cat.html', {'data': {}})

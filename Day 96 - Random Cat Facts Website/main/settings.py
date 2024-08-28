@@ -133,7 +133,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 #TODO 
-    # fill in input of previous choice
+    # fix button on cats_by_breed page
 
     # implement grid system in start.html and other
     # make sidebar responsive, move it to the bottom on smaller screen

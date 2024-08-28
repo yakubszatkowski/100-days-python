@@ -1,6 +1,7 @@
 const breedInputElement = document.querySelector('#search-breed-input');
 const breedSuggestions = document.querySelector('#breed-list');
 const submitbutton = document.querySelector('.cats-button');
+let hiddenInput = document.querySelector('#hidden-breed-input');
 let fetchedBreedList = []
 let data = []
 
@@ -48,14 +49,20 @@ function showSuggestions(results, inputVal) {
 	};
 };
 
-
 function handleSearch() {  
 	if (breedInputElement && breedInputElement.value.length > 0) {
 		const firstSuggestion = breedSuggestions.querySelector('.form-wrapper ul li:first-child');
-		breedInputElement.value = firstSuggestion.innerText.trim();
-		breedInputElement.focus();
-		breedSuggestions.innerHTML = '';
-		document.querySelector('.form-wrapper').submit();  
+		if (firstSuggestion) {
+			breedInputElement.value = firstSuggestion.innerText.trim();
+			breedInputElement.focus();
+			breedSuggestions.innerHTML = '';
+			document.querySelector('.form-wrapper').submit(); 
+		} else {
+			breedInputElement.value = breedInputElement.value.trim();
+			hiddenInput.value = data[breedInputElement.value]
+			breedInputElement.focus();
+			document.querySelector('.form-wrapper').submit(); 
+		}
 	} else {
 		location.reload();
 	}
@@ -66,8 +73,7 @@ function useSuggestion(e) {
 	breedInputElement.focus();
 	breedSuggestions.innerHTML = '';
 
-	let hiddenInput = document.querySelector('#hidden-breed-input');
-	hiddenInput.value = data[e.target.innerText]
+	hiddenInput.value = data[e.target.innerText];
 	document.querySelector('.form-wrapper').submit();
 };
 
@@ -83,8 +89,8 @@ if (breedInputElement && breedSuggestions) {
 			handleSearch();
 		};
 	});
-}
+};
 
 if (submitbutton) {
 	submitbutton.addEventListener('click', handleSearch);
-}
+};

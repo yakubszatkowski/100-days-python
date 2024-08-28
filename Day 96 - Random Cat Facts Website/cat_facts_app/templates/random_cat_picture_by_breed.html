@@ -1,7 +1,7 @@
 {% extends "random_cat_picture.html" %} 
 
 {% block cat_search %} 
-    <input id="search-breed-input" type="text" name="search-breed" placeholder="Search cat breed" autocomplete="off" value="{% if input %} {{input}} {% endif %}">
+    <input id="search-breed-input" type="text" name="search-breed" placeholder="Search cat breed" autocomplete="off" value="{% if input %}{{input}}{% endif %}">
     <input type="hidden" id="hidden-breed-input" name="hidden-input">
     <ul class="autocom-box" id="breed-list"></ul>
 {% endblock %}
