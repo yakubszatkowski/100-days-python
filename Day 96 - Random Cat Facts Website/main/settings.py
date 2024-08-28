@@ -133,8 +133,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 #TODO 
-
-    # finish autocomplete feature
+    # fill in input of previous choice
 
     # implement grid system in start.html and other
     # make sidebar responsive, move it to the bottom on smaller screen

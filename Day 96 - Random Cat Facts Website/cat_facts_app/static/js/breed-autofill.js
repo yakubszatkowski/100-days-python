@@ -2,12 +2,12 @@ const breedInputElement = document.querySelector('#search-breed-input');
 const breedSuggestions = document.querySelector('#breed-list');
 const submitbutton = document.querySelector('.cats-button');
 let fetchedBreedList = []
-let keys = []
+let data = []
+
 
 async function loadBreeds() {
 	const response = await fetch('/static/json/breeds.json');
-	const data = await response.json();
-	keys = Object.values(data);
+	data = await response.json();
 	fetchedBreedList = Object.keys(data);
 };
 
@@ -61,12 +61,14 @@ function handleSearch() {
 	}
 };
 
-function useSuggestion(e) {  // add invisible input that will send the code
+function useSuggestion(e) {  
 	breedInputElement.value = e.target.innerText;
-	console.log(e.target.innerText)
 	breedInputElement.focus();
 	breedSuggestions.innerHTML = '';
-	// document.querySelector('.form-wrapper').submit();
+
+	let hiddenInput = document.querySelector('#hidden-breed-input');
+	hiddenInput.value = data[e.target.innerText]
+	document.querySelector('.form-wrapper').submit();
 };
 
 if (breedInputElement && breedSuggestions) {
@@ -79,7 +81,7 @@ if (breedInputElement && breedSuggestions) {
 		if (e.key === 'Enter') {
 			e.preventDefault();
 			handleSearch();
-		}
+		};
 	});
 }
 
