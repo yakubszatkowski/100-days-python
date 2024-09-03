@@ -1,0 +1,13 @@
+{% extends "base.html" %} 
+{% block title %} Cat Explorer {% endblock %} 
+
+{% block content %}
+    
+    {% if user.is_authenticated %}
+        {% include 'cat_characteristics.html' %}
+
+    {% else %}
+        {% include 'login_register.html' %}
+    {% endif %}
+
+{% endblock %}

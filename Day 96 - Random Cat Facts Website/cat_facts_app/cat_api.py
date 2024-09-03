@@ -28,7 +28,7 @@ def get_random_cat_picture_by_breed(breed_id):  # in start.html
     response.raise_for_status()
     data = response.json()
     
-    return data[0]
+    return data
 
 
 def browse_random_cats():  # in start.html
@@ -46,8 +46,12 @@ def browse_random_cats():  # in start.html
 
 
 def show_cat_by_id(id):
-    pass
 
+    response = requests.get(url=f'https://api.thecatapi.com/v1/images/{id}')
+    response.raise_for_status()
+    data = response.json()
+    return data
 
 def get_favorite_cat_pictures():  # in profile.html
     pass
+
