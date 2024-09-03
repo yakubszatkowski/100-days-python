@@ -133,12 +133,9 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 #TODO 
-    # fix button on cats_by_breed page
 
     # implement grid system in start.html and other
     # make sidebar responsive, move it to the bottom on smaller screen
-    
-    # finish cat_api.py
     # create sidebar profile link which when clicked will show:
         # username
         # e-mail

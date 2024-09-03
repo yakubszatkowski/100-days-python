@@ -1,0 +1,17 @@
+{% extends "base.html" %} 
+{% block title %} New cat {% endblock %} 
+
+{% block content %}
+    
+    {% if user.is_authenticated %}
+        <h1 class="header">Explore Cats!</h1>
+        <div class="explore-page-container">
+            {% for cat in data %}
+                <img src="{{cat.url}}" class="img-thumbnail cat-pic-browse" alt="...">
+            {% endfor %}
+        </div>
+    {% else %}
+        {% include 'login_register.html' %}
+    {% endif %}
+
+{% endblock %}

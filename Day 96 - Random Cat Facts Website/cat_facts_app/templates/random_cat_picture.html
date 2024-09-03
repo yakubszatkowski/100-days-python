@@ -3,98 +3,101 @@
 
 {% block content %}
 
-    {% if data %}
-        <h1 class="header">{{ data.breeds.0.name }}</h1>
+    {% if user.is_authenticated %}
+        {% if data %}
+            <h1 class="header">{{ data.breeds.0.name }}</h1>
 
-        <div class="row">
-            <div class="col-lg-5 container-center cat-pic-container">
-                <img src="{{data.url}}" alt="catpic" class="cat-pic">
+            <div class="row">
+                <div class="col-lg-5 container-center cat-pic-container">
+                    <img src="{{data.url}}" alt="catpic" class="cat-pic">
+                </div>
+                <div class="col-lg-7 description">
+                    <h3 class="header">Description</h3>
+                    <p>{{ data.breeds.0.description }}</p>
+                    <p>Read more about {{ data.breeds.0.name }}s <a href="{{data.breeds.0.wikipedia_url}}" class="link">here</a>.</p>
+                </div>
             </div>
-            <div class="col-lg-7 description">
-                <h3 class="header">Description</h3>
-                <p>{{ data.breeds.0.description }}</p>
-                <p>Read more about {{ data.breeds.0.name }}s <a href="{{data.breeds.0.wikipedia_url}}" class="link">here</a>.</p>
+
+            <div class="row">
+                <h5 class="header">Characteristics</h5>
+                <div class="col-lg-4 container-center">
+                    <ul class="list-container">
+                        <li>
+                            <span>Lifespan:</span>
+                            <span>{{ data.breeds.0.life_span }}</span>
+
+                        </li>
+                        <li>
+                            <span>Lap friendly:</span>
+                            <span class="rating" data-rating="{{ data.breeds.0.lap }}"></span>
+                        </li>
+                        <li>
+                            <span>Affectionate:</span>
+                            <span class="rating" data-rating="{{ data.breeds.0.affection_level }}"></span>
+                        </li>
+                        <li>
+                            <span>Energy level:</span>
+                            <span class="rating" data-rating="{{ data.breeds.0.energy_level }}"></span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4 container-center">
+                    <ul class="list-container">
+                        <li>
+                            <span>Child friendly:</span>
+                            <span class="rating" data-rating="{{ data.breeds.0.child_friendly }}"></span>
+                        </li>
+                        <li>
+                            <span>Dog friendly:</span>
+                            <span class="rating" data-rating="{{ data.breeds.0.dog_friendly }}"></span>
+                        </li>
+                        <li>
+                            <span>Stranger friendly:</span>
+                            <span class="rating" data-rating="{{ data.breeds.0.stranger_friendly }}"></span>
+                        </li>
+                        <li>
+                            <span>Talkactive:</span>
+                            <span class="rating" data-rating="{{ data.breeds.0.vocalisation }}"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 container-center">
+                    <ul class="list-container">
+                        <li>
+                            <span>Grooming:</span>
+                            <span class="rating" data-rating="{{ data.breeds.0.grooming }}"></span>
+                        </li>
+                        <li>
+                            <span>Health issues:</span>
+                            <span class="rating" data-rating="{{ data.breeds.0.health_issues }}"></span>
+                        </li>
+                        <li>
+                            <span>Intelligence:</span>
+                            <span class="rating" data-rating="{{ data.breeds.0.intelligence }}"></span>
+                        </li>
+                        <li>
+                            <span>Social needs:</span>
+                            <span class="rating" data-rating="{{ data.breeds.0.social_needs }}"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    
+        {% else %}
+            <h1 class="header">Find cat by breed</h1>
+        {% endif %}
+
+        <div class="row {% if data %} bottom-row {% endif %}">
+            <div class="container-center ">
+                <form method="post" class="form-wrapper">
+                    {% csrf_token %}
+                    {% block cat_search %} {% endblock %}
+                    <button class="cats-button" type="button">See more cats!</button>
+                </form>
             </div>
         </div>
-
-        <div class="row">
-            <h5 class="header">Characteristics</h5>
-            <div class="col-lg-4 container-center">
-                <ul class="list-container">
-                    <li>
-                        <span>Lifespan:</span>
-                        <span>{{ data.breeds.0.life_span }}</span>
-
-                    </li>
-                    <li>
-                        <span>Lap friendly:</span>
-                        <span class="rating" data-rating="{{ data.breeds.0.lap }}"></span>
-                    </li>
-                    <li>
-                        <span>Affectionate:</span>
-                        <span class="rating" data-rating="{{ data.breeds.0.affection_level }}"></span>
-                    </li>
-                    <li>
-                        <span>Energy level:</span>
-                        <span class="rating" data-rating="{{ data.breeds.0.energy_level }}"></span>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="col-lg-4 container-center">
-                <ul class="list-container">
-                    <li>
-                        <span>Child friendly:</span>
-                        <span class="rating" data-rating="{{ data.breeds.0.child_friendly }}"></span>
-                    </li>
-                    <li>
-                        <span>Dog friendly:</span>
-                        <span class="rating" data-rating="{{ data.breeds.0.dog_friendly }}"></span>
-                    </li>
-                    <li>
-                        <span>Stranger friendly:</span>
-                        <span class="rating" data-rating="{{ data.breeds.0.stranger_friendly }}"></span>
-                    </li>
-                    <li>
-                        <span>Talkactive:</span>
-                        <span class="rating" data-rating="{{ data.breeds.0.vocalisation }}"></span>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-lg-4 container-center">
-                <ul class="list-container">
-                    <li>
-                        <span>Grooming:</span>
-                        <span class="rating" data-rating="{{ data.breeds.0.grooming }}"></span>
-                    </li>
-                    <li>
-                        <span>Health issues:</span>
-                        <span class="rating" data-rating="{{ data.breeds.0.health_issues }}"></span>
-                    </li>
-                    <li>
-                        <span>Intelligence:</span>
-                        <span class="rating" data-rating="{{ data.breeds.0.intelligence }}"></span>
-                    </li>
-                    <li>
-                        <span>Social needs:</span>
-                        <span class="rating" data-rating="{{ data.breeds.0.social_needs }}"></span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-  
     {% else %}
-        <h1 class="header">Find cat by breed</h1>
+        {% include 'login_register.html' %}
     {% endif %}
-
-    <div class="row {% if data %} bottom-row {% endif %}">
-        <div class="container-center ">
-            <form method="post" class="form-wrapper">
-                {% csrf_token %}
-                {% block cat_search %} {% endblock %}
-                <button class="cats-button" type="button">See more cats!</button>
-            </form>
-        </div>
-    </div>
-
 {% endblock %}

@@ -402,3 +402,15 @@ ul.autocom-box  {
     border-radius: 10px; 
     border: 3px solid rgba(254, 242, 234);; 
 }
+
+.cat-pic-browse {
+    max-height: 200px;
+    object-fit: cover; /* Ensures the image fills the container while maintaining aspect ratio */
+}
+
+.explore-page-container {
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: space-around; 
+    width: 100%;
+}

@@ -25,6 +25,8 @@ def random_cat_picture_by_breed(response):
     
     return render(response, "random_cat_picture_by_breed.html", {'data': {}})
 
-def post_your_cat(response):
+def browse_cats(response):
+    cats_data = browse_random_cats()
+    
+    return render(response, 'browse_cats.html', {'data': cats_data})
 
-    return render(response, 'post_your_cat.html', {'data': {}})
