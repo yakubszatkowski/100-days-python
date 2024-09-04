@@ -56,12 +56,16 @@ function handleSearch() {
 			breedInputElement.value = firstSuggestion.innerText.trim();
 			breedInputElement.focus();
 			breedSuggestions.innerHTML = '';
+			hiddenInput.value = data[breedInputElement.value];
 			document.querySelector('.form-wrapper').submit(); 
+			console.log('A')
+			
 		} else {
 			breedInputElement.value = breedInputElement.value.trim();
 			hiddenInput.value = data[breedInputElement.value]
 			breedInputElement.focus();
 			document.querySelector('.form-wrapper').submit(); 
+			console.log('B')
 		}
 	} else {
 		location.reload();

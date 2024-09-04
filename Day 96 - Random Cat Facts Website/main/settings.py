@@ -134,6 +134,8 @@ LOGOUT_REDIRECT_URL = '/'
 
 #TODO 
 
+    # fix search 
+
     # implement grid system in start.html and other
     # make sidebar responsive, move it to the bottom on smaller screen
     # create sidebar profile link which when clicked will show:

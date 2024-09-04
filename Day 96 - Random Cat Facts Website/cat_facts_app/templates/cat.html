@@ -5,7 +5,9 @@
     
     {% if user.is_authenticated %}
         {% include 'cat_characteristics.html' %}
-
+        <div class="container-center">
+            <a href="{% url 'browse_cats' %}" class="return-button bottom-row">Back</a>
+        </div>
     {% else %}
         {% include 'login_register.html' %}
     {% endif %}

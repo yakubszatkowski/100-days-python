@@ -414,3 +414,14 @@ ul.autocom-box  {
     justify-content: space-around; 
     width: 100%;
 }
+
+.return-button {
+    padding: 6px 16px;
+    color: rgb(139,69,19);
+    background-color: rgba(255,255,255,.8);
+    border: rgb(139,69,19), solid, 1px;
+    border-radius: 4px;
+    width: auto;
+    text-decoration: none;
+    text-align: center;
+}
