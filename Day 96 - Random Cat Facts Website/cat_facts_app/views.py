@@ -1,5 +1,12 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from .cat_api import *
+
+def favorite_response(response):
+    if response.method == "POST":
+        checkbox_signal = response.POST.get('checkbox-signal')
+        print(checkbox_signal)
+
 
 # Create your views here.
 def home(response):
@@ -11,6 +18,7 @@ def start(response):
 
 
 def random_cat_picture(response):
+    # favorite_response(response)
     random_cat_data = get_random_cat_picture()
 
     return render(response, "random_cat_picture.html", {'data': random_cat_data})

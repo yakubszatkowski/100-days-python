@@ -134,7 +134,9 @@ LOGOUT_REDIRECT_URL = '/'
 
 #TODO 
 
-    # fix search 
+    # checkbox signal
+    # favorite feature https://www.youtube.com/watch?v=H4QPHLmsZMU
+    # fix background picture stretching in different resolutions
 
     # implement grid system in start.html and other
     # make sidebar responsive, move it to the bottom on smaller screen
@@ -143,5 +145,5 @@ LOGOUT_REDIRECT_URL = '/'
         # e-mail
         # registration date
         # last login
-        # favourites
+        # change password
     # chat between users

@@ -279,6 +279,8 @@ a.sidebar-link:hover{
 
 .cat-pic-container {
     margin: 20px 0;
+    position: relative;
+    display: inline-block;
 }
 
 .cats-button {
@@ -351,9 +353,6 @@ a.sidebar-link:hover{
     transition: 0.5s;
 }
 
-/* .container-center, .form-wrapper {
-    overflow: visible;
-} */
 
 .container-center:has(#search-breed-input:focus),
 .form-wrapper:has(#search-breed-input:focus) {
@@ -424,4 +423,22 @@ ul.autocom-box  {
     width: auto;
     text-decoration: none;
     text-align: center;
+}
+
+.hidden-checkbox {
+    display: none;
+}
+
+.favorite-checkbox {
+    position: absolute;
+    bottom: 10px;
+    right: 20px; 
+    width: 20px;
+    height: 20px;
+    background-image: url('../img/like.png');
+    background-size: cover;
+}
+
+.hidden-checkbox:checked + .favorite-checkbox {
+    background-image: url('../img/like2.png');
 }
