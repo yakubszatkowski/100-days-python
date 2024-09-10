@@ -3,11 +3,14 @@
 <div class="row">
     <div class="col-lg-5 container-center cat-pic-container">
         <img src="{{data.url}}" alt="catpic" class="cat-pic">
-        <form>
-            <input type="checkbox" id="custom-checkbox" class="hidden-checkbox" > 
+        <form id="fav-form">
+            {% csrf_token %} 
+            <input type="checkbox" id="custom-checkbox" class="hidden-checkbox" name="fav-signal"> 
             <label for="custom-checkbox" class="favorite-checkbox"></label>
+            <input type="hidden" id="cat-id" value="{{ id }}">
         </form>
     </div>
+
     <div class="col-lg-7 description">
         <h3 class="header">Description</h3>
         <p>{{ data.breeds.0.description }}</p>
@@ -16,7 +19,9 @@
 </div>
 
 <div class="row">
+
     <h5 class="header">Characteristics</h5>
+
     <div class="col-lg-4 container-center">
         <ul class="list-container">
             <li>

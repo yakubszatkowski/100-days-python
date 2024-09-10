@@ -52,6 +52,7 @@ def show_cat_by_id(id):
     data = response.json()
     return data
 
+
 def get_favorite_cat_pictures():  # in profile.html
     pass
 

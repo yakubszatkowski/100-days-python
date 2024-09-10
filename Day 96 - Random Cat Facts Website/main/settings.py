@@ -134,7 +134,9 @@ LOGOUT_REDIRECT_URL = '/'
 
 #TODO 
 
-    # checkbox signal
+    # checkbox signal via ajax request
+
+    
     # favorite feature https://www.youtube.com/watch?v=H4QPHLmsZMU
     # fix background picture stretching in different resolutions
 
