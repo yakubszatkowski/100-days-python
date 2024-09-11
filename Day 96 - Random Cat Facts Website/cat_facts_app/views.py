@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from .cat_api import *
-from .utils import *
+from .cat_fav_querry import *
+from .models import FavoriteList
+from django.contrib.auth.models import User
+
 
 # Create your views here.
 def home(response):

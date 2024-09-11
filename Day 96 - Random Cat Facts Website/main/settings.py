@@ -134,9 +134,9 @@ LOGOUT_REDIRECT_URL = '/'
 
 #TODO 
 
-    # checkbox signal via ajax request
+    # assigning favorites to the currently logged in user
 
-    
+
     # favorite feature https://www.youtube.com/watch?v=H4QPHLmsZMU
     # fix background picture stretching in different resolutions
 
