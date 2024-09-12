@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .cat_api import *
 from .cat_fav_querry import *
-from .models import FavoriteList
+from .models import Favorite
 from django.contrib.auth.models import User
 
 
@@ -46,3 +46,10 @@ def browse_cats(response):
     cats_data = browse_random_cats()
     
     return render(response, 'browse_cats.html', {'data': cats_data})
+
+
+def browse_favorite_cats(response):
+    favorite_cats_ids = [id.favorite_cat_id for id in cat_favorite_user_request(response)]
+    favorite_cats = favorite_cat_convert_ids_to_data(favorite_cats_ids)
+
+    return render(response, 'browse_cats.html', {'data': favorite_cats}) 

@@ -133,11 +133,8 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 #TODO 
-
-    # assigning favorites to the currently logged in user
-
-
-    # favorite feature https://www.youtube.com/watch?v=H4QPHLmsZMU
+    # check if cat is already favorite
+    # cache
     # fix background picture stretching in different resolutions
 
     # implement grid system in start.html and other
@@ -148,4 +145,4 @@ LOGOUT_REDIRECT_URL = '/'
         # registration date
         # last login
         # change password
-    # chat between users
+    # GAmy2bg8G <- check lap friendly
