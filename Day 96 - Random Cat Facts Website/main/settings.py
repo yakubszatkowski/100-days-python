@@ -134,7 +134,7 @@ LOGOUT_REDIRECT_URL = '/'
 
 #TODO 
     # check if cat is already favorite
-    # cache
+    # caching api requests
     # fix background picture stretching in different resolutions
 
     # implement grid system in start.html and other

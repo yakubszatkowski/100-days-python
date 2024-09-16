@@ -14,7 +14,16 @@ def cat_favorite_ajax_post_request(response):
 
 
 def cat_favorite_user_request(response):
-    return Favorite.objects.filter(user=response.user)
+    user_favorites = Favorite.objects.filter(user=response.user)
+    return [id.favorite_cat_id for id in user_favorites]
+
+
+def is_cat_favorite(response, cat_id):
+    user_favorite_cats_ids = cat_favorite_user_request(response)
+    if cat_id in user_favorite_cats_ids:
+        return True
+    else:
+        return False
 
 
 # http://127.0.0.1:8000/cat/qg0_IodJp

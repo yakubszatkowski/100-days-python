@@ -4,7 +4,7 @@
 {% block content %}
     
     {% if user.is_authenticated %}
-        <h1 class="header">Explore Cats</h1>
+        <h1 class="header">{{ title }}</h1>
         <div class="explore-page-container">
             {% for cat in data %}
             <a href="{% url 'cat' cat.id %}">

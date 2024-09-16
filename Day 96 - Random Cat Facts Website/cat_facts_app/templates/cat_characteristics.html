@@ -5,7 +5,7 @@
         <img src="{{data.url}}" alt="catpic" class="cat-pic">
         <form id="fav-form">
             {% csrf_token %} 
-            <input type="checkbox" id="custom-checkbox" class="hidden-checkbox" name="fav-signal"> 
+            <input type="checkbox" id="custom-checkbox" class="hidden-checkbox" name="fav-signal" {% if favorite %} checked {% endif %}> 
             <label for="custom-checkbox" class="favorite-checkbox"></label>
             <input type="hidden" id="cat-id" value="{{ id }}">
         </form>
