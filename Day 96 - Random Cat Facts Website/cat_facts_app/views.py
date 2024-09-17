@@ -1,17 +1,18 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, response
 from .cat_api import *
 from .cat_fav_querry import *
 from .models import Favorite
-from django.contrib.auth.models import User
 
 
 # Create your views here.
 def home(response):
+
     return render(response, "index.html", {})
 
 
 def start(response):
+
     return render(response, "start.html", {})
 
 
@@ -44,6 +45,7 @@ def cat_by_id(response, id):
         cat_favorite_ajax_post_request(response)
     data = show_cat_by_id(id)
     cat_favorite = is_cat_favorite(response, id)
+
     return render(response, "cat.html", {'data': data, 'id': id, 'favorite': cat_favorite})
 
 
@@ -59,3 +61,9 @@ def browse_favorite_cats(response):
     favorite_cats = favorite_cat_convert_ids_to_data(user_favorite_cats_ids)
 
     return render(response, 'browse_cats.html', {'title': 'Favorite Cats', 'data': favorite_cats}) 
+
+
+def user_profile(response, username):
+    user = response.user
+    if username == user.username:
+        return render(response, 'user_profile.html', {'user': user})

@@ -299,7 +299,17 @@ a.sidebar-link:hover{
     width: 250px;
 }
 
+.profile-list-container {
+    width: 500px;
+}
+
 .list-container li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.profile-list-container li {
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
@@ -441,4 +451,16 @@ ul.autocom-box  {
 
 .hidden-checkbox:checked + .favorite-checkbox {
     background-image: url('../img/like2.png');
+}
+
+.password-reset-button {
+    margin-top: auto;
+    text-align: center;
+    text-decoration: none;
+    width: 200px;
+    padding: 6px;
+    color: rgb(139,69,19);
+    background-color: rgba(255,255,255,.6);
+    border: rgb(139,69,19), solid, 1px;
+    border-radius: 4px;
 }

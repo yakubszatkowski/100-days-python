@@ -1,0 +1,37 @@
+{% extends "base.html" %} 
+{% block title %} Your Profile {% endblock %} 
+
+{% block content %}
+    
+    {% if user.is_authenticated %}
+        <h1 class="header">{{user.username}}'s Profile</h1>
+
+        <div class="row">
+            <div class="col-lg-4 container-center">
+                <ul class="profile-list-container">
+                    <li>
+                        <span>Username:</span>
+                        <span>{{user.username}}</span>
+                    </li>
+                    <li>
+                        <span>E-mail:</span>
+                        <span>{{user.email}}</span>
+                    </li>
+                    <li>
+                        <span>Last login:</span>
+                        <span>{{user.last_login.date}}</span>
+                    </li>
+                    <li>
+                        <span>Register date:</span>
+                        <span>{{user.date_joined.date}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <a href="{% url 'password_change' %}" class="password-reset-button">Reset password</a>
+    {% else %}
+        {% include 'login_register.html' %}
+    {% endif %}
+
+{% endblock %}

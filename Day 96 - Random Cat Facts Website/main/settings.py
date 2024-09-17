@@ -59,7 +59,7 @@ ROOT_URLCONF = 'main.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'register' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request'
             ],
         },
     },
@@ -133,16 +134,8 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 #TODO 
-    # check if cat is already favorite
-    # caching api requests
-    # fix background picture stretching in different resolutions
+    # change username password in profile view https://www.youtube.com/watch?v=ZR8Ymkx30p0
 
     # implement grid system in start.html and other
     # make sidebar responsive, move it to the bottom on smaller screen
-    # create sidebar profile link which when clicked will show:
-        # username
-        # e-mail
-        # registration date
-        # last login
-        # change password
     # GAmy2bg8G <- check lap friendly
