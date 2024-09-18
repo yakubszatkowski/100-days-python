@@ -57,7 +57,6 @@ def browse_cats(response):
 
 def browse_favorite_cats(response):
     user_favorite_cats_ids = cat_favorite_user_request(response)
-    print(user_favorite_cats_ids)
     favorite_cats = favorite_cat_convert_ids_to_data(user_favorite_cats_ids)
 
     return render(response, 'browse_cats.html', {'title': 'Favorite Cats', 'data': favorite_cats}) 

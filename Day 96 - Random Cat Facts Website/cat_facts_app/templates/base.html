@@ -27,6 +27,14 @@
             </div>
 
             <ul class="sidebar-nav">
+
+                <li class="sidebar-item">
+                    <a href="{% url 'home' %}" class="sidebar-link">
+                        <i class="lni lni-home"></i>
+                        <span>About</span>
+                    </a>
+                </li>
+
                 {% if user.is_authenticated %}
                 <li class="sidebar-item">
                     <a href="{% url 'user_profile' request.user.username %}" class="sidebar-link">
@@ -35,13 +43,6 @@
                     </a>
                 </li>
                 {% endif %}
-
-                <li class="sidebar-item">
-                    <a href="{% url 'home' %}" class="sidebar-link">
-                        <i class="lni lni-home"></i>
-                        <span>About</span>
-                    </a>
-                </li>
 
                 <li class="sidebar-item">
                     <a href="{% url 'start' %}" class="sidebar-link">

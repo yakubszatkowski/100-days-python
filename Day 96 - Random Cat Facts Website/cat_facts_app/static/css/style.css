@@ -217,6 +217,7 @@ a.sidebar-link:hover{
     position: relative;
     overflow: hidden;
     height: 250px;
+    text-align: center;
 }
 
 .share-explore-card a::before {
@@ -226,7 +227,7 @@ a.sidebar-link:hover{
     right: 0;
     bottom: 0;
     left: 0;
-    background-position: 100% 20%;
+    background-position: 0% 20%;
     background-size: cover;
     background-repeat: no-repeat;
     border-radius: 40px; 
@@ -297,10 +298,12 @@ a.sidebar-link:hover{
 
 .list-container {
     width: 250px;
+    padding-left: 0;
 }
 
 .profile-list-container {
     width: 500px;
+    padding-left: 0;
 }
 
 .list-container li {
@@ -463,4 +466,93 @@ ul.autocom-box  {
     background-color: rgba(255,255,255,.6);
     border: rgb(139,69,19), solid, 1px;
     border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 60px; 
+        min-width: 100%;
+        display: flex;
+        flex-direction: row;
+        z-index: 1000;
+        transition: all 0.25s ease-in-out;
+        justify-content: space-between;
+    }
+
+    .sidebar-nav {
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+        width: 100%;
+        margin-left: 20px;
+        justify-content: space-between;
+    }
+
+    .sidebar-bottom {
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .sidebar-item {
+        width: 60px; 
+        text-align: center;
+    }
+
+    .sidebar-footer {
+        width: 80px; 
+        text-align: center;
+    }
+
+    .sidebar-link {
+        display: block;
+        padding: 1rem 0;
+        border-left: none;
+        border-top: 3px solid transparent;
+    }
+
+    .sidebar-link i {
+        margin-right: 0;
+        font-size: 1.5rem;
+    }
+
+    a.sidebar-link:hover {
+        background-color: rgba(0, 0, 0, .1);
+        border-top: 3px solid #fff;
+    }
+
+    .d-flex {
+        flex-direction: column;
+    }
+
+    .toggle-btn {
+        padding: 12px 10px 10px 10px;
+    }
+    
+    .sidebar-logo {
+        text-align: center;
+        margin: 0;
+        padding-left: 10px;
+    }
+
+    .main-card {
+        display: flex; 
+        flex-direction: column;
+        width: 100%;
+        min-height: 90%;
+        background-color: rgba(209, 194, 173, 0.85);
+        border: rgb(139,69,19), solid, 1px;
+        border-radius: 40px;
+        z-index: 2;
+        padding: 20px 20px;
+        color: rgb(139,69,19);
+        margin-bottom: 20px;
+    }
+
 }

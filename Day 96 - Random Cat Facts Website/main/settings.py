@@ -134,8 +134,6 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 #TODO 
-    # change username password in profile view https://www.youtube.com/watch?v=ZR8Ymkx30p0
-
-    # implement grid system in start.html and other
-    # make sidebar responsive, move it to the bottom on smaller screen
-    # GAmy2bg8G <- check lap friendly
+    # mobile responsiveness
+    # forgot password
+    # authentication
