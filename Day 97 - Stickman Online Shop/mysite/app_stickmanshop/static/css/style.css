@@ -1,3 +1,139 @@
-body {
-    background-color: red;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Source Code Pro', monospace;
+}
+
+.content {
+    margin: 1em;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    color: #f0bc4d;
+}
+
+a {
+    color: #EAD8B1
+}
+
+.app {
+    display: flex;
+    min-height: 100vh;
+    background-color: #6A9AB0;
+}
+
+.sidebar {
+    flex: 1 1 0;
+    max-width: 200px;
+    padding: 2rem 1rem;
+    border-right: 1px solid #EAD8B1;
+    background-color: #3A6D8C;
+    transition: 0.2s ease-in-out;
+}
+
+.sidebar h3 {
+    margin-bottom: 1rem;
+}
+
+.sidebar .menu {
+    margin: 0 -1rem;
+}
+
+.sidebar .menu .menu-item {
+    display: block;
+    padding: 0.75rem;
+    text-decoration: none;
+    transition: 0.2s ease-in-out;
+}
+
+.sidebar .menu .menu-item:hover,
+.sidebar .menu .menu-item.is-active {
+	color: #f0bc4d;
+	border-right: 5px solid #f0bc4d;
+}
+
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 99px;
+    background-color: #001F3F;
+    cursor: pointer;
+}
+
+.hamburger {
+	position: relative;
+	top: calc(50% - 2px);
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 32px;
+}
+
+.hamburger > span,
+.hamburger > span::before,
+.hamburger > span::after {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  border-radius: 99px;
+  background-color: #FFF;
+  transition-duration: .25s;
+}
+
+.hamburger > span::before {
+    content: '';
+    top: -10px
+}
+
+.hamburger > span::after {
+    content: '';
+    top: 10px
+}
+
+.menu-toggle.is-active .hamburger > span {
+    transform: rotate(45deg);
+  }
+  .menu-toggle.is-active .hamburger > span::before {
+    top: 0;
+    transform: rotate(0deg);
+  }
+  .menu-toggle.is-active .hamburger > span::after {
+    top: 0;
+    transform: rotate(90deg);
+  }
+
+@media (max-width: 1024px) {
+    .sidebar {
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .content {
+        padding-top: 5rem;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -300px;
+        height: 100vh;
+        width: 100%;
+        max-width: 300px;
+        transition: 0.2s ease-in-out;
+        }
+
+    .sidebar.is-active {
+        left: 0;
+    }
 }

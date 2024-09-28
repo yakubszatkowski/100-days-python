@@ -124,4 +124,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# MINE
+#MINE
+    # https://stripe.com/docs/payments/checkout
+    # Color palette: #001F3F, #3A6D8C, #6A9AB0, #EAD8B1
+
+#TODO
+    # responsive sidebar
+

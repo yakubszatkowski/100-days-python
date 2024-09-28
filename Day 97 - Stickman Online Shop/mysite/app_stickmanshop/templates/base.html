@@ -5,12 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}title{% endblock %}</title>
-    
     {% block styles %}
         <link rel="stylesheet" href="{% static 'css/style.css' %}?{% now 'U' %}">
     {% endblock %}
 </head>
 <body>
-    {% block content %} {% endblock %}
+    <div class="app">
+
+        <div class="menu-toggle">
+            <div class="hamburger">
+                <span></span>
+            </div>
+        </div>
+
+        <aside class="sidebar">
+            <h3>Stickman shop</h3>
+
+            <nav class="menu">
+                <a href="#" class="menu-item">Home</a>
+                <a href="#" class="menu-item">Create Stickman</a>
+                <a href="#" class="menu-item">Collection</a>
+                <a href="#" class="menu-item">Login</a>
+                <a href="#" class="menu-item">Register</a>
+            </nav>
+
+        </aside>
+
+        <main class="content">
+            {% block content %} {% endblock %}
+        </main>
+
+    </div>
+
+
+    <script src="{% static 'js/toggle-sidebar.js' %}"></script>
 </body>
 </html>
