@@ -5,7 +5,6 @@ let hiddenInput = document.querySelector('#hidden-breed-input');
 let fetchedBreedList = []
 let data = []
 
-
 async function loadBreeds() {
 	const response = await fetch('/static/json/breeds.json');
 	data = await response.json();

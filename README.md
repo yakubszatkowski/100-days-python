@@ -21,6 +21,10 @@ The goal of the course was to take me from understanding basic Python concepts, 
 <h3 style='color:crimson; text-align: center;'>Only projects from day 82-100 are done entirely by me!</h3>
 <p style='font-style: italic;'>Projects below are ordered from the most recent to the latest.</p>
 
+<h2>Day 96 - Cat browsing website</h2>
+<p>Stack: <b>django, bootstrap5</b></p>
+<img class="img" src="readmegifs/catcurios.gif">
+<p>I created a website where cat fans can browse and discover interesting facts about various cat breeds! This project is my first experience with the Django framework, aimed at building a functional website that allows users to register, log in, and browse cat pictures provided by The Cat API. The first challenge was implementing a sidebar with an expansion effect, revealing options to redirect users to the main page, profile, browsing content, login/logout, and registration. The homepage, where all the content is located, offers options to browse random cats, cats by breed, an explorer page for viewing pictures of 30 random cats, and browsing saved favorite cats. Next steps included creating a cat characteristics page that describes each breed, implementing a smart autofill feature for available cat breeds, and an AJAX response to save favorite cats.</p>
 
 <h2>Day 95 - Space Invaders Game</h2>
 <p>Stack: <b>pygame</b></p>
