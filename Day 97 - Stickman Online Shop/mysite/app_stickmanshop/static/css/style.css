@@ -26,10 +26,13 @@ a {
 .sidebar {
     flex: 1 1 0;
     max-width: 200px;
+    min-width: 200px;
     padding: 2rem 1rem;
     border-right: 1px solid #EAD8B1;
     background-color: #3A6D8C;
     transition: 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar h3 {
@@ -38,6 +41,9 @@ a {
 
 .sidebar .menu {
     margin: 0 -1rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .sidebar .menu .menu-item {
@@ -95,6 +101,19 @@ a {
     top: 10px
 }
 
+.menu-item.login-item,
+.menu-item.register-item {
+    margin-top: auto;
+}
+
+.content {
+    padding: 0 2vw;
+}
+
+.content h1, .content p { 
+    padding-bottom: 1vw;
+}
+
 .menu-toggle.is-active .hamburger > span {
     transform: rotate(45deg);
   }
@@ -107,9 +126,12 @@ a {
     transform: rotate(90deg);
   }
 
+
+
 @media (max-width: 1024px) {
     .sidebar {
         max-width: 150px;
+        min-width: 150px
     }
 }
 
