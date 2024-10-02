@@ -14,6 +14,7 @@
         {% if user.is_authenticated %}
             <p class="header">
                 <a href="{% url 'start' %}" class="link">Click here to view some cats!</a>
+            </p>
         {% else %}
             <p class="footer">
                 To start please head out to <a href="{% url 'login' %}" class="link">login</a> or <a href="{% url 'register' %}" class="link">register</a> page.
