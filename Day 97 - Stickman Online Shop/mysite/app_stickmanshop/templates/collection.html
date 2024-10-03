@@ -1,0 +1,12 @@
+{% extends "base.html" %} 
+
+{% block title %} Stickman Shop {% endblock %} 
+
+
+{% block content %} 
+    {% if user.is_authenticated %}
+        <h1>{{ request.user.username }}'s collection</h1>
+    {% else %}
+        {% include 'login_register.html' %}
+    {% endif %}
+{% endblock %}

@@ -25,10 +25,15 @@
 
             <nav class="menu">
                 <a href="{% url 'home' %}" class="menu-item">Home</a>
-                <a href="#" class="menu-item">Create Stickman</a>
-                <a href="#" class="menu-item">Collection</a>
-                <a href="{% url 'login' %}" class="menu-item login-item">Login</a>
-                <a href="{% url 'register' %}" class="menu-item ">Register</a>
+                <a href="{% url 'create' %}" class="menu-item">Create Stickman</a>
+                <a href="{% url 'collection' %}" class="menu-item">Collection</a>
+                <a href="{% url 'profile' %}" class="menu-item">Profile</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="menu-item login-item">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="menu-item login-item">Login</a>
+                    <a href="{% url 'register' %}" class="menu-item ">Register</a>
+                {% endif %}
             </nav>
 
         </aside>
