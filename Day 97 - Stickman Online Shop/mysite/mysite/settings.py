@@ -136,4 +136,6 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 #TODO
-    # responsive sidebar
+    # base stickman picture posted from backend
+    # send ajax signal to backend
+    # based on signal change picture via PIL

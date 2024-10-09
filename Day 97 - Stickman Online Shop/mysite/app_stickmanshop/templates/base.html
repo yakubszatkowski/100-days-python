@@ -26,9 +26,9 @@
             <nav class="menu">
                 <a href="{% url 'home' %}" class="menu-item">Home</a>
                 <a href="{% url 'create' %}" class="menu-item">Create Stickman</a>
-                <a href="{% url 'collection' %}" class="menu-item">Collection</a>
-                <a href="{% url 'profile' %}" class="menu-item">Profile</a>
                 {% if user.is_authenticated %}
+                    <a href="{% url 'collection' %}" class="menu-item">Collection</a>
+                    <a href="{% url 'profile' %}" class="menu-item">Profile</a>
                     <a href="{% url 'logout' %}" class="menu-item login-item">Logout</a>
                 {% else %}
                     <a href="{% url 'login' %}" class="menu-item login-item">Login</a>

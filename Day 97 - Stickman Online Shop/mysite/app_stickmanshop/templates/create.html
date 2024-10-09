@@ -6,6 +6,20 @@
 {% block content %} 
     {% if user.is_authenticated %}
         <h1>Create your stickman</h1>
+
+        <div class="creator-menu">
+            <div class="stickman-items">
+
+            </div>
+
+            <div class="stickman-picture">
+                <img src="../static/img/base_stickman.jpg" alt="stickman">
+            </div>
+            
+            <div class="stickman-colors">
+
+            </div>
+        </div>
     {% else %}
         {% include 'login_register.html' %}
     {% endif %}
