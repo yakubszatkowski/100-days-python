@@ -2,25 +2,45 @@
 
 {% block title %} Stickman Shop {% endblock %} 
 
-
 {% block content %} 
     {% if user.is_authenticated %}
         <h1>Create your stickman</h1>
 
         <div class="creator-menu">
             <div class="stickman-items">
-
+                <h3>Dress</h3>
+                <ul class="items-list">
+                    <li><label><input type="checkbox">Hat</label></li>
+                    <li><label><input type="checkbox">T-Shirt</label></li>
+                    <li><label><input type="checkbox">Pants</label></li>
+                    <li><label><input type="checkbox">Boots</label></li>
+                </ul>
             </div>
 
             <div class="stickman-picture">
                 <img src="data:image/jpeg;charset=utf-8;base64, {{ stickman_image }}" alt="stickman">
             </div>
-            
-            <div class="stickman-colors">
 
+            <div class="stickman-colors">
+                <h3>Color</h3>
+                <ul class="color-list">
+                    <li><input type="radio" name="item_color" style="background-color: white"></li>
+                    <li><input type="radio" name="item_color" style="background-color: black"></li>
+                    <li><input type="radio" name="item_color" style="background-color: gray"></li>
+                    <li><input type="radio" name="item_color" style="background-color: red "></li>
+                    <li><input type="radio" name="item_color" style="background-color: green"></li>
+                    <li><input type="radio" name="item_color" style="background-color: blue"></li>
+                    <li><input type="radio" name="item_color" style="background-color: yellow"></li>
+                    <li><input type="radio" name="item_color" style="background-color: orange"></li>
+                    <li><input type="radio" name="item_color" style="background-color: purple"></li>
+                    <li><input type="radio" name="item_color" style="background-color: brown"></li>
+                    <li><input type="radio" name="item_color" style="background-color: pink"></li>
+                    <li><input type="radio" name="item_color" style="background-color: cyan"></li>
+                </ul>
             </div>
         </div>
     {% else %}
         {% include 'login_register.html' %}
     {% endif %}
+
 {% endblock %}

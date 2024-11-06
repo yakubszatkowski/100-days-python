@@ -127,15 +127,32 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#MINE
-    # https://stripe.com/docs/payments/checkout
-    # Color palette: #001F3F, #3A6D8C, #6A9AB0, #EAD8B1 - https://colorhunt.co/palette/001f3f3a6d8c6a9ab0ead8b1
-
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+#MINE
+    # https://stripe.com/docs/payments/checkout
+    # Color palette: #001F3F, #3A6D8C, #6A9AB0, #EAD8B1 - https://colorhunt.co/palette/001f3f3a6d8c6a9ab0ead8b1
+
 #TODO
-    # base stickman picture posted from backend
+    # checkbox bind
+    # view color of 
+    # responsiveness of create page 
+
     # send ajax signal to backend
     # based on signal change picture via PIL
+
+
+# white     – RGB(255, 255, 255)
+# black     – RGB(0, 0, 0)
+# gray      – RGB(128, 128, 128)
+# red       – RGB(255, 0, 0)
+# green     – RGB(0, 255, 0)
+# blue      – RGB(0, 0, 255)
+# yellow    – RGB(255, 255, 0)
+# orange    – RGB(255, 165, 0)
+# purple    – RGB(128, 0, 128)
+# brown     – RGB(165, 42, 42)
+# pink      – RGB(255, 192, 203)
+# cyan      – RGB(0, 255, 255)

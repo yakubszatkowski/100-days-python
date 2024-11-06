@@ -191,6 +191,48 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     background-color: rgba(255,255,255,.6);
 }
 
+.creator-menu ul {
+    padding: 0 5px;
+    align-items: center;
+    list-style: none;
+}
+
+.creator-menu h3 {
+    color: #3A6D8C;
+    text-align: center;
+    border-bottom: 1px solid #6A9AB0;
+    padding: 8px 0;
+    margin-bottom: 0;
+}
+
+.stickman-items li {
+    padding: 5px 10px;
+}
+
+.stickman-items li label {
+    width: 100%;
+    vertical-align: middle;
+    color: #3A6D8C;
+}
+
+.stickman-items li input[type="checkbox"] {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.stickman-items li input[type="radio"] {
+    vertical-align: middle;
+    /* display: none; */
+}
+
+.stickman-items li + li {
+    border-top: 1px solid #6A9AB0;
+}
+
+.stickman-items li:last-child {
+    border-bottom: 1px solid #6A9AB0;
+}
+
 .stickman-colors {
     float: right;
     width: 20%;
@@ -199,15 +241,48 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
 }
 
 .stickman-picture {
+    display: flex;
     margin: 0 8px;
     width: 60%; 
-    text-align: center; 
+    max-height: 100%;
+    justify-content: center;
 }
 
 .stickman-picture img {
+    max-height: 100%;
     max-width: 100%;
-    height: auto
 }
+
+.color-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+}
+
+.color-list li {
+    padding: 16px;
+}
+
+.color-list input[type="radio"] {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.color-list input[type="radio"]:checked {
+    box-shadow: 0px 0px 4px 1px #6A9AB0
+}
+
 
 @media (max-width: 1024px) {
     .sidebar {
