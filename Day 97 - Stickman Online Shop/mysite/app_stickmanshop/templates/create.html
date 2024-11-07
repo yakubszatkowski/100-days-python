@@ -6,7 +6,8 @@
     {% if user.is_authenticated %}
         <h1>Create your stickman</h1>
 
-        <div class="creator-menu">
+        <form class="creator-menu" id="creator-form">
+            {% csrf_token %} 
             <div class="stickman-items">
                 <h3>Dress</h3>
                 <ul class="items-list">
@@ -38,7 +39,7 @@
                     <li><input type="radio" name="item_color" style="background-color: cyan"></li>
                 </ul>
             </div>
-        </div>
+        </form>
     {% else %}
         {% include 'login_register.html' %}
     {% endif %}

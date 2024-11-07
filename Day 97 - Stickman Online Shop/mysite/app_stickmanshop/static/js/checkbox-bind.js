@@ -1,16 +1,33 @@
-const item_menu = document.querySelector('.stickman-items');
+const itemMenu = document.querySelector('.stickman-items');
 
 
-if (item_menu) {
-    const items = item_menu.querySelectorAll('li')
-    const color_label = document.querySelector('.stickman-colors h3')
-    const color_radio_buttons = document.querySelectorAll('.stickman-colors input')
+if (itemMenu) {
 
-    for (let i = 0; i<items.length; i++) {
+    const items = itemMenu.querySelectorAll('label') // change to input and grab parent?
+    const coloLabel = document.querySelector('.stickman-colors h3')
+    const colorRadioButtons = document.querySelectorAll('.stickman-colors input')
+    let item = ''
+    let choosedColor = ''
+
+    for (let i = 0; i < items.length; i++) {
         items[i].addEventListener('click', () => {
-            let item = items[i].innerText
-            color_label.innerText = item + '\'s color'
-            color_radio_buttons[0].checked = true
+            item = items[i].innerText
+            coloLabel.innerText = item + '\'s color'
+            colorRadioButtons[0].checked = true
+            console.log(item + ': rgb(255, 255, 255)')    
         })
     }
+
+    for (let j = 0; j < colorRadioButtons.length; j++) {
+        colorRadioButtons[j].addEventListener('change', () => {
+            choosedColor = getComputedStyle(colorRadioButtons[j])['background-color']
+            let itemAndColor = item + ': '+ choosedColor
+            console.log(itemAndColor)
+            
+        })
+    }
+
+    
+
+    
 } 
