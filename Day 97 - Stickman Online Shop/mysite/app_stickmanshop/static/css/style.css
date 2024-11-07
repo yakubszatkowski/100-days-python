@@ -117,6 +117,8 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
 } 
 
 .content p { 
+    text-align: justify;
+    padding: 0 10px;
     padding-bottom: 1vw;
 }
 
@@ -220,10 +222,6 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     margin-right: 10px;
 }
 
-.stickman-items li input[type="radio"] {
-    vertical-align: middle;
-    /* display: none; */
-}
 
 .stickman-items li + li {
     border-top: 1px solid #6A9AB0;
@@ -238,6 +236,7 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     width: 20%;
     height: 100%;
     background-color: rgba(255,255,255,.6);
+    overflow-y: auto;
 }
 
 .stickman-picture {
@@ -258,7 +257,7 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
-
+    overflow-y: scroll;
 }
 
 .color-list li {
@@ -289,6 +288,19 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
         max-width: 150px;
         min-width: 150px
     }
+
+    .content {
+        margin: 0;
+        padding: 5px;
+    }
+
+    .creator-menu {
+        padding: 2px;
+    }
+
+    .stickman-picture {
+        margin: 2px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -314,4 +326,20 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     .sidebar.is-active {
         left: 0;
     }
+
+    .stickman-items label {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stickman-items label {
+        align-items: center;
+        font-size: 12px;
+    }
+
+    .stickman-items label input[type="checkbox"] {
+        margin: 0;
+    }
+
+
 }

@@ -136,10 +136,9 @@ LOGOUT_REDIRECT_URL = '/'
     # Color palette: #001F3F, #3A6D8C, #6A9AB0, #EAD8B1 - https://colorhunt.co/palette/001f3f3a6d8c6a9ab0ead8b1
 
 #TODO
-    # implement jQuery
     # responsiveness of create page 
-
     # send ajax signal to backend
+
     # based on signal change picture via PIL
 
 
