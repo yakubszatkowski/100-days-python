@@ -1,7 +1,7 @@
-const menu_toggle = document.querySelector('.menu-toggle');
-const sidebar = document.querySelector('.sidebar');
+const menu_toggle = $('.menu-toggle');
+const sidebar = $('.sidebar');
 
-menu_toggle.addEventListener('click', () => {
-    menu_toggle.classList.toggle('is-active');
-    sidebar.classList.toggle('is-active');
+menu_toggle.on('click', function() {
+    menu_toggle.toggleClass('is-active');
+    sidebar.toggleClass('is-active');
 });
