@@ -283,6 +283,7 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
 }
 
 
+
 @media (max-width: 1024px) {
     .sidebar {
         max-width: 150px;
@@ -321,7 +322,7 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
         width: 100%;
         max-width: 300px;
         transition: 0.2s ease-in-out;
-        }
+    }
 
     .sidebar.is-active {
         left: 0;
@@ -340,6 +341,4 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     .stickman-items label input[type="checkbox"] {
         margin: 0;
     }
-
-
 }

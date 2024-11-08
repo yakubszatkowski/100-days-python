@@ -6,7 +6,7 @@
     {% if user.is_authenticated %}
         <h1>Create your stickman</h1>
 
-        <form class="creator-menu" id="creator-form">
+        <form class="creator-menu" id="creator-form" method="post">
             {% csrf_token %} 
             <div class="stickman-items">
                 <h3>Dress</h3>
@@ -39,6 +39,7 @@
                     <li><input type="radio" name="item_color" style="background-color: cyan"></li>
                 </ul>
             </div>
+            <!-- <button type="submit", name="save", value="save">Save</button> -->
         </form>
     {% else %}
         {% include 'login_register.html' %}

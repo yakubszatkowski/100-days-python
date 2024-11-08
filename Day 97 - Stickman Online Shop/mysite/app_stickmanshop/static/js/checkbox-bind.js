@@ -1,11 +1,11 @@
 const itemMenu = $('.stickman-items');
 
-
 if (itemMenu) {
 
     const items = $('.stickman-items label')
     const colorLabel = $('.stickman-colors h3')
     const colorRadioButtons = $('.stickman-colors input')
+    const form = $('#creator-form')
     let item = ''
     let choosedColor = ''
 
@@ -18,7 +18,14 @@ if (itemMenu) {
     colorRadioButtons.on('change', function() {
         choosedColor = $(this).css('background-color')
         finalItem = item + ': ' + choosedColor
-        console.log(finalItem)
-    })
 
+        $.ajax({
+            url: "create",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                'finalItem': finalItem
+            },
+        });
+    })
 } 

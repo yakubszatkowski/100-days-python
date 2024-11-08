@@ -138,9 +138,7 @@ LOGOUT_REDIRECT_URL = '/'
 #TODO
     # responsiveness of create page 
     # send ajax signal to backend
-
     # based on signal change picture via PIL
-
 
 # white     – RGB(255, 255, 255)
 # black     – RGB(0, 0, 0)

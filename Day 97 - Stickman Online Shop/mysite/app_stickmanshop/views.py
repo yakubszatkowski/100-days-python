@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.conf import settings
 from PIL import Image
-from io import StringIO, BytesIO
+from io import BytesIO
 import os, base64
 
 # Create your views here.
@@ -11,6 +11,10 @@ def home(request):
 
 
 def create(request):
+    if request.method == "POST":
+        request_getdata = request.POST.get('finalItem', None)
+        print(request_getdata)
+
     path_static_img = os.path.join(settings.BASE_DIR, 'app_stickmanshop', 'static', 'img')
     base_img_stickman = Image.open(f'{path_static_img}/base_stickman.jpg').convert('RGB')
     
