@@ -1,31 +1,49 @@
 const itemMenu = $('.stickman-items');
 
-if (itemMenu) {
+function ajaxPost(itemMap) {
+    console.log(itemMap)
 
-    const items = $('.stickman-items label')
-    const colorLabel = $('.stickman-colors h3')
-    const colorRadioButtons = $('.stickman-colors input')
-    const form = $('#creator-form')
-    let item = ''
-    let choosedColor = ''
-
-    items.on('click', function() {
-        item = $(this).text();
-        colorLabel.text(item + '\'s color')
-        colorRadioButtons.first().prop('checked', true).trigger('change')
+    $.ajax({
+        url: "create",
+        type: "POST",
+        data: {
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            ajax_data: JSON.stringify(itemMap)
+        },
+        // success: function(response) {
+        //     image.attr('src', 'data:image/jpeg;charset=utf-8;base64, ' + response.stickman_image)
+        // }
     });
+}
+
+if (itemMenu) {
+    const items = $('.stickman-items label input')
+    const colorRadioButtons = $('.stickman-colors input')
+    const colorLabel = $('.stickman-colors h3')
+    let itemMap = {}
+    let item = ''
+
+    items.on('change', function() {
+        let itemCheckbox = $(this)
+        item = itemCheckbox.parent().text()
+
+        if (itemCheckbox.is(':checked')) {
+            itemMap[item] = ''
+            colorRadioButtons.first().prop('checked', true).trigger('change')
+            colorLabel.text(item + '\'s color')
+        } 
+        else if (itemCheckbox.not(':checked')) {
+            delete itemMap[item]
+            item = Object.keys(itemMap)[Object.keys(itemMap).length-1]
+            colorLabel.text(item ? item + '\'s color' : 'Color')
+            ajaxPost(itemMap)
+        }
+    })
 
     colorRadioButtons.on('change', function() {
-        choosedColor = $(this).css('background-color')
-        finalItem = item + ': ' + choosedColor
+        let choosedColor = $(this).css('background-color')
+        itemMap[item] = choosedColor
 
-        $.ajax({
-            url: "create",
-            type: "POST",
-            data: {
-                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-                'finalItem': finalItem
-            },
-        });
+        ajaxPost(itemMap)
     })
 } 

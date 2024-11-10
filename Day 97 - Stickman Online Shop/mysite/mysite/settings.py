@@ -136,8 +136,9 @@ LOGOUT_REDIRECT_URL = '/'
     # Color palette: #001F3F, #3A6D8C, #6A9AB0, #EAD8B1 - https://colorhunt.co/palette/001f3f3a6d8c6a9ab0ead8b1
 
 #TODO
-    # responsiveness of create page 
-    # send ajax signal to backend
+    # create dress pictures in gimp
+    # fill in color of dresses - https://stackoverflow.com/questions/20548590/python-imaging-library-can-i-simply-fill-my-image-with-one-color
+
     # based on signal change picture via PIL
 
 # white     – RGB(255, 255, 255)
