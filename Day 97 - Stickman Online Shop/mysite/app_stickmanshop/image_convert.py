@@ -3,10 +3,10 @@ from PIL import ImageDraw
 import base64, re
 
 coordinates = {
-    'Boots': ((73, 629), (324, 629)),
-    'Hat': ((200, 70)),
-    'Pants': ((200, 450)),
-    'T-Shirt': ((210, 300))
+    'Boots': [(73, 629), (324, 629)],
+    'Hat': [(200, 70)],
+    'Pants': [(200, 450)],
+    'T-Shirt': [(210, 300)]
 }
 
 
@@ -24,10 +24,7 @@ def png_to_base64(png_image):
 def fill_color(base_img, item, color):
     item_coordinates = coordinates[item]
     rgb_tuple = tuple(map(int, re.findall(r'\d+', color)))
-    if item == 'Boots':
-        for coordinate in item_coordinates:
-            ImageDraw.floodfill(base_img, xy=coordinate, value=rgb_tuple)
-    else:
-        ImageDraw.floodfill(base_img, xy=item_coordinates, value=rgb_tuple)
+    for coordinate in item_coordinates:
+        ImageDraw.floodfill(base_img, xy=coordinate, value=rgb_tuple)
     return base_img
     
