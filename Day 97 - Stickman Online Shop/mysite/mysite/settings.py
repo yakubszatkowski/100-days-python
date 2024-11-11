@@ -137,7 +137,7 @@ LOGOUT_REDIRECT_URL = '/'
 
 #TODO
     # create dress pictures in gimp
-    # fill in color of dresses - https://stackoverflow.com/questions/20548590/python-imaging-library-can-i-simply-fill-my-image-with-one-color
+    # fill in color of dresses - 
 
     # based on signal change picture via PIL
 

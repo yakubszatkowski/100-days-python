@@ -26,12 +26,13 @@ def create(request):
                 item_color = item_data[item]
                 item_img = Image.open(f'{path_static_img}/{item}.png')
                 base_img_stickman.paste(item_img, (0,0), item_img)
-                stickman_image_base64 = png_to_base64(base_img_stickman)
+                colored_picture = fill_color(base_img_stickman, item, item_color)
+                stickman_image_base64 = png_to_base64(colored_picture)
         else:
             stickman_image_base64 = png_to_base64(base_img_stickman)
-        
+
         return JsonResponse({'stickman_image': stickman_image_base64})
-        
+
     else:
         stickman_image_base64 = png_to_base64(base_img_stickman)
         return render(request, 'create.html', {'stickman_image': stickman_image_base64})
