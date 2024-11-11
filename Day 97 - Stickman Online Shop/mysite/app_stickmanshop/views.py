@@ -20,17 +20,21 @@ def create(request):
     if request.method == "POST":
         ajax_data = request.POST.get('ajax_data', None)
         item_data = json.loads(ajax_data)
-        print(type(item_data), item_data)
 
-        # item, color = request_getdata.split('_')
-        # item_img = Image.open(f'{path_static_img}/{item}.png')
-        # base_img_stickman.paste(item_img, (0,0), item_img)
-        # stickman_image_base64 = png_to_base64(base_img_stickman)
-        # return JsonResponse({'stickman_image': stickman_image_base64})
-
-    # else:
-    stickman_image_base64 = png_to_base64(base_img_stickman)
-    return render(request, 'create.html', {'stickman_image': stickman_image_base64})
+        if item_data:
+            for item in item_data:
+                item_color = item_data[item]
+                item_img = Image.open(f'{path_static_img}/{item}.png')
+                base_img_stickman.paste(item_img, (0,0), item_img)
+                stickman_image_base64 = png_to_base64(base_img_stickman)
+        else:
+            stickman_image_base64 = png_to_base64(base_img_stickman)
+        
+        return JsonResponse({'stickman_image': stickman_image_base64})
+        
+    else:
+        stickman_image_base64 = png_to_base64(base_img_stickman)
+        return render(request, 'create.html', {'stickman_image': stickman_image_base64})
 
 
 def collection(request):
