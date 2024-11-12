@@ -44,10 +44,11 @@
         <form class="purchase-options" method="POST">
             <h4 id="total">Total: $ {{ money_total }}</h4>
             {% csrf_token %} 
-            <input type="text" placeholder="Enter stickman name" maxlength="20" id="stickman-name" >
+            <input type="text" placeholder="Enter stickman name" maxlength="20" id="stickman-name" name="stickman_name">
             <input type="submit" id="save" name="save_stickman" value="Save">
             <input type="submit" id="purchase" name="purchase_stickman" value="Purchase">
         </form>
+
     {% else %}
         {% include 'login_register.html' %}
     {% endif %}

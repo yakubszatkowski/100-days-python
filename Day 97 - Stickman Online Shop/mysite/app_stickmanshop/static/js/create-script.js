@@ -11,12 +11,12 @@ $(document).ready(function(){
                 type: "POST",
                 data: {
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-                    ajax_data: JSON.stringify(itemMap)
+                    ajax_data: JSON.stringify(itemMap),
                 },
                 success: function(response) {
                     image.attr('src', 'data:image/jpeg;charset=utf-8;base64, ' + response.stickman_image)
                     totalLabel.text('Total: $ ' + response.money_total)
-                }
+                },
             });
         }
 

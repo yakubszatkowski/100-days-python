@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
+from django.http import JsonResponse
 from PIL import Image
 from .image_convert import *
+from .models import SavedStickman
 import os, json
 
-from django.http import JsonResponse
 
-# Create your views here.
 def home(request):
     
     return render(request, 'index.html', {})
@@ -23,24 +23,31 @@ def create(request):
         item_data = json.loads(ajax_data) if ajax_data else {}
         save = request.POST.get('save_stickman', None)
         purchase = request.POST.get('purchase_stickman', None)
+        name = request.POST.get('stickman_name', None)
 
-        if save and item_data:
-            print('saved')
-        elif purchase and item_data:
+        if save:
+            last_item_data = request.session.get('last_item_data', None)
+            if last_item_data:
+                stickman = SavedStickman(stickman_name=name, stickman_data=last_item_data)
+                stickman.save()
+                request.user.saved_stickmen.add(stickman)
+                user_saved = SavedStickman.objects.filter(user=request.user)
+                for saves in user_saved:
+                    print(saves)
+                request.session['last_item_data'] = None
+
+        elif purchase:
             print('purchased')
         elif ajax_data:
             if item_data:
+                context['stickman_image'] = png_to_base64(dressing_stickman(path_static_img, base_img_stickman, item_data))
                 context['money_total'] = pricing(item_data)
-                for item in item_data:
-                    item_color = item_data[item]
-                    item_img = Image.open(f'{path_static_img}/{item}.png')
-                    base_img_stickman.paste(item_img, (0,0), item_img)
-                    colored_picture = fill_color(base_img_stickman, item, item_color)
-                    context['stickman_image'] = png_to_base64(colored_picture)
+                request.session['last_item_data'] = ajax_data 
             else:
                 context['stickman_image'] = png_to_base64(base_img_stickman)
                 context['money_total'] = '0.00'
             return JsonResponse(context)
+            
 
     return render(request, 'create.html', context)
 

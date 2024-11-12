@@ -1,5 +1,5 @@
 from io import BytesIO
-from PIL import ImageDraw
+from PIL import ImageDraw, Image
 import base64, re
 
 coordinates = {
@@ -28,10 +28,19 @@ def fill_color(base_img, item, color):
 
     return base_img
     
-    
+
+def dressing_stickman(path_static_img, base_img_stickman, item_data):
+    for item in item_data:
+        item_color = item_data[item]
+        item_img = Image.open(f'{path_static_img}/{item}.png')
+        base_img_stickman.paste(item_img, (0,0), item_img)
+        colored_picture = fill_color(base_img_stickman, item, item_color)
+
+    return colored_picture
+
+
 def pricing(items):
     final_price = 0
-
     for item in items:
         color = items[item]
         item_price = 0.20

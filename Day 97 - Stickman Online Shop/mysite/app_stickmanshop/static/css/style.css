@@ -311,6 +311,16 @@ input#stickman-name {
     text-align: center;
     padding: 0 20px;
     margin: 0 10px;
+
+}
+
+.purchase-options input[type="submit"] {
+    border-radius: 10px;
+    transition: .25s;
+}
+
+.purchase-options input:hover {
+    background-color: #6A9AB0;
 }
 
 .purchase-options input[type="text"] {
