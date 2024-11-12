@@ -11,7 +11,6 @@ coordinates = {
 
 
 def png_to_base64(png_image):
-    
     png_image.convert('RGB')
     buffer_stickman = BytesIO()
     png_image.save(buffer_stickman, 'PNG')
@@ -26,5 +25,17 @@ def fill_color(base_img, item, color):
     rgb_tuple = tuple(map(int, re.findall(r'\d+', color)))
     for coordinate in item_coordinates:
         ImageDraw.floodfill(base_img, xy=coordinate, value=rgb_tuple)
+
     return base_img
     
+    
+def pricing(items):
+    final_price = 0
+
+    for item in items:
+        color = items[item]
+        item_price = 0.20
+        color_price = 0.10 if color != 'rgb(255, 255, 255)' else 0
+        final_price += item_price + color_price
+
+    return f'{final_price:.2f}'

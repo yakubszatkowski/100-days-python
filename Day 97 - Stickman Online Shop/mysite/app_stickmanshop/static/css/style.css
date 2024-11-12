@@ -17,6 +17,8 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     color: #EAD8B1
 }
 
+
+
 .app {
     display: flex;
     min-height: 100vh;
@@ -113,7 +115,7 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
 
 .content h1 { 
     text-align: center;
-    padding-bottom: 1vw;
+    padding-bottom: 5px;
 } 
 
 .content p { 
@@ -181,7 +183,7 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 80vh;
+    height: 78vh;
     padding: 8px;
     background-color: rgba(255,255,255,.6);
 }
@@ -280,7 +282,54 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     box-shadow: 0px 0px 4px 1px #6A9AB0
 }
 
+.purchase-options {
+    display: flex;
+    
+    margin: 0 1vw;
+    margin-top: 1vh;
+    align-items: center;
+    height: auto;
+    
+}
 
+h4#total {
+    color:#f1c158;
+    margin-bottom: 0;
+}
+
+input#stickman-name {
+    float: right;
+    margin-left: auto;
+}
+
+.purchase-options input {
+    background-color: #3A6D8C;
+    color: #EAD8B1;
+    border: 2px solid;
+    width: 150px;
+    height: 30px;
+    text-align: center;
+    padding: 0 20px;
+    margin: 0 10px;
+}
+
+.purchase-options input[type="text"] {
+    width: 300px;
+    height: 30px;
+    border-width: 1px;
+    border: none;
+    border-bottom: 1px solid #f1c158;
+    background-color: transparent;
+    color: #f1c158;
+    text-align: center;
+    &:focus {
+        outline: none;
+        border-bottom: 2px solid #f1c158;
+    }
+    &::placeholder{
+        color: #f1c15873;
+    }
+}
 
 @media (max-width: 1024px) {
     .sidebar {
@@ -307,6 +356,9 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
 
     .color-list ul {
         overflow-y: scroll;
+    }
+    .purchase-options input[type="text"] {
+        width: 200px;
     }
 }
 
@@ -346,5 +398,34 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
 
     .stickman-items label input[type="checkbox"] {
         margin: 0;
+    }
+
+    .purchase-options h4 {
+        font-size: 15px;
+    }
+
+    .purchase-options input {
+        width: 80px;
+        text-align: center;
+        padding: 0;
+    }
+
+    input#save {
+        margin-left: auto;
+    }
+
+    .purchase-options input[type="text"] {
+        position: absolute;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #001F3F;
+        border-bottom: 1px solid #001f3f6e;
+        &::placeholder {
+            color: #001f3f6e;
+        }
+        &:focus {
+            border-bottom: 2px solid #001f3f6e;
+        }
     }
 }
