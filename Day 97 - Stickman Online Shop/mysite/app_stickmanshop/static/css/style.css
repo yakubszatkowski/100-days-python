@@ -35,6 +35,7 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     transition: 0.2s ease-in-out;
     display: flex;
     flex-direction: column;
+    z-index: 10;
 }
 
 .sidebar h3 {
@@ -186,6 +187,7 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     height: 78vh;
     padding: 8px;
     background-color: rgba(255,255,255,.6);
+    border-radius: 10px;
 }
 
 .stickman-items {
@@ -276,7 +278,11 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     outline: none;
     cursor: pointer;
     transition: 0.25s;
+    &:disabled{
+        opacity: .4;
+    }
 }
+
 
 .color-list input[type="radio"]:checked {
     box-shadow: 0px 0px 4px 1px #6A9AB0
@@ -341,36 +347,6 @@ input#stickman-name {
     }
 }
 
-@media (max-width: 1024px) {
-    .sidebar {
-        max-width: 150px;
-        min-width: 150px
-    }
-
-    .content {
-        margin: 0;
-        padding: 5px;
-    }
-
-    .creator-menu {
-        padding: 2px;
-    }
-
-    .stickman-picture {
-        margin: 2px;
-    }
-
-    .stickman-colors {
-        overflow-y: auto;
-    }
-
-    .color-list ul {
-        overflow-y: scroll;
-    }
-    .purchase-options input[type="text"] {
-        width: 200px;
-    }
-}
 
 .collection-container {
     display: flex;
@@ -379,6 +355,8 @@ input#stickman-name {
     width: 100%;
     height: 85vh;
     justify-content: space-evenly;
+    overflow-y: auto;
+    border-radius: 10px;
 }
 
 .picture-container {
@@ -407,6 +385,55 @@ input#stickman-name {
     top: 90%;
     transform: translate(50%,-50%);
     text-shadow: 0 0 1px #001F3F;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #EAD8B1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #f0bc4d ;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #001F3F;
+}
+
+@media (max-width: 1024px) {
+    .sidebar {
+        max-width: 150px;
+        min-width: 150px
+    }
+
+    .content {
+        margin: 0;
+        padding: 5px;
+    }
+
+    .creator-menu {
+        padding: 2px;
+    }
+
+    .stickman-picture {
+        margin: 2px;
+    }
+
+    .stickman-colors {
+        overflow-y: auto;
+    }
+
+    .color-list ul {
+        overflow-y: scroll;
+    }
+
+    .purchase-options input[type="text"] {
+        width: 200px;
+    }
 }
 
 @media (max-width: 768px) {

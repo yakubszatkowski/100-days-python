@@ -28,6 +28,15 @@ $(document).ready(function(){
         let itemMap = {}
         let item = ''
 
+        items.on('change', function () {
+            let checkboxes = $('.items-list input:checked')
+            if (checkboxes.length > 0) {
+                colorRadioButtons.prop('disabled', false);
+            } else {
+                colorRadioButtons.prop('disabled', true)
+            }
+        })
+
         items.on('change', function() {
             let itemCheckbox = $(this)
             item = itemCheckbox.parent().text()

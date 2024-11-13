@@ -136,11 +136,10 @@ LOGOUT_REDIRECT_URL = '/'
     # Color palette: #001F3F, #3A6D8C, #6A9AB0, #EAD8B1 - https://colorhunt.co/palette/001f3f3a6d8c6a9ab0ead8b1
 
 #TODO
-    # disable/enable buttons for save/purchase depending on input
-    # save stickman to collection
+    # disable/enable color checkboxes
     # collection page
     # payment method -> https://www.youtube.com/watch?v=hZYWtK2k1P8
     # prevent image of being saved or make it harder
-
-    # save image to collection
     # purchase image
+
+    #  
