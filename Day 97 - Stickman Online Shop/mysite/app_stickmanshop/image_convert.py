@@ -39,7 +39,7 @@ def dressing_stickman(path_static_img, base_img_stickman, item_data):
     return colored_picture
 
 
-def pricing(items):
+def stickman_pricing(items):
     final_price = 0
     for item in items:
         color = items[item]

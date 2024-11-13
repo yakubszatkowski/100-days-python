@@ -27,34 +27,43 @@ def create(request):
 
         if save:
             last_item_data = request.session.get('last_item_data', None)
+            last_image_data = request.session.get('last_image_data', None)
             if last_item_data:
-                stickman = SavedStickman(stickman_name=name, stickman_data=last_item_data)
+                stickman = SavedStickman(
+                    stickman_name=name, 
+                    stickman_clothes=last_item_data,
+                    stickman_img_base64=last_image_data
+                )
                 stickman.save()
+                print(len(name))
                 request.user.saved_stickmen.add(stickman)
-                user_saved = SavedStickman.objects.filter(user=request.user)
-                for saves in user_saved:
-                    print(saves)
-                request.session['last_item_data'] = None
+                request.session['last_item_data'], request.session['last_image_data'] = None, None
 
         elif purchase:
             print('purchased')
+
         elif ajax_data:
             if item_data:
-                context['stickman_image'] = png_to_base64(dressing_stickman(path_static_img, base_img_stickman, item_data))
-                context['money_total'] = pricing(item_data)
-                request.session['last_item_data'] = ajax_data 
+                dressed_stickman = dressing_stickman(path_static_img, base_img_stickman, item_data)
+                context['stickman_image'] = png_to_base64(dressed_stickman)
+                context['money_total'] = stickman_pricing(item_data)
+                request.session['last_item_data'] = item_data
+                request.session['last_image_data'] = context['stickman_image']
             else:
                 context['stickman_image'] = png_to_base64(base_img_stickman)
                 context['money_total'] = '0.00'
             return JsonResponse(context)
-            
 
     return render(request, 'create.html', context)
 
 
 def collection(request):
+    user_saved_stickmans = SavedStickman.objects.filter(user=request.user)
 
-    return render(request, 'collection.html', {})
+    ids = [stickman.id for stickman in user_saved_stickmans]
+    print(ids)
+
+    return render(request, 'collection.html', {'stickmans_data': user_saved_stickmans})
 
 
 def profile(request):

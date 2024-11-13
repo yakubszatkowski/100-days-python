@@ -6,6 +6,15 @@
 {% block content %} 
     {% if user.is_authenticated %}
         <h1>{{ request.user.username }}'s collection</h1>
+        <div class="collection-container">
+            {% for stickman_data in stickmans_data %}
+                <div class="picture-container">
+                    <img src="data:image/jpeg;charset=utf-8;base64, {{ stickman_data.stickman_img_base64 }}" alt="stickman">
+                    <h4 class="stickman-name">{{stickman_data.stickman_name}}</h4>
+                </div>
+
+            {% endfor %}
+        </div>
     {% else %}
         {% include 'login_register.html' %}
     {% endif %}
