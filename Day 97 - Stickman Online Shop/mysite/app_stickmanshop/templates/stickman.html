@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+
+{% block title %} {{ stickman.stickman_name }} the stickman {% endblock %} 
+
+
+{% block content %} 
+    {% if user.is_authenticated %}
+        <h1>This is {{ stickman.stickman_name }}</h1>
+
+        <div class="fav-stickman-container">
+            <img src="data:image/jpeg;charset=utf-8;base64, {{ stickman.stickman_img_base64 }}" alt="stickman">
+
+            <form class="purchase-options" method="POST">
+                <h4 id="total">Total: $ {{ stickman.price }}0</h4>
+                {% csrf_token %} 
+                <input type="submit" id="delete" name="delete_stickman" value="Delete">
+                <input type="submit" id="purchase" name="purchase_stickman" value="Purchase">
+            </form>
+        </div>
+
+    {% else %}
+        {% include 'login_register.html' %}
+    {% endif %}
+
+{% endblock %}
+
+
+

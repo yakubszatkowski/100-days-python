@@ -1,0 +1,15 @@
+{% extends "base.html" %} 
+
+{% block title %} {{ stickman.stickman_name }} the stickman {% endblock %} 
+
+
+{% block content %} 
+    {% if user.is_authenticated %}
+        <p class="header">
+            Content unavailable
+        </p>
+    {% else %}
+        {% include 'login_register.html' %}
+    {% endif %}
+
+{% endblock %}

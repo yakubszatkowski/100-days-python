@@ -6,4 +6,6 @@ urlpatterns = [
     path('create', views.create, name='create'),
     path('collection', views.collection, name='collection'),
     path('profile', views.profile, name='profile'),
+    path('stickman/<str:id>', views.stickman, name="stickman"),
+    # path('wrong_path',)
 ]

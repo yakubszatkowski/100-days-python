@@ -1,6 +1,6 @@
 {% extends "base.html" %} 
 
-{% block title %} Stickman Shop {% endblock %} 
+{% block title %} Stickman Collection {% endblock %} 
 
 
 {% block content %} 
@@ -8,11 +8,10 @@
         <h1>{{ request.user.username }}'s collection</h1>
         <div class="collection-container">
             {% for stickman_data in stickmans_data %}
-                <div class="picture-container">
+                <a href="{% url 'stickman' stickman_data.id %}" class="picture-container">
                     <img src="data:image/jpeg;charset=utf-8;base64, {{ stickman_data.stickman_img_base64 }}" alt="stickman">
                     <h4 class="stickman-name">{{stickman_data.stickman_name}}</h4>
-                </div>
-
+                </a>
             {% endfor %}
         </div>
     {% else %}
