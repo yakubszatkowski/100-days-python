@@ -45,7 +45,9 @@ def create(request):
                 )
                 stickman.save()
                 request.user.saved_stickmen.add(stickman)
-                request.session['last_item_data'], request.session['last_image_data'], request.session['last_price'] = None, None, None
+                request.session['last_item_data'] = None
+                request.session['last_image_data'] = None
+                request.session['last_price'] = None
 
         elif purchase:
             ic('purchase')
@@ -55,7 +57,6 @@ def create(request):
                 dressed_stickman = dressing_stickman(path_static_img, base_img_stickman, item_data)
                 context['stickman_image'] = png_to_base64(dressed_stickman)
                 context['money_total'] = stickman_pricing(item_data)
-
                 request.session['last_item_data'] = item_data
                 request.session['last_image_data'] = context['stickman_image']
                 request.session['last_price'] = context['money_total']
@@ -74,18 +75,17 @@ def collection(request):
 
 
 def stickman(request, id):
-    user_stickman = SavedStickman.objects.get(id=id)
+    user_stickman = SavedStickman.objects.filter(id=id).first()
 
     if user_stickman in request.user.saved_stickmen.all():
         if request.method == "POST":
             delete = request.POST.get('delete_stickman', None)
             purchase = request.POST.get('purchase_stickman', None)
             if delete:
-                ic('delete')
+                user_stickman.delete()
+                return redirect('collection')
             elif purchase:
                 ic('purchase')
-
         return render(request, 'stickman.html', {'stickman': user_stickman})
-    
     else:
         return render(request, 'content_unavailable.html')
