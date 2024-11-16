@@ -23,5 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app_stickmanshop.urls')),
     path('register/', register_views.register, name='register'),
-    path('', include('django.contrib.auth.urls')),
+    path('account/', include('django.contrib.auth.urls')),
 ]
