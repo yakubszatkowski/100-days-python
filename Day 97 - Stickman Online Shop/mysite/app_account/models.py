@@ -4,11 +4,11 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 
 class AppUserManager(BaseUserManager):
 
-    def create_user(self, email, username, password=None):
-        if not email:
-            raise ValueError('An email is required')
+    def create_user(self, username, email, password=None):
         if not username:
             raise ValueError('A username is required')
+        if not email:
+            raise ValueError('An email is required')
         if not password:
             raise ValueError('A password is required')
         
@@ -22,11 +22,11 @@ class AppUserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, username, password=None):
-        if not email:
-            raise ValueError('An email is required')
+    def create_superuser(self, username, email, password=None):
         if not username:
             raise ValueError('A username is required')
+        if not email:
+            raise ValueError('An email is required')
         if not password:
             raise ValueError('A password is required')
         
@@ -57,8 +57,8 @@ class AppUser(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
     objects = AppUserManager()
 
     def __str__(self):
