@@ -38,8 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # My apps
     'app_stickmanshop',
-    'register.apps.RegisterConfig',
+    'app_account',
+
+    # Custom apps
     'crispy_forms',
     'crispy_bootstrap5',
 ]
@@ -132,8 +136,14 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 #MINE
-    # https://stripe.com/docs/payments/checkout
-    # Color palette: #001F3F, #3A6D8C, #6A9AB0, #EAD8B1 - https://colorhunt.co/palette/001f3f3a6d8c6a9ab0ead8b1
+
 
 #TODO
+    # Custom user model
+    # Custom admin view
+    # Custom user registration
+    # Logging in and logging out
+    # Updating user information
+    # Password change and password reset
+
     # payment method -> https://www.youtube.com/watch?v=hZYWtK2k1P8
