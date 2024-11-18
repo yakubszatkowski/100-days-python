@@ -12,7 +12,6 @@ class AppUserManager(BaseUserManager):
         if not password:
             raise ValueError('A password is required')
         
-        
         user = self.model(
             email=self.normalize_email(email),
             username=username
@@ -43,7 +42,6 @@ class AppUserManager(BaseUserManager):
         return user
 
 
-
 class AppUser(AbstractBaseUser):
     # Uniques
     user_id = models.AutoField(primary_key=True)
@@ -63,3 +61,9 @@ class AppUser(AbstractBaseUser):
 
     def __str__(self):
         return self.username
+
+    def has_perm(self, perm, obj=None):
+        return self.is_admin
+    
+    def has_module_perms(self, app_label):
+        return True

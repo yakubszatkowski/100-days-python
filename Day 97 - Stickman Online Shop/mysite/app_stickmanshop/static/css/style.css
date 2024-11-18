@@ -17,8 +17,6 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     color: #EAD8B1
 }
 
-
-
 .app {
     display: flex;
     min-height: 100vh;
@@ -59,6 +57,27 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
 .sidebar .menu .menu-item:hover,
 .sidebar .menu .menu-item.is-active {
 	color: #f0bc4d;
+	border-right: 5px solid #f0bc4d;
+}
+
+.logout-button-form {
+    margin-top: auto;
+}
+
+.logout-button {
+    margin-top: auto;
+    border: none;
+    text-align: left;
+    text-decoration: none;
+    color: #EAD8B1;
+    background-color: transparent;
+    width: 100%;
+    padding: 0.75rem;
+    transition: 0.2s ease-in-out;
+}
+
+.logout-button:hover {
+    color: #f0bc4d;
 	border-right: 5px solid #f0bc4d;
 }
 
@@ -160,7 +179,7 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     color: #f1c158;
 }
 
-.password-reset-button, button {
+.auth-button {
     background-color: #3A6D8C;
     color: #EAD8B1;
     border: 2px solid;
@@ -174,7 +193,7 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
     text-align: center;
 }
 
-.password-reset-button:hover, button:hover {
+.auth-button:hover{
     background-color: #567e97;
     color: #e6d8bcfd;
 }

@@ -16,12 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from app_account import views as auth_views
+from register.views import UserRegistrationView
+from django.contrib.auth.views import LogoutView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app_stickmanshop.urls')),
-
-    # path('register/', register_views.register, name='register'),
-    # path('account/', include('django.contrib.auth.urls')),
+    path('', include('django.contrib.auth.urls')),
+    path('register/', UserRegistrationView.as_view(), name='register'),
+    path('logout/', LogoutView.as_view(), {'next_page': '/'}, name='logout'),
 ]

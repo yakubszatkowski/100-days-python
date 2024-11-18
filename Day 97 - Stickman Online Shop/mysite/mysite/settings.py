@@ -41,11 +41,12 @@ INSTALLED_APPS = [
 
     # My apps
     'app_stickmanshop',
-    'app_account',
+    # 'app_account',
 
     # Custom apps
     'crispy_forms',
     'crispy_bootstrap5',
+    'register.apps.RegisterConfig'
 ]
 
 MIDDLEWARE = [
@@ -131,21 +132,20 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+#Mine
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
-# LOGIN_REDIRECT_URL = '/'
-# LOGOUT_REDIRECT_URL = '/'
-AUTH_USER_MODEL = 'app_account.AppUser'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+AUTH_USER_MODEL = 'register.AppUser'
 
-
-#MINE
 
 
 #TODO
-    # Custom user model
-    # Custom admin view
     # Custom user registration
     # Logging in and logging out
     # Updating user information
     # Password change and password reset
 
     # payment method -> https://www.youtube.com/watch?v=hZYWtK2k1P8
+

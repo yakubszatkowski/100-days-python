@@ -1,5 +1,5 @@
 from django.db import models
-from app_account.models import AppUser
+from register.models import AppUser
 
 # Create your models here.
 class SavedStickman(models.Model):
