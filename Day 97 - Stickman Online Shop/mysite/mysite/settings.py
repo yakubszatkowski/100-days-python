@@ -26,6 +26,9 @@ SECRET_KEY = os.environ.get('django_secret_key_stickman_shop')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 ALLOWED_HOSTS = []
 
 
@@ -38,11 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # My apps
     'app_stickmanshop',
-    # 'app_account',
-
     # Custom apps
     'crispy_forms',
     'crispy_bootstrap5',
@@ -140,12 +140,5 @@ LOGOUT_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'register.AppUser'
 
 
-
 #TODO
-    # Custom user registration
-    # Logging in and logging out
-    # Updating user information
-    # Password change and password reset
-
     # payment method -> https://www.youtube.com/watch?v=hZYWtK2k1P8
-
