@@ -24,6 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app_stickmanshop.urls')),
     path('', include('django.contrib.auth.urls')),
+    path('payment/', include('user_payments.urls')),
     path('register/', UserRegistrationView.as_view(), name='register'),
     path('logout/', LogoutView.as_view(), {'next_page': '/'}, name='logout'),
+    
 ]

@@ -41,12 +41,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # My apps
-    'app_stickmanshop',
-    # Custom apps
+
+    # Added apps
     'crispy_forms',
     'crispy_bootstrap5',
-    'register.apps.RegisterConfig'
+    'register.apps.RegisterConfig',
+    
+    # My apps
+    'app_stickmanshop',
+    'user_payments',
 ]
 
 MIDDLEWARE = [
@@ -138,7 +141,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'register.AppUser'
-
 
 #TODO
     # payment method -> https://www.youtube.com/watch?v=hZYWtK2k1P8
