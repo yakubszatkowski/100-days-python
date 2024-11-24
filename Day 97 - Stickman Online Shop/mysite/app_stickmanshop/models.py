@@ -8,7 +8,7 @@ class SavedStickman(models.Model):
     stickman_name = models.CharField(max_length=20)
     stickman_clothes = models.JSONField()
     stickman_img_base64 = models.CharField(max_length=60000)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self) -> str:
         return f"{self.user.username} - {self.stickman_name}"

@@ -16,4 +16,3 @@ class UserPayment(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.stripe_checkout_id} - Paid: {self.payment_bool}'
-    

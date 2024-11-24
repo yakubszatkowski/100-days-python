@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import os
+from environ import Env
+env = Env()
+env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('django_secret_key_stickman_shop')
+SECRET_KEY = env('DJANGO_MAIN_KEY', default='django_main')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -138,9 +140,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #Mine
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+
 AUTH_USER_MODEL = 'register.AppUser'
 
+BASE_URL = 'http://127.0.0.1:8000/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY_TEST', default='secret')
+STRIPE_WEBHOOK_SECRET = env('STRIPE_WEEBHOOK_SECRET', default='weebhook')
+PRODUCT_ID = env('PRODUCT_ID', default='product')
+
+
 #TODO
+    # checkout with input price
     # payment method -> https://www.youtube.com/watch?v=hZYWtK2k1P8

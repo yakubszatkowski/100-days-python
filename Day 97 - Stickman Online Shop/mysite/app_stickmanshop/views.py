@@ -6,9 +6,6 @@ from .image_convert import *
 from .models import SavedStickman
 import os, json
 
-from icecream import ic
-
-
 def home(request):
     
     return render(request, 'index.html', {})
@@ -48,9 +45,10 @@ def create(request):
                 request.session['last_item_data'] = None
                 request.session['last_image_data'] = None
                 request.session['last_price'] = None
+                return redirect('collection')
 
         elif purchase:
-            ic('purchase')
+            print('purchase')
 
         elif ajax_data:
             if item_data:
@@ -74,18 +72,18 @@ def collection(request):
     return render(request, 'collection.html', {'stickmans_data': user_saved_stickmans})
 
 
-def stickman(request, id):
-    user_stickman = SavedStickman.objects.filter(id=id).first()
+# def stickman(request, id):
+    # user_stickman = SavedStickman.objects.filter(id=id).first()
 
-    if user_stickman in request.user.saved_stickmen.all():
-        if request.method == "POST":
-            delete = request.POST.get('delete_stickman', None)
-            purchase = request.POST.get('purchase_stickman', None)
-            if delete:
-                user_stickman.delete()
-                return redirect('collection')
-            elif purchase:
-                ic('purchase')
-        return render(request, 'stickman.html', {'stickman': user_stickman})
-    else:
-        return render(request, 'content_unavailable.html')
+    # if user_stickman in request.user.saved_stickmen.all():
+    #     if request.method == "POST":
+    #         delete = request.POST.get('delete_stickman', None)
+    #         purchase = request.POST.get('purchase_stickman', None)
+    #         if delete:
+    #             user_stickman.delete()
+    #             return redirect('collection')
+    #         elif purchase:
+    #             print('purchase')
+    #     return render(request, 'stickman.html', {'stickman': user_stickman})
+
+    # return render(request, 'content_unavailable.html')

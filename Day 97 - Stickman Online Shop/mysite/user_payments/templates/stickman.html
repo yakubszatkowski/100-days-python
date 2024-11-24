@@ -11,7 +11,7 @@
             <img src="data:image/jpeg;charset=utf-8;base64, {{ stickman.stickman_img_base64 }}" alt="stickman">
 
             <form class="purchase-options" method="POST">
-                <h4 id="total">Total: $ {{ stickman.price }}0</h4>
+                <h4 id="total">Total: $ {{ stickman.price }}</h4>
                 {% csrf_token %} 
                 <input type="submit" id="delete" name="delete_stickman" value="Delete">
                 <input type="submit" id="purchase" name="purchase_stickman" value="Purchase">

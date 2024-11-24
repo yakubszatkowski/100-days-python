@@ -27,5 +27,4 @@ urlpatterns = [
     path('payment/', include('user_payments.urls')),
     path('register/', UserRegistrationView.as_view(), name='register'),
     path('logout/', LogoutView.as_view(), {'next_page': '/'}, name='logout'),
-    
 ]
