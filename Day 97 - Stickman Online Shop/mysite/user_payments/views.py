@@ -67,14 +67,14 @@ def stickman(request, id):
 def payment_successful(request):
     checkout_session_id = request.GET.get('session_id', None)
 
-    if checkout_session_id:
-        session = stripe.checkout.Session.retrieve(checkout_session_id)
-        customer_id = session.customer
+    # if checkout_session_id:
+    #     session = stripe.checkout.Session.retrieve(checkout_session_id)
+    #     customer_id = session.customer
 
-        user_payment = UserPayment.objects.get(stripe_checkout_id=checkout_session_id)
-        user_payment.stripe_customer_id = customer_id
-        user_payment.payment_bool = True
-        user_payment.save()
+    #     user_payment = UserPayment.objects.get(stripe_checkout_id=checkout_session_id)
+    #     user_payment.stripe_customer_id = customer_id
+    #     user_payment.payment_bool = True
+    #     user_payment.save()
 
     return render(request, 'payment_successful.html')
 
@@ -83,7 +83,9 @@ def payment_cancelled(request):
     return render(request, 'payment_cancelled.html')
 
 
-# TEST STRIPE CLI
+# TEST WITH CLI
+# stripe login --api-key *APIKEY*
+# # stripe listen --forward-to http://127.0.0.1:8000/payment/stripe_webhook
 
 import logging
 logger = logging.getLogger(__name__)
@@ -91,33 +93,23 @@ logger = logging.getLogger(__name__)
 @require_POST
 @csrf_exempt
 def stripe_webhook(request):
-    logger.info("Webhook received.")
     endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
     payload = request.body
     signature_header = request.META.get('HTTP_STRIPE_SIGNATURE', '')
 
-    print(endpoint_secret)
-
     try:
         event = stripe.Webhook.construct_event(payload, signature_header, endpoint_secret)
-        logger.info(f"Event type: {event['type']}")
-    except ValueError as e:
-        logger.error("Invalid payload")
-        return HttpResponse(status=400)
-    except stripe.error.SignatureVerificationError as e:
-        logger.error("Invalid signature")
+    except ValueError:
         return HttpResponse(status=400)
 
     if event['type'] == 'checkout.session.completed':
+        print('worked')
         session = event['data']['object']
         checkout_session_id = session.get('id')
-        try:
-            user_payment = UserPayment.objects.get(stripe_checkout_id=checkout_session_id)
-            user_payment.stripe_customer_id = session.get('customer')
-            user_payment.payment_bool = True
-            user_payment.save()
-            logger.info("Payment updated successfully.")
-        except UserPayment.DoesNotExist:
-            logger.error(f"No UserPayment found for checkout_session_id: {checkout_session_id}")
+        user_payment = UserPayment.objects.get(stripe_checkout_id=checkout_session_id)
+        user_payment.stripe_customer_id = session.get('customer')
+        user_payment.payment_bool = True
+        user_payment.save()
+        print('worked')
 
     return HttpResponse(status=200)
