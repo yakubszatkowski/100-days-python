@@ -14,7 +14,8 @@
                 <h4 id="total">Total: $ {{ stickman.price }}</h4>
                 {% csrf_token %} 
                 <input type="submit" id="delete" name="delete_stickman" value="Delete">
-                <input type="submit" id="purchase" name="purchase_stickman" value="Purchase">
+                <input type="submit" id="purchase" name="purchase_stickman" value="Purchase" 
+                    {% if payment_status %} disabled {% endif %}>
             </form>
         </div>
 

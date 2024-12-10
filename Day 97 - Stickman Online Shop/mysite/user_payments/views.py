@@ -5,7 +5,9 @@ from django.shortcuts import render, redirect, reverse, HttpResponse
 from django.conf import settings
 from app_stickmanshop.models import SavedStickman
 from .models import UserPayment
+from .utils import checkout
 import stripe
+
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 product_id = settings.PRODUCT_ID
@@ -14,6 +16,7 @@ product_id = settings.PRODUCT_ID
 @login_required(login_url='login')
 def stickman(request, id):
     user_stickman = SavedStickman.objects.filter(id=id).first()
+    
 
     if user_stickman in request.user.saved_stickmen.all():
 
@@ -29,7 +32,7 @@ def stickman(request, id):
                 # Creating UserPayment object in my database
                 initial_user_payment = UserPayment(
                     user = request.user,
-                    stickman_id = user_stickman,
+                    stickman_id = user_stickman.id,
                     payment_bool = False,
                 )
 
@@ -67,14 +70,8 @@ def stickman(request, id):
 def payment_successful(request):
     checkout_session_id = request.GET.get('session_id', None)
 
-    # if checkout_session_id:
-    #     session = stripe.checkout.Session.retrieve(checkout_session_id)
-    #     customer_id = session.customer
-
-    #     user_payment = UserPayment.objects.get(stripe_checkout_id=checkout_session_id)
-    #     user_payment.stripe_customer_id = customer_id
-    #     user_payment.payment_bool = True
-    #     user_payment.save()
+    if checkout_session_id:
+        checkout(checkout_session_id)
 
     return render(request, 'payment_successful.html')
 
@@ -83,12 +80,6 @@ def payment_cancelled(request):
     return render(request, 'payment_cancelled.html')
 
 
-# TEST WITH CLI
-# stripe login --api-key *APIKEY*
-# # stripe listen --forward-to http://127.0.0.1:8000/payment/stripe_webhook
-
-import logging
-logger = logging.getLogger(__name__)
 
 @require_POST
 @csrf_exempt
@@ -103,13 +94,8 @@ def stripe_webhook(request):
         return HttpResponse(status=400)
 
     if event['type'] == 'checkout.session.completed':
-        print('worked')
         session = event['data']['object']
         checkout_session_id = session.get('id')
-        user_payment = UserPayment.objects.get(stripe_checkout_id=checkout_session_id)
-        user_payment.stripe_customer_id = session.get('customer')
-        user_payment.payment_bool = True
-        user_payment.save()
-        print('worked')
+        checkout(checkout_session_id)
 
     return HttpResponse(status=200)

@@ -4,15 +4,14 @@ from django.http import JsonResponse
 from PIL import Image
 from .image_convert import *
 from .models import SavedStickman
+from user_payments.models import UserPayment
 import os, json
 
 def home(request):
-    
     return render(request, 'index.html', {})
 
 
 def profile(request):
-
     return render(request, 'profile.html', {})
 
 
@@ -71,19 +70,3 @@ def collection(request):
 
     return render(request, 'collection.html', {'stickmans_data': user_saved_stickmans})
 
-
-# def stickman(request, id):
-    # user_stickman = SavedStickman.objects.filter(id=id).first()
-
-    # if user_stickman in request.user.saved_stickmen.all():
-    #     if request.method == "POST":
-    #         delete = request.POST.get('delete_stickman', None)
-    #         purchase = request.POST.get('purchase_stickman', None)
-    #         if delete:
-    #             user_stickman.delete()
-    #             return redirect('collection')
-    #         elif purchase:
-    #             print('purchase')
-    #     return render(request, 'stickman.html', {'stickman': user_stickman})
-
-    # return render(request, 'content_unavailable.html')

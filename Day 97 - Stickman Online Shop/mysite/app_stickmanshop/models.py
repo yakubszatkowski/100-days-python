@@ -1,10 +1,11 @@
 from django.db import models
 from register.models import AppUser
 
-# Create your models here.
+
 class SavedStickman(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='saved_stickmen', null=True) 
+    user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='saved_stickmen', null=True)
+    payment_bool = models.BooleanField(default=False)
     stickman_name = models.CharField(max_length=20)
     stickman_clothes = models.JSONField()
     stickman_img_base64 = models.CharField(max_length=60000)

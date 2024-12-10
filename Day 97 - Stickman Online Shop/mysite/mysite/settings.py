@@ -140,19 +140,26 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #Mine
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
-
 AUTH_USER_MODEL = 'register.AppUser'
 
 BASE_URL = 'http://127.0.0.1:8000/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-
 STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY_TEST', default='secret')
 STRIPE_WEBHOOK_SECRET = env('STRIPE_WEEBHOOK_SECRET', default='weebhook')
 PRODUCT_ID = env('PRODUCT_ID', default='product')
 
 
+# TEST WITH CLI
+# stripe login --api-key *APIKEY*
+# stripe listen --forward-to http://127.0.0.1:8000/payment/stripe_webhook
+
 #TODO
-    # checkout with input price
-    # payment method -> https://www.youtube.com/watch?v=hZYWtK2k1P8
+    # collection view - label with purchased
+    # stickman view - disable button
+
+    # try production
+    # host on raspberry pi
+    # try payment
+    # style e-mail and send it to myself

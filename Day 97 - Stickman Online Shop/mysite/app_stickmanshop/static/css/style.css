@@ -360,9 +360,15 @@ input#stickman-name {
     transition: .25s;
 }
 
-.purchase-options input:hover {
+.purchase-options input:hover:not([disabled]) {
     background-color: #6A9AB0;
 }
+
+.purchase-options input:disabled {
+    opacity: .4;
+    transition: none;
+}
+
 
 .purchase-options input[type="text"] {
     width: 300px;
