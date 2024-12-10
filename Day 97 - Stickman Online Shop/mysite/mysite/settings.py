@@ -12,11 +12,14 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from environ import Env
+import os
+
 env = Env()
 env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,12 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('DJANGO_MAIN_KEY', default='django_main')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -150,17 +150,29 @@ STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY_TEST', default='secret')
 STRIPE_WEBHOOK_SECRET = env('STRIPE_WEEBHOOK_SECRET', default='weebhook')
 PRODUCT_ID = env('PRODUCT_ID', default='product')
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='product')
+EMAIL_HOST_PASSWORD = env('APP_PASSWORD', default='product')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER', default='product')
 
 # TEST WITH CLI
 # stripe login --api-key *APIKEY*
 # stripe listen --forward-to http://127.0.0.1:8000/payment/stripe_webhook
 
 #TODO
-    # collection label
-    # purchase in app_stickmanshop.views
-    # email styling
-
     # try production
+    # change password email styling
+    # load static files in production
+
+    # check responsiveness
+    
     # host on raspberry pi
     # try real payment
-    # style e-mail and send it to myself
+    
+
+x = '''
+    send_mail('Test Subject','This is a test message.','djangotesting12324@gmail.com',['yakub.szatkowski@gmail.com'], fail_silently=False)
+    '''

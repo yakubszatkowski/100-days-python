@@ -17,6 +17,8 @@ def save_stickman(request, name):
         request.session['last_image_data'] = None
         request.session['last_price'] = None
 
+        return stickman.id
+
 
 def stickman_pricing(items):
     final_price = 0.50

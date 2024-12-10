@@ -7,6 +7,7 @@ from .utils import save_stickman, stickman_pricing
 from PIL import Image
 import os, json
 
+
 def home(request):
     return render(request, 'index.html', {})
 
@@ -33,8 +34,8 @@ def create(request):
             return redirect('collection')
 
         elif purchase:
-            save_stickman(request, name)
-            print('purchase')
+            stickman_id = save_stickman(request, name)
+            return redirect(f'payment/stickman/{stickman_id}')
 
         elif ajax_data:
             if item_data:
