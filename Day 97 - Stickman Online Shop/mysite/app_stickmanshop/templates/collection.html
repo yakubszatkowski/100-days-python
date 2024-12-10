@@ -9,6 +9,9 @@
         <div class="collection-container">
             {% for stickman_data in stickmans_data %}
                 <a href="{% url 'stickman' stickman_data.id %}" class="picture-container">
+                    {% if stickman_data.payment_bool %} 
+                        <h4 class="purchase">Purchased!</h4>
+                    {% endif %}
                     <img src="data:image/jpeg;charset=utf-8;base64, {{ stickman_data.stickman_img_base64 }}" alt="stickman">
                     <h4 class="stickman-name">{{stickman_data.stickman_name}}</h4>
                 </a>

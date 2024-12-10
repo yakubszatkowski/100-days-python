@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import JsonResponse
-from PIL import Image
-from .image_convert import *
+from .image_convert import png_to_base64, dressing_stickman
 from .models import SavedStickman
-from user_payments.models import UserPayment
+from .utils import save_stickman, stickman_pricing
+from PIL import Image
 import os, json
 
 def home(request):
@@ -29,24 +29,11 @@ def create(request):
         name = request.POST.get('stickman_name', None)
 
         if save:
-            last_item_data = request.session.get('last_item_data', None)
-            last_image_data = request.session.get('last_image_data', None)
-            last_price = request.session.get('last_price', None)
-            if last_item_data:
-                stickman = SavedStickman(
-                    stickman_name=name, 
-                    stickman_clothes=last_item_data,
-                    stickman_img_base64=last_image_data,
-                    price=last_price
-                )
-                stickman.save()
-                request.user.saved_stickmen.add(stickman)
-                request.session['last_item_data'] = None
-                request.session['last_image_data'] = None
-                request.session['last_price'] = None
-                return redirect('collection')
+            save_stickman(request, name)
+            return redirect('collection')
 
         elif purchase:
+            save_stickman(request, name)
             print('purchase')
 
         elif ajax_data:
@@ -69,4 +56,3 @@ def collection(request):
     user_saved_stickmans = SavedStickman.objects.filter(user=request.user)
 
     return render(request, 'collection.html', {'stickmans_data': user_saved_stickmans})
-

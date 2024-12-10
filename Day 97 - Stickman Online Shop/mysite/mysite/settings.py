@@ -156,10 +156,11 @@ PRODUCT_ID = env('PRODUCT_ID', default='product')
 # stripe listen --forward-to http://127.0.0.1:8000/payment/stripe_webhook
 
 #TODO
-    # collection view - label with purchased
-    # stickman view - disable button
+    # collection label
+    # purchase in app_stickmanshop.views
+    # email styling
 
     # try production
     # host on raspberry pi
-    # try payment
+    # try real payment
     # style e-mail and send it to myself

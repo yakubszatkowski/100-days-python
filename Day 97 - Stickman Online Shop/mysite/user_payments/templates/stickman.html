@@ -15,7 +15,7 @@
                 {% csrf_token %} 
                 <input type="submit" id="delete" name="delete_stickman" value="Delete">
                 <input type="submit" id="purchase" name="purchase_stickman" value="Purchase" 
-                    {% if payment_status %} disabled {% endif %}>
+                    {% if stickman.payment_bool %} disabled {% endif %}>
             </form>
         </div>
 

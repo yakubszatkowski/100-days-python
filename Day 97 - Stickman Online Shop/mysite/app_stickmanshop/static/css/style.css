@@ -428,6 +428,18 @@ input#stickman-name {
     text-shadow: 0 0 1px #001F3F;
 }
 
+.purchase {
+    background-color: #567e97be;
+    position: absolute;
+    text-align: center;
+    left: 5%;
+    width: 250px;
+    top: 12%;
+    transform: translate(50%,-50%);
+    transform: rotate(30deg);
+    text-shadow: 0 0 1px #001F3F;
+}
+
 ::-webkit-scrollbar {
     width: 5px;
 }

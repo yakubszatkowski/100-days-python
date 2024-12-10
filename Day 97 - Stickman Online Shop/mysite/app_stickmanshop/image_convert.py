@@ -37,14 +37,3 @@ def dressing_stickman(path_static_img, base_img_stickman, item_data):
         colored_picture = fill_color(base_img_stickman, item, item_color)
 
     return colored_picture
-
-
-def stickman_pricing(items):
-    final_price = 0.50
-    for item in items:
-        color = items[item]
-        item_price = 0.20
-        color_price = 0.10 if color != 'rgb(255, 255, 255)' else 0
-        final_price += item_price + color_price
-
-    return f'{final_price:.2f}'
