@@ -325,10 +325,12 @@ a, form li, div#id_username_helptext, div#id_password2_helptext {
 
 .purchase-options {
     display: flex;
+    
     margin: 0 1vw;
     margin-top: 1vh;
     align-items: center;
     height: auto;
+    
 }
 
 h4#total {

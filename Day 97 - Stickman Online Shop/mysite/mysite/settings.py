@@ -141,6 +141,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #Mine
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 AUTH_USER_MODEL = 'register.AppUser'
+STATIC_ROOT = BASE_DIR / 'static'
 
 BASE_URL = 'http://127.0.0.1:8000/'
 LOGIN_REDIRECT_URL = '/'
@@ -163,16 +164,9 @@ DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER', default='product')
 # stripe listen --forward-to http://127.0.0.1:8000/payment/stripe_webhook
 
 #TODO
-    # try production
     # change password email styling
-    # load static files in production
-
     # check responsiveness
-    
+    #
+
     # host on raspberry pi
     # try real payment
-    
-
-x = '''
-    send_mail('Test Subject','This is a test message.','djangotesting12324@gmail.com',['yakub.szatkowski@gmail.com'], fail_silently=False)
-    '''
