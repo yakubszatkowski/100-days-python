@@ -165,7 +165,7 @@ DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER', default='product')
 
 
 #TODO
-    # send e-mail with stickman picture after purchase
+    
 
-    # host on raspberry pi
+    # host on raspberry pi 
     # try real payment
