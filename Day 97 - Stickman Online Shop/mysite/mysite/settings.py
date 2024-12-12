@@ -163,10 +163,9 @@ DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER', default='product')
 # stripe login --api-key *APIKEY*
 # stripe listen --forward-to http://127.0.0.1:8000/payment/stripe_webhook
 
+
 #TODO
-    # change password email styling
-    # check responsiveness
-    #
+    # send e-mail with stickman picture after purchase
 
     # host on raspberry pi
     # try real payment

@@ -1,16 +1,34 @@
-from app_stickmanshop.models import SavedStickman
-from .models import UserPayment
-import stripe
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from io import BytesIO
+
+def send_email_stickman(session, user_stickman):
+
+    subject = f'{user_stickman.stickman_name} now belongs to you!'
+    html_message = render_to_string("purchase_successful.html", {'stickman': user_stickman})
+    plain_message = strip_tags(html_message)
+    from_email = settings.EMAIL_HOST_USER
+    to = [session['customer_details']['email']]
 
 
-def checkout(checkout_session_id):
-    session = stripe.checkout.Session.retrieve(checkout_session_id)
-    customer_id = session.customer
-    user_payment = UserPayment.objects.get(stripe_checkout_id=checkout_session_id)
-    user_payment.stripe_customer_id = customer_id
-    user_payment.payment_bool = True
-    user_payment.save()
+    # Convert base64 string to an image
+    # Save the image in memory buffer as PNG
+    buffer = BytesIO(f"data:image/jpeg;base64,{user_stickman.stickman_img_base64}")
+    
+    email = EmailMultiAlternatives(
+        subject, 
+        plain_message, 
+        from_email, 
+        to
+    )
 
-    user_stickman = SavedStickman.objects.filter(id=user_payment.stickman_id).first()
-    user_stickman.payment_bool = True
-    user_stickman.save()
+    # Attach image to the e-mail
+    email.attach(
+        
+    )
+
+    email.attach_alternative(html_message, "text/html")
+    email.send()
+    

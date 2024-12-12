@@ -5,9 +5,11 @@ from django.shortcuts import render, redirect, reverse, HttpResponse
 from django.conf import settings
 from app_stickmanshop.models import SavedStickman
 from .models import UserPayment
-from .utils import checkout
+from .utils import send_email_stickman
+# from django.core.mail import send_mail, EmailMultiAlternatives
+# from django.template.loader import render_to_string
+# from django.utils.html import strip_tags
 import stripe
-
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 product_id = settings.PRODUCT_ID
@@ -15,8 +17,7 @@ product_id = settings.PRODUCT_ID
 
 @login_required(login_url='login')
 def stickman(request, id):
-    user_stickman = SavedStickman.objects.filter(id=id).first()
-    
+    user_stickman = SavedStickman.objects.filter(id=id).first()    
 
     if user_stickman in request.user.saved_stickmen.all():
 
@@ -68,17 +69,11 @@ def stickman(request, id):
 
 
 def payment_successful(request):
-    checkout_session_id = request.GET.get('session_id', None)
-
-    if checkout_session_id:
-        checkout(checkout_session_id)
-
     return render(request, 'payment_successful.html')
 
 
 def payment_cancelled(request):
     return render(request, 'payment_cancelled.html')
-
 
 
 @require_POST
@@ -96,6 +91,18 @@ def stripe_webhook(request):
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
         checkout_session_id = session.get('id')
-        checkout(checkout_session_id)
+        
+        session = stripe.checkout.Session.retrieve(checkout_session_id)
+        customer_id = session.customer
+        user_payment = UserPayment.objects.get(stripe_checkout_id=checkout_session_id)
+        user_payment.stripe_customer_id = customer_id
+        user_payment.payment_bool = True
+        user_payment.save()
+
+        user_stickman = SavedStickman.objects.filter(id=user_payment.stickman_id).first()
+        user_stickman.payment_bool = True
+        user_stickman.save()
+
+        send_email_stickman(session, user_stickman)
 
     return HttpResponse(status=200)

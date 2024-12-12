@@ -1,0 +1,62 @@
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Source Code Pro', monospace;
+            
+        }
+
+        .main {
+            padding: 20px;
+            width: 100%;
+            min-height: 100vh;
+            background-color: #6A9AB0;
+            justify-content: center;
+        }
+
+        h1, h2, h3, h4, h5, h6, p, form label {
+            color: #f0bc4d;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            font-weight: normal;
+        }
+
+        .title {
+            text-align: center;
+            padding-bottom: 5px;
+        }
+
+        .stickman-picture {
+            display: flex;
+            margin: 0 8px;
+            width: 60%; 
+            max-height: 100%;
+            justify-content: center;
+        }
+
+        .stickman-picture img {
+            max-height: 100%;
+            max-width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <h1 class="title">{{stickman.stickman_name}} now belongs to you!</h2>
+        <h3>Hello, here is a stickman picture you've just purchased</h3>
+
+        <!-- <div style="display: flex; justify-content: center; margin-bottom: 15px;">
+            <img src="data:image/jpeg;base64,{{ stickman.stickman_img_base64 }}" 
+                 alt="stickman" 
+                 style="max-width: 100%; max-height: 400px; display: block; margin: 0 auto;">
+        </div> -->
+
+        <h3>The pictures in question have no value, and should not be bought.</h3>
+        <h3>Thank you,<br><br><br>The StickmanShop Team</h3>
+    </div>
+</body>
