@@ -5,8 +5,8 @@ if __name__ == '__main__':
 
 
 
-#TODO
-    # step a - PySide6 Gui for variable input
+# Concept
+    # step a - electronjs Gui for variable input
         # Open pdf file path
         # main_topic - revelant information about/anki deck title
         # focus_input - write with own words what should generator focus on
@@ -14,20 +14,15 @@ if __name__ == '__main__':
         # cloze_number - cloze number in each front statement
         # word_count - word count
 
-        # Example source text - default
-        # Example response - default
-                
         # Pages range - Select range of desired page range
         # Save file path
 
-
-    # steb b - Read pdf with fitz and format 
+    # steb b - Read pdf with fitz and format
         # Read pdf file
         # Analyze text to see if there is a way to keep together the revelant text (end of the page/paragraph mark)
         # Remove repetitive sentences that may come from footers etc
         # Part revelant text
 
-    # step c - Generate the contents of flashcards - 
-
+    # step c - Generate the contents of flashcards
 
     # step d - Save into .csv file for review
