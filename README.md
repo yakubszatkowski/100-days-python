@@ -21,6 +21,25 @@ The goal of the course was to take me from understanding basic Python concepts, 
 <h3 style='color:crimson; text-align: center;'>Only projects from day 82-100 are done entirely by me!</h3>
 <p style='font-style: italic;'>Projects below are ordered from the most recent to the latest.</p>
 
+
+<h2>Day 96 - Stickman Online Shop</h2>
+<p>Stack: <b>django, stripe, apache2, raspberry pi</b></p>
+<img class="img" src="readmegifs/stickmanshop.gif">
+<p>I built a retail website using the Django framework where users can create, customize, and purchase unique stickman characters.
+After registering an account, users access an interactive dashboard that lets them design their own stickman and dress it up with various clothing options.
+Once saved, they can purchase the image through Stripe card payment. Upon successful payment, the user receives an email with the image of their personalized stickman.</p>
+<p>Through this project, I gained hands-on experience with:
+</p>
+<ul>
+    <li>Creating custom user models, forms, and URL views</li>
+    <li>Handling requests with class-based views</li>
+    <li>Building dynamic features with advanced AJAX requests</li>
+    <li>Integrating Stripe payments and handling webhooks</li>
+    <li>Hosting the application on a Raspberry Pi using Apache on a Linux server</li>
+</ul>
+<p>This project helped me sharpen both my frontend interactivity and backend logic,
+and gave me real-world exposure to deploying and maintaining a live web service.</p>
+
 <h2>Day 96 - Cat browsing website</h2>
 <p>Stack: <b>django, bootstrap5</b></p>
 <img class="img" src="readmegifs/catcurios.gif">
