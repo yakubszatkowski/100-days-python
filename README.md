@@ -24,7 +24,7 @@ The goal of the course was to take me from understanding basic Python concepts, 
 
 <h2>Day 96 - Stickman Online Shop</h2>
 <p>Stack: <b>django, stripe, apache2, raspberry pi</b></p>
-<img class="img" src="readmegifs/stickmanshop.gif">
+<p align="center"><img class="img" src="readmegifs/stickmanshop.gif" ></p>
 <p>I built a retail website using the Django framework where users can create, customize, and purchase unique stickman characters.
 After registering an account, users access an interactive dashboard that lets them design their own stickman and dress it up with various clothing options.
 Once saved, they can purchase the image through Stripe card payment. Upon successful payment, the user receives an email with the image of their personalized stickman.</p>
