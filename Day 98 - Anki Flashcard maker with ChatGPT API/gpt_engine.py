@@ -5,7 +5,6 @@ import math
 
 class ChatGPTAPI:
     """This class handles ChatGPT engine"""
-
     def __init__(self):
         pass
 
@@ -44,12 +43,11 @@ class ChatGPTAPI:
             'death. | 1 |\n| Acute {{c1::peripancreatic fluid collections}} are non-encapsulated aggregations of ' +\
             'fluid in the pancreatic bed and retroperitoneum.  |  | 2 |\n'
 
-
         return prompt
 
     def request(self):
         """Sends message prompt to ChatGPT"""
 
 
-prompt = ChatGPTAPI().prompt_input("AWS, Amazon Web Services", test_input)
-print(prompt)
+PROMPT_MESSAGE = ChatGPTAPI().prompt_input("AWS, Amazon Web Services", test_input)
+print(PROMPT_MESSAGE)
