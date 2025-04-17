@@ -22,7 +22,7 @@ The goal of the course was to take me from understanding basic Python concepts, 
 <p style='font-style: italic;'>Projects below are ordered from the most recent to the latest.</p>
 
 
-<h2>Day 96 - Stickman Online Shop</h2>
+<h2>Day 97 - Stickman Online Shop</h2>
 <p>Stack: <b>django, stripe, apache2, raspberry pi</b></p>
 <p align="center"><img class="img" src="readmegifs/stickmanshop.gif" ></p>
 <p>I built a retail website using the Django framework where users can create, customize, and purchase unique stickman characters.
