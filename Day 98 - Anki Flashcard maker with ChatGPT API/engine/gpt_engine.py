@@ -9,13 +9,15 @@ class ChatGPTAPI:
         pass
 
     def prompt_input(self, main_topic, source_text, **kwargs):
-        """This function returns appropriate prompt based on variables provided"""
+        """
+            This function returns appropriate prompt based on variables provided
+        """
 
         cloze_number = kwargs.get("cloze_number", 2)
         word_count = kwargs.get("word_count", 40)
         outside_scope = kwargs.get("outside_scope", True)
-        output_density = int(kwargs.get("output_density", 40))
-        flashcard_count = math.ceil(len(source_text.split()) / output_density)
+        output_density = int(kwargs.get("output_density", 20))/1000
+        flashcard_count = math.ceil(len(source_text.split()) * output_density)
 
         prompt = f'Review Text: "{source_text} " \n Task: \n- Create concise and direct statements from '+\
             f'the provided text that focus on {main_topic}. \n- Add cloze deletions to these statements using Anki '+\

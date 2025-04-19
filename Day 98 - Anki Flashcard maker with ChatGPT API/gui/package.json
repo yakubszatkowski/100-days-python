@@ -1,0 +1,14 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "application for anki flashcard creation",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "yakubszatkowski",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^35.1.5"
+  }
+}
