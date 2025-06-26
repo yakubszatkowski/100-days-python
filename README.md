@@ -19,7 +19,7 @@ This is my repository where I track my progress throughout <strong>[100 Days of 
 The goal of the course was to take me from understanding basic Python concepts, to exploring libraries specializing in GUI, game development, APIs, web develompent, relational databases, automation, data science. Finally making my own portfolio projects where I decided I want to go an extra mile and make something special in more than one day!
 
 <h3 style='color:crimson; text-align: center;'>Only projects from day 82-100 are done entirely by me!</h3>
-<p style='font-style: italic;'>Projects below are ordered from the most recent to the latest.</p>
+<p style='font-style: italic;'>The following projects are arranged in reverse chronological order.</p>
 
 
 <h2>Day 97 - Stickman Online Shop</h2>
