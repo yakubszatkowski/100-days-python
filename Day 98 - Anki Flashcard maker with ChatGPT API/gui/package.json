@@ -1,18 +1,19 @@
 {
-  "name": "my-electron-app",
+  "name": "flash-ai",
   "version": "1.0.0",
-  "description": "Hello World!",
-  "main": "main.js",
+  "description": "",
+  "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "test": "pogchamp"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "yakubszatkowski",
   "license": "MIT",
-  "dependencies": {
-    "python-shell": "^5.0.0"
-  },
   "devDependencies": {
     "electron": "^37.1.0"
+  },
+  "dependencies": {
+    "jquery": "^3.7.1",
+    "python-shell": "^5.0.0"
   }
 }

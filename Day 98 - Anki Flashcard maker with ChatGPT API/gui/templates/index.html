@@ -3,10 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?{% now 'U' %}">
-    <title>Flashcardai</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"/>
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"/>
+    <title>Flashai</title>
+    <link rel="stylesheet" href="../src/styles.css">
 </head>
 <body>
-    <h1>Hello world</h1>
+    <h1>Flashai</h1>
+    <form id='input-form' action="">
+        <input id='input-text' type="text">
+        <button id='input-submit' type="submit">Submit</button>
+    </form>
+
+    <p id="info">test</p>
+    <script src="../src/renderer.js"></script>
+    
 </body>
+
 </html>
