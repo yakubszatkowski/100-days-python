@@ -1,7 +1,4 @@
-window.$ = window.jQuery = require('jquery');
+import $ from 'jquery';
+const test = $('#test')
 
-var title = $('h1')
-
-if (title) {
-    console.log('workss')
-}
+console.log(test.text())
