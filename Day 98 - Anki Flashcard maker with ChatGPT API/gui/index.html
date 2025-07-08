@@ -6,8 +6,25 @@
     <link rel="stylesheet" href="./src/styles.css">
   </head>
   <body>
-    <h1>💖 Hello World!</h1>
-    <p id="test">Welcome to your Electron application.</p>
+    <h1>Flashai</h1>
+    <h3>Your AI flashcard maker.</h3>
+
+    <form id="input-form">
+      <input type="text" id="input-topic" name="topic" placeholder="Enter topic of your flashcards" required>
+      <input type="text" id="input-file-path" name="file-path" required>
+      <button type="button" id="choose-file-button">Choose file</button>
+
+      <input type="text" id="input-cloze" name="cloze" placeholder="Default 2">
+      <input type="text" id="input-word-count" name="word-count" placeholder="Default 40">
+       <select name="outside-scope" id="input-outside-scope">
+        <option value="True">True</option>
+        <option value="False">False</option>
+       </select>
+      <input type="text" id="input-output-density" name="output-density" placeholder="Default 20">
+
+      <button type="submit" id="submit-button">Submit</button>
+    </form>
+
     <script type="module" src="/src/renderer.js"></script>
   </body>
 </html>

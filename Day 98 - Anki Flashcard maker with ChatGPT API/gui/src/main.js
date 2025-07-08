@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
 
@@ -28,11 +28,19 @@ const createWindow = () => {
 app.whenReady().then(() => {
   createWindow();
 
+  ipcMain.handle('open-file', async () => {
+    const {canceled, filePaths} = await dialog.showOpenDialog()
+    if (!canceled) {
+      return filePaths[0]
+    }
+  })
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
     }
   });
+
 });
 
 
