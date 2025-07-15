@@ -3,8 +3,8 @@ from test import test_input
 import math
 
 
-class ChatGPTAPI:
-    """This class handles ChatGPT engine"""
+class ChatGptApi:
+    """This class handles ChatGPT API engine"""
     def __init__(self):
         pass
 
@@ -51,5 +51,5 @@ class ChatGPTAPI:
         """Sends message prompt to ChatGPT"""
 
 
-PROMPT_MESSAGE = ChatGPTAPI().prompt_input("AWS, Amazon Web Services", test_input)
+PROMPT_MESSAGE = ChatGptApi().prompt_input("AWS, Amazon Web Services", test_input)
 print(PROMPT_MESSAGE)

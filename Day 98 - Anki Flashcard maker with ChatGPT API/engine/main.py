@@ -1,7 +1,16 @@
+''' main '''
+import sys
+from utils import user_input_covert_to_dict
 
 
 if __name__ == '__main__':
-    print('hello world')
+    for line in sys.stdin:
+        raw_user_input = line.strip()
+        dict_user_input = user_input_covert_to_dict(raw_user_input)
+
+        
+        print(dict_user_input)
+        sys.stdout.flush()
 
 
 

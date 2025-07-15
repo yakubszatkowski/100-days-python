@@ -1,7 +1,8 @@
 import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
-const pyshell = require('python-shell').PythonShell
+import {PythonShell} from 'python-shell'
+
 
 if (started) {
     app.quit();
@@ -25,15 +26,15 @@ const createWindow = () => {
     mainWindow.webContents.openDevTools();
 };
 
-const pythonOptions = {
-    scriptPath: path.join(__dirname, '../test.py'),
-    args: [],
-}
-
+const pyOptions = {
+    scriptPath : path.join(__dirname, '../../../engine/'),
+    args : [],
+};
+const pyShellMain = new PythonShell('main.py', pyOptions);
 
 app.whenReady().then(() => {
     createWindow();
-
+    
     ipcMain.handle('open-file', async () => {
         const {canceled, filePaths} = await dialog.showOpenDialog()
         if (!canceled) {
@@ -42,8 +43,12 @@ app.whenReady().then(() => {
     })
 
     ipcMain.on('data-receive', (e, data) => {
-        console.log(data)
+        pyShellMain.send(JSON.stringify(data), { mode: 'json' });
     })
+
+    pyShellMain.on('message', function(message) {
+        console.log(message);
+    });
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
