@@ -17,7 +17,6 @@ form.on('submit', (e) => {
     if (filePathInputValue.search('.pdf') > 0) {
         sendData.toMain(formData)
     } else {
-        console.log('error')
-        // TODO: ERROR DIALOG HERE
+        showError.toMainError()
     }
 })

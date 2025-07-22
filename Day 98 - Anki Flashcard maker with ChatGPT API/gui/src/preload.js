@@ -8,4 +8,6 @@ contextBridge.exposeInMainWorld('sendData', {
     toMain: (data) => {ipcRenderer.send('data-receive', data)}
 })
 
-// TODO: ERROR DIALOG
+contextBridge.exposeInMainWorld('showError', {
+    toMainError: () => {ipcRenderer.send('open-error')}
+})

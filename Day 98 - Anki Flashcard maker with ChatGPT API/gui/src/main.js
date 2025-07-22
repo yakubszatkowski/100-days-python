@@ -50,7 +50,9 @@ app.whenReady().then(() => {
         pyShellMain.send(JSON.stringify(data), { mode: 'json' });
     })
 
-    // TODO: ERROR DIALOG HERE
+    ipcMain.on('open-error', () => {
+        dialog.showErrorBox('Error', 'You must only enter .pdf files.')
+    })
 
     pyShellMain.on('message', function(message) {
         console.log(message);
@@ -61,7 +63,6 @@ app.whenReady().then(() => {
             createWindow();
         }
     });
-
 });
 
 
