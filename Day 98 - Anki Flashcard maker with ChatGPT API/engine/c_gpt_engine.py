@@ -1,17 +1,19 @@
-"""This module imports testing input that is forwarded to gpt engine"""
-from test import test_input
+'''
+gpt_engine.py
+This module imports testing input that is forwarded to gpt engine
+'''
 import math
 
 
 class ChatGptApi:
-    """This class handles ChatGPT API engine"""
+    '''This class handles ChatGPT API engine'''
     def __init__(self):
         pass
 
     def prompt_input(self, main_topic, source_text, **kwargs):
-        """
+        '''
             This function returns appropriate prompt based on variables provided
-        """
+        '''
 
         cloze_number = kwargs.get("cloze_number", 2)
         word_count = kwargs.get("word_count", 40)
@@ -48,8 +50,8 @@ class ChatGptApi:
         return prompt
 
     def request(self):
-        """Sends message prompt to ChatGPT"""
+        '''Sends message prompt to ChatGPT'''
 
 
-PROMPT_MESSAGE = ChatGptApi().prompt_input("AWS, Amazon Web Services", test_input)
-print(PROMPT_MESSAGE)
+# PROMPT_MESSAGE = ChatGptApi().prompt_input("AWS, Amazon Web Services", test_input)
+# print(PROMPT_MESSAGE)

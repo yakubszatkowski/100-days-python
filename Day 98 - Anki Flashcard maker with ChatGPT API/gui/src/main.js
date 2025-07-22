@@ -16,6 +16,7 @@ const createWindow = () => {
             preload: path.join(__dirname, 'preload.js'),
         },
     });
+    // mainWindow.setAlwaysOnTop(true, 'screen');
 
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
         mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
@@ -28,6 +29,7 @@ const createWindow = () => {
 
 const pyOptions = {
     scriptPath : path.join(__dirname, '../../../engine/'),
+    pythonPath: process.env.PYTHON_PATH,
     args : [],
 };
 const pyShellMain = new PythonShell('a_main.py', pyOptions);
