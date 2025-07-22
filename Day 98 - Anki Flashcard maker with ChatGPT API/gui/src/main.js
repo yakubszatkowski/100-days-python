@@ -30,13 +30,17 @@ const pyOptions = {
     scriptPath : path.join(__dirname, '../../../engine/'),
     args : [],
 };
-const pyShellMain = new PythonShell('main.py', pyOptions);
+const pyShellMain = new PythonShell('a_main.py', pyOptions);
+
+const dialogOptions = {
+    filters: [{ name: 'PDF', extensions: ['pdf'] } ]
+}
 
 app.whenReady().then(() => {
     createWindow();
     
     ipcMain.handle('open-file', async () => {
-        const {canceled, filePaths} = await dialog.showOpenDialog()
+        const {canceled, filePaths} = await dialog.showOpenDialog(dialogOptions)
         if (!canceled) {
             return filePaths[0]
         }
@@ -45,6 +49,8 @@ app.whenReady().then(() => {
     ipcMain.on('data-receive', (e, data) => {
         pyShellMain.send(JSON.stringify(data), { mode: 'json' });
     })
+
+    // TODO: ERROR DIALOG HERE
 
     pyShellMain.on('message', function(message) {
         console.log(message);
