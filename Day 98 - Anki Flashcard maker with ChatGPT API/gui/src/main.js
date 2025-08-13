@@ -2,7 +2,9 @@ import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
 import {PythonShell} from 'python-shell'
+import dotenv from 'dotenv'
 
+dotenv.config()
 
 if (started) {
     app.quit();
@@ -30,6 +32,7 @@ const createWindow = () => {
 const pyOptions = {
     scriptPath : path.join(__dirname, '../../../engine/'),
     pythonPath: process.env.PYTHON_PATH,
+    pythonOptions: ['-u'],
     args : [],
 };
 const pyShellMain = new PythonShell('a_main.py', pyOptions);
@@ -57,7 +60,11 @@ app.whenReady().then(() => {
     })
 
     pyShellMain.on('message', function(message) {
-        console.log(message);
+        if (message == 'False') {
+            dialog.showErrorBox('Error', 'This file doesn\'t exist!')
+        } else {
+            console.log(message);
+        }
     });
 
     app.on('activate', () => {
