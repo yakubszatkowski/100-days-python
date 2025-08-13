@@ -33,6 +33,7 @@ const pyOptions = {
     scriptPath : path.join(__dirname, '../../../engine/'),
     pythonPath: process.env.PYTHON_PATH,
     pythonOptions: ['-u'],
+    encoding: 'utf8',
     args : [],
 };
 const pyShellMain = new PythonShell('a_main.py', pyOptions);
