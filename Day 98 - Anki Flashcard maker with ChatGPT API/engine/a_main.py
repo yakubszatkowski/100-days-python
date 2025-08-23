@@ -4,7 +4,8 @@ main.py
 Handles overall setup, runs the main logic, and coordinates other modules to perform the required tasks.
 '''
 
-import sys, io, json
+import sys
+import io
 from utils import user_input_covert_to_dict
 from b_pdf_reader import read_pdf
 
@@ -15,17 +16,18 @@ if __name__ == '__main__':
         try:
             raw_user_input = line.strip()
             dict_user_input = user_input_covert_to_dict(raw_user_input)
+            pdf_pages = read_pdf(dict_user_input['source_file_path'])
+            print(pdf_pages)
 
-            pdf_text = read_pdf(dict_user_input['source_file_path'])
-            
-            print(pdf_text)
         except Exception as e:
             print(e)
             continue
-            
+
         sys.stdout.flush()
 
 
+#TODO
+    # new prompt
 
 
 # test

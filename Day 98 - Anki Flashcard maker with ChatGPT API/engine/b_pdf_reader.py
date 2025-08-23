@@ -8,11 +8,11 @@ import pymupdf
 
 def read_pdf(file_path):
     ''' Read .pdf file by file path and return formatted string of it'''
-
+    document = []
     if os.path.isfile(file_path):
         with pymupdf.open(file_path) as doc:
-            text = chr(12).join([page.get_text() for page in doc])
+            for page in doc:
+                document.append(page.get_text())
     else:
-        text = False
-    return text
-
+        document = False
+    return document
