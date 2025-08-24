@@ -6,8 +6,9 @@ import math
 
 
 class ChatGptApi:
-    '''This class handles ChatGPT API engine'''
+    
     def __init__(self):
+        '''This class handles ChatGPT API engine'''
         pass
 
     def create_instruction(self, main_topic, **kwargs):

@@ -6,8 +6,9 @@ Handles overall setup, runs the main logic, and coordinates other modules to per
 
 import sys
 import io
+import os
 from utils import user_input_covert_to_dict
-from b_pdf_reader import read_pdf
+from b_pdf_reader import PDFConverter
 
 
 if __name__ == '__main__':
@@ -16,8 +17,13 @@ if __name__ == '__main__':
         try:
             raw_user_input = line.strip()
             dict_user_input = user_input_covert_to_dict(raw_user_input)
-            pdf_pages = read_pdf(dict_user_input['source_file_path'])
-            print(pdf_pages)
+            print(dict_user_input)
+
+            if not os.path.isfile(dict_user_input['source_file_path']):
+                print(False)
+
+            # pdf_pages = read_pdf(dict_user_input['source_file_path'])
+            # print(pdf_pages)
 
         except Exception as e:
             print(e)
@@ -27,11 +33,13 @@ if __name__ == '__main__':
 
 
 #TODO
-    # new prompt
+    # refactor a_main.py so its functional from electron side
+
+    # part text into chunks 500-1000 tokens each
 
 
 # test
-# [{"name":"main-topic","value":"AWS Cloud Practitioner"},{"name":"source-file-path","value":"C:\\Users\\kubas\\Desktop\\test.pdf"},{"name":"cloze-count","value":"2"},{"name":"flashcard-word-length","value":"40"},{"name":"outside-scope","value":"True"},{"name":"flashcard-density-per-1000","value":"20"}]
+# [{"name":"main-topic","value":"AWS Cloud Practitioner"},{"name":"source-file-path","value":"C:\\Users\\kubas\\Desktop\\test_split.pdf"},{"name":"cloze-count","value":"2"},{"name":"flashcard-word-length","value":"40"},{"name":"outside-scope","value":"True"},{"name":"flashcard-density-per-1000","value":"20"}]
 
 # full
 # [{"name":"main-topic","value":"AWS Cloud Practitioner"},{"name":"source-file-path","value":"C:\\Users\\kubas\\Desktop\\AWS Certified Cloud Practitioner Slides v2.11.0.pdf"},{"name":"cloze-count","value":"2"},{"name":"flashcard-word-length","value":"40"},{"name":"outside-scope","value":"True"},{"name":"flashcard-density-per-1000","value":"20"}]
