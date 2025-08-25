@@ -17,7 +17,8 @@ class PDFConverter():
     def read_pdf(self):
         ''' Reads .pdf file by file path and return formatted string of it'''
         with pymupdf.open(self.file_path) as doc:
-            return [page.get_text() for page in doc]
+            page_list = [page.get_text() for page in doc]
+            return page_list
 
 
     def clean_repetetives(self):

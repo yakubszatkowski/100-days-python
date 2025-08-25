@@ -18,12 +18,14 @@ if __name__ == '__main__':
             raw_user_input = line.strip()
             dict_user_input = user_input_covert_to_dict(raw_user_input)
             print(dict_user_input)
+            file_path_input = dict_user_input['source_file_path']
 
-            if not os.path.isfile(dict_user_input['source_file_path']):
+            if not os.path.isfile(file_path_input):
                 print(False)
+                sys.stdout.flush()
 
-            # pdf_pages = read_pdf(dict_user_input['source_file_path'])
-            # print(pdf_pages)
+            pdf_file_converter = PDFConverter(file_path_input)
+            print(pdf_file_converter.clean_repetetives())
 
         except Exception as e:
             print(e)
@@ -34,9 +36,7 @@ if __name__ == '__main__':
 
 #TODO
     # refactor a_main.py so its functional from electron side
-
     # part text into chunks 500-1000 tokens each
-
 
 # test
 # [{"name":"main-topic","value":"AWS Cloud Practitioner"},{"name":"source-file-path","value":"C:\\Users\\kubas\\Desktop\\test_split.pdf"},{"name":"cloze-count","value":"2"},{"name":"flashcard-word-length","value":"40"},{"name":"outside-scope","value":"True"},{"name":"flashcard-density-per-1000","value":"20"}]
