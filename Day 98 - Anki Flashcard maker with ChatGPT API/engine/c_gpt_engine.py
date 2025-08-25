@@ -11,7 +11,7 @@ class ChatGptApi:
         '''This class handles ChatGPT API engine'''
         pass
 
-    def create_instruction(self, main_topic, **kwargs):
+    def save_instruction(self, main_topic, **kwargs):
         '''
             This function returns appropriate prompt based on variables provided
         '''
@@ -19,8 +19,7 @@ class ChatGptApi:
         cloze_number = kwargs.get("cloze_number", 2)
         word_count = kwargs.get("word_count", 40)
         outside_scope = kwargs.get("outside_scope", True)
-        # output_density = int(kwargs.get("output_density", 20))/1000
-        # flashcard_count = math.ceil(len(source_text.split()) * output_density)
+        output_density = int(kwargs.get("output_density", 10))
 
         instructions = f'''Task: 
 - Create concise and direct statements about my input that I will be providing you based on {main_topic}
@@ -44,7 +43,8 @@ Reference Criteria for each "Statement":
 - Keep ONLY simple, direct, cloze deletion statements in the "Statements". Keep any additional explanatory information in the "Notes".
 - {'Expand with valuable insights beyond the given text, incorporating relevant knowledge for a richer response.' if outside_scope else 'Limit the response strictly to the information provided in the source text'} 
 - Example Chatbot Response:
-''' + r'{{c1::Necrosis}} in pancreatitis is identified by lack of contrast enhancement after bolus contrast administration. ; Necrotizing pancreatitis is associated with increased severity of disease and increased risk of death.'
+''' + r'{{c1::Necrosis}} in pancreatitis is identified by lack of contrast enhancement after bolus contrast administration. ; Necrotizing pancreatitis is associated with increased severity of disease and increased risk of death.' 
+        # + '{}'
 
         return instructions
 

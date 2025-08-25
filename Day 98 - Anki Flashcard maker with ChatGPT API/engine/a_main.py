@@ -25,7 +25,7 @@ if __name__ == '__main__':
                 sys.stdout.flush()
 
             pdf_file_converter = PDFConverter(file_path_input)
-            print(pdf_file_converter.clean_repetetives())
+            print(pdf_file_converter.tokenize_text())
 
         except Exception as e:
             print(e)
