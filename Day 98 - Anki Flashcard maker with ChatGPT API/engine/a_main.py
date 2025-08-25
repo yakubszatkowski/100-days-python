@@ -35,8 +35,8 @@ if __name__ == '__main__':
 
 
 #TODO
-    # refactor a_main.py so its functional from electron side
-    # part text into chunks 500-1000 tokens each
+    # create chatgpt api instruction
+    
 
 # test
 # [{"name":"main-topic","value":"AWS Cloud Practitioner"},{"name":"source-file-path","value":"C:\\Users\\kubas\\Desktop\\test_split.pdf"},{"name":"cloze-count","value":"2"},{"name":"flashcard-word-length","value":"40"},{"name":"outside-scope","value":"True"},{"name":"flashcard-density-per-1000","value":"20"}]

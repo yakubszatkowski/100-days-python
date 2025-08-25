@@ -2,57 +2,44 @@
 gpt_engine.py
 This module imports testing input that is forwarded to gpt engine
 '''
-import math
-
+import re
 
 class ChatGptApi:
     
     def __init__(self):
-        '''This class handles ChatGPT API engine'''
+        '''Initialize ChatGPT API engine'''
         pass
 
     def save_instruction(self, main_topic, **kwargs):
-        '''
-            This function returns appropriate prompt based on variables provided
-        '''
+        '''Generate instructions for creating Anki cloze cards based on a given topic.
+        Args:
+            main_topic (str): The main topic for the Anki cards.
+            **kwargs:
+                cloze_number (int, optional): Number of cloze deletions per statement (default 2).
+                word_count (int, optional): Maximum word count for statements and notes (default 60).
+                outside_scope (bool, optional): Whether notes can include external sources (default True).
+                output_density (int, optional): Number of cards generated per ~1000 tokens (default 10).
+
+        Returns:
+            str: A formatted instruction string for GPT prompting'''
+        
 
         cloze_number = kwargs.get("cloze_number", 2)
-        word_count = kwargs.get("word_count", 40)
+        word_count = kwargs.get("word_count", 60)
         outside_scope = kwargs.get("outside_scope", True)
         output_density = int(kwargs.get("output_density", 10))
 
-        instructions = f'''Task: 
-- Create concise and direct statements about my input that I will be providing you based on {main_topic}
-- Add cloze deletions to these statements using Anki cloze deletion mark-up. Ensure that each statement is clearly written, easily understandable, and adheres to the specified formatting and reference criteria.
+        instructions = f'''Task:
+            - You are a proffesional teacher specialized in getting people ready for {main_topic} exam
+            - Generate concise Anki cloze statements from {main_topic}, each with at least {cloze_number} (max {cloze_number+1}) clozes and <{word_count} words.
+            - Format: Statement ; Note (no labels/headers, one per line, end with breakpoint). Statement: simple, standalone, key info. Note: extra info, {'may include outside sources' if outside_scope else 'only from source text'}.
+            - Output at least {output_density} cards.
+            - Example: {{{{c1::Semi-supervised learning}}}} trains a model with both labeled and {{{{c1::unlabeled data}}}}; Semi-supervised learning is a machine learning approach combining labeled and unlabeled data for classification or regression.'''
 
-Formatting Criteria:
-- Construct sentences that will contain "Statement" and "Note" that will be separated by semicolon (;)
-- Each “Statement" should contain a single statement written in Anki cloze deletion mark-up. Prioritize information about {main_topic}.
-- Each "Note" should provide additional information for the corresponding "Statement". Do not restate or summarize information already present in the "Statment". 
-- {'Information in the notes section can be outsourced outside the text' if outside_scope else 'Information in the notes section must be sourced only from the text'} 
-- End of each sentence should end with breakpoint
-- Output only the “Statement ; Note” pairs, each on its own line.
-- Do not add section headers, numbering, or extra formatting outside of the required structure.
-- Do not add any follow-up questions, suggestions, or extra commentary outside of the required Statement ; Note pairs.
+        return re.sub('  ', '', instructions)
 
-Reference Criteria for each "Statement":
-- Restrict each statement to {cloze_number} cloze deletions. If necessary, add 1-2 more cloze deletions, but they can only be either a cloze1 or cloze2 deletion.
-- Limit the word count of each statement mentioned to less than {word_count} words.
-- Keep the text within the cloze deletions limited to one or two key words.
-- Each statement must be able to stand alone. Include the subject of the statement somewhere in the text.
-- Keep ONLY simple, direct, cloze deletion statements in the "Statements". Keep any additional explanatory information in the "Notes".
-- {'Expand with valuable insights beyond the given text, incorporating relevant knowledge for a richer response.' if outside_scope else 'Limit the response strictly to the information provided in the source text'} 
-- Example Chatbot Response:
-''' + r'{{c1::Necrosis}} in pancreatitis is identified by lack of contrast enhancement after bolus contrast administration. ; Necrotizing pancreatitis is associated with increased severity of disease and increased risk of death.' 
-        # + '{}'
+    def request(self, instruction, prompt):
+        '''Sends call prompt to ChatGPT'''
 
-        return instructions
-
-    def request(self):
-        '''Sends message prompt to ChatGPT'''
-
-
-PROMPT_MESSAGE = ChatGptApi().create_instruction('AWS Cloud Practitioner')
+PROMPT_MESSAGE = ChatGptApi().save_instruction('AWS Cloud Practitioner')
 print(PROMPT_MESSAGE)
-
-# - Try to cover every aspect of the reviewed text in the flashcards, make at least {flashcard_count} of them
