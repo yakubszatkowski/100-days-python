@@ -1,7 +1,7 @@
 '''
 pdf_reader.py
 
-Module that contains class used to process .pdf files
+Module that contains class used to process .pdf files to tokenized text
 '''
 
 import pymupdf
@@ -55,7 +55,7 @@ class PDFConverter():
         return len_token_chunks, token_chunks
 
 
-converter = PDFConverter(r'C:\Users\kubas\Desktop\test_split.pdf')
+converter = PDFConverter(r'C:\Users\kubas\Desktop\AWS Certified Cloud Practitioner Slides v2.11.0.pdf')
 token_len, token_list  = converter.tokenize_text()
 clean_text = converter.clean_repetetives()
 postion = 19
@@ -64,3 +64,5 @@ print(token_list[postion])
 print(len(token_list[postion]))
 print(token_len)
 print(clean_text)
+
+print(token_list)
