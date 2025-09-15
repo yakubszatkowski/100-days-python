@@ -5,7 +5,7 @@ This module imports testing input that is forwarded to gpt engine
 import re
 import os
 import asyncio
-from openai import OpenAI
+from openai import AsyncOpenAI
 from dotenv import load_dotenv
 
 class ChatGptApi:
@@ -20,7 +20,7 @@ class ChatGptApi:
 
         load_dotenv()
         chat_gpt_api_key = os.getenv('OPENAI_API_KEY')
-        self.client = OpenAI(api_key=chat_gpt_api_key)
+        self.client = AsyncOpenAI(api_key=chat_gpt_api_key)
         
 
     def save_instruction(self, main_topic, **kwargs):
@@ -53,16 +53,16 @@ class ChatGptApi:
 
     async def get_response(self, instruction, prompt):
         print('start task')
-        response = await asyncio.to_thread(
-            self.client.responses.create,
+        response = await self.client.responses.create(
             model=self.model,
             instructions=instruction,
             input=prompt,
         )
+
         return response.output_text
 
 
-    async def get_all_responses2(self, instruction, prompt_list):
+    async def get_all_responses(self, instruction, prompt_list):
         tasks = []
         async with asyncio.TaskGroup() as tg:
             for i, prompt in enumerate(prompt_list):

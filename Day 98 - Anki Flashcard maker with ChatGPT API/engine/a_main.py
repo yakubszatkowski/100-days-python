@@ -42,7 +42,7 @@ if __name__ == '__main__':
             print('instructions created')
 
             print('start requesting api')
-            results = asyncio.run(gpt_api.get_all_responses2(gpt_api_instruction, token_list))
+            results = asyncio.run(gpt_api.get_all_responses(gpt_api_instruction, token_list))
 
             print(results)
             
