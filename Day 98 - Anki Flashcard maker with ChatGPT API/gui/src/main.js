@@ -38,27 +38,51 @@ const pyOptions = {
 };
 const pyShellMain = new PythonShell('a_main.py', pyOptions);
 
-const dialogOptions = {
+const openDialogOptions = {
     filters: [{ name: 'PDF', extensions: ['pdf'] } ]
 }
+
+const saveDialogOptions = {
+    filters: [{ name: 'CSV', extensions: ['csv'] } ],
+    defaultPath: path.join(app.getPath('downloads'), 'myflashcards')
+}
+
+let dialogOpened = false;
 
 app.whenReady().then(() => {
     createWindow();
     
     ipcMain.handle('open-file', async () => {
-        const {canceled, filePaths} = await dialog.showOpenDialog(dialogOptions)
+        if (dialogOpened) return null
+        dialogOpened = true
+        const {canceled, filePaths} = await dialog.showOpenDialog(openDialogOptions)
         if (!canceled) {
+            dialogOpened = false
             return filePaths[0]
+        } else {
+            dialogOpened = false
         }
-    })
+    });
+
+    ipcMain.handle('save-directory', async () => {
+        if (dialogOpened) return null
+        dialogOpened = true
+        const { canceled, filePath } = await dialog.showSaveDialog(saveDialogOptions);
+        if (!canceled) {
+            dialogOpened = false
+            return filePath;
+        } else {
+            dialogOpened = false
+        }
+    });
 
     ipcMain.on('data-receive', (e, data) => {
         pyShellMain.send(JSON.stringify(data), { mode: 'json' });
-    })
+    });
 
     ipcMain.on('open-error', () => {
         dialog.showErrorBox('Error', 'You must only enter .pdf files.')
-    })
+    });
 
     pyShellMain.on('message', function(message) {
         if (message == 'False') {

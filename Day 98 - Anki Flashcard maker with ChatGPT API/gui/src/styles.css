@@ -47,7 +47,8 @@ h1 {
 }
 
 #input-row button {
-  padding: 0 50px;
+  padding: 0;
+  min-width: 200px;
   line-height: 1;
   background-color: #3b3b3d;
   color: #ece5c3;

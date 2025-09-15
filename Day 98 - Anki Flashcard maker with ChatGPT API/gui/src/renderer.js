@@ -3,10 +3,17 @@ import $ from 'jquery';
 const form = $('#input-form')
 const chooseFileButton = $('#choose-file-button')
 const filePathInput = $('#input-file-path')
+const chooseDirectoryButton = $('#choose-directory-button')
+const fileDirectoryInput = $('#input-directory-path')
 
 chooseFileButton.on('click', async (e) => {
     var path = await openFileApi.openFile()
     filePathInput.val(path)
+})
+
+chooseDirectoryButton.on('click', async (e) => {
+    var path = await saveDirectoryApi.saveDirectory()
+    fileDirectoryInput.val(path)
 })
 
 form.on('submit', (e) => {
