@@ -4,7 +4,7 @@ This module imports testing input that is forwarded to gpt engine
 '''
 import re
 import os
-
+import asyncio
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -16,10 +16,11 @@ class ChatGptApi:
         self.word_count = None
         self.outside_scope = None
         self.output_density = None
+        self.model = 'gpt-4o-mini'
 
         load_dotenv()
-        chat_gpt_api_key = os.getenv("OPENAI_API_KEY")
-        self.client  = OpenAI(api_key=chat_gpt_api_key)
+        chat_gpt_api_key = os.getenv('OPENAI_API_KEY')
+        self.client = OpenAI(api_key=chat_gpt_api_key)
         
 
     def save_instruction(self, main_topic, **kwargs):
@@ -49,18 +50,28 @@ class ChatGptApi:
 
         return re.sub('  ', '', instructions)
 
-    def request(self, instruction, prompt):
-        '''Sends call prompt to ChatGPT'''
+
+    async def get_response(self, instruction, prompt):
+        print('start task')
+        response = await asyncio.to_thread(
+            self.client.responses.create,
+            model=self.model,
+            instructions=instruction,
+            input=prompt,
+        )
+        return response.output_text
 
 
+    async def get_all_responses2(self, instruction, prompt_list):
+        tasks = []
+        async with asyncio.TaskGroup() as tg:
+            for i, prompt in enumerate(prompt_list):
+                print('create task', i)
+                task = tg.create_task(self.get_response(instruction, prompt))
+                tasks.append(task)
+        
+        print('finalized results')
+        results = [task.result() for task in tasks]
 
-# gpt_api = ChatGptApi()
-# gpt_api_instructions = gpt_api.save_instruction(
-#     main_topic='AWS Cloud Practitioner',
-#     cloze_number=2,
-#     word_count=60,
-#     outside_scope=True,
-#     output_density=10,
-# )
+        return results
 
-# print(gpt_api_instructions)

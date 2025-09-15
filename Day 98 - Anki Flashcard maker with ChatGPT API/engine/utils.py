@@ -8,7 +8,7 @@ to make the code easier to read and reuse.
 import json
 
 
-def user_input_covert_to_dict(raw_user_input):
+def user_input_convert_to_dict(raw_user_input):
     ''' converts raw user imput to json, then to dictionary with correctly handled variables '''
     json_user_input = json.loads(raw_user_input)
 

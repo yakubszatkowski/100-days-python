@@ -28,7 +28,6 @@ class PDFConverter():
             return page_list
 
 
-
     def clean_repetetives(self):
         '''Cleans .pdf file from footers, headers and other repetitive sentences, characters and returns clean text'''
         document_pages = self.read_pdf() 
@@ -55,14 +54,10 @@ class PDFConverter():
         return len_token_chunks, token_chunks
 
 
-converter = PDFConverter(r'C:\Users\kubas\Desktop\AWS Certified Cloud Practitioner Slides v2.11.0.pdf')
-token_len, token_list  = converter.tokenize_text()
-clean_text = converter.clean_repetetives()
-postion = 19
-
-print(token_list[postion])
-print(len(token_list[postion]))
-print(token_len)
-print(clean_text)
-
-print(token_list)
+# converter = PDFConverter(r'C:\Users\kubas\Desktop\AWS Certified Cloud Practitioner Slides v2.11.0.pdf')
+# token_len, token_list  = converter.tokenize_text()
+# postion = 19
+# print(token_list[postion])
+# print(len(token_list[postion]))
+# print(token_len)
+# print(token_list)
