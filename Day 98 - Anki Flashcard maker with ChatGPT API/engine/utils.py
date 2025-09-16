@@ -14,14 +14,16 @@ def user_input_convert_to_dict(raw_user_input):
 
     main_topic_val = json_user_input[0]['value']
     source_file_path = json_user_input[1]['value']
-    cloze_count = int(json_user_input[2]['value']) if json_user_input[2]['value'] == int else 2
-    flashcard_word_length = int(json_user_input[3]['value']) if json_user_input[3]['value'] == int else 60
-    outside_scope = (True if json_user_input[4]['value'] == 'True' else False)
-    flashcard_density_per_1000 = int(json_user_input[5]['value']) if json_user_input[3]['value'] == int else 10
+    save_directory_path = json_user_input[2]['value']
+    cloze_count = int(json_user_input[3]['value']) if json_user_input[2]['value'] == int else 2
+    flashcard_word_length = int(json_user_input[4]['value']) if json_user_input[3]['value'] == int else 60
+    outside_scope = (True if json_user_input[5]['value'] == 'True' else False)
+    flashcard_density_per_1000 = int(json_user_input[6]['value']) if json_user_input[3]['value'] == int else 10
 
     user_input = {
         'main_topic': main_topic_val,
         'source_file_path': source_file_path,
+        'save_directory_path': save_directory_path,
         'cloze_count': cloze_count,
         'flashcard_word_length': flashcard_word_length,
         'outside_scope': outside_scope,

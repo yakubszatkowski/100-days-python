@@ -44,9 +44,9 @@ class ChatGptApi:
         instructions = f'''Task:
             - You are a proffesional teacher specialized in getting people ready for {main_topic} exam
             - Generate concise Anki cloze statements from {main_topic}, each with at least {self.cloze_number} (max {self.cloze_number+1}) clozes and <{self.word_count} words
-            - Format: Statement ; Note (no labels/headers, one per line, end with breakpoint). Statement: simple, standalone, key info. Note: extra info, {'may include outside sources' if self.outside_scope else 'only from source text'}
+            - Format: Statement ; Note (no labels/headers, one per line, end with breakpoint). Statement: simple, standalone, key info, must contain cloze. Note: extra info, {'may include outside sources' if self.outside_scope else 'only from source text'}
             - Output at least {self.output_density} cards
-            - Example: {{{{c1::Semi-supervised learning}}}} trains a model with both labeled and unlabeled data; Semi-supervised learning is a machine learning approach combining labeled and unlabeled data for classification or  {{{{c1::regression}}}}'''
+            - Example: {{{{c1::Semi-supervised learning}}}} trains a model with both {{{{c2::labeled and unlabeled}}}} data; Semi-supervised learning is a machine learning approach combining labeled and unlabeled data for classification or regression'''
 
         return re.sub('  ', '', instructions)
 

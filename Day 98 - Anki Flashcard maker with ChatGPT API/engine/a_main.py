@@ -11,6 +11,7 @@ import asyncio
 from utils import user_input_convert_to_dict
 from b_pdf_reader import PDFConverter
 from c_gpt_engine import ChatGptApi
+from d_csv_format import save_to_csv
 
 
 if __name__ == '__main__':
@@ -18,10 +19,13 @@ if __name__ == '__main__':
     for line in sys.stdin:
         try:
             raw_user_input = line.strip()
-            print('start')
+            print('input successful')
             dict_user_input = user_input_convert_to_dict(raw_user_input)
             
-            file_path_input = dict_user_input['source_file_path']
+            file_path_input = dict_user_input['source_file_path']  
+            save_path_output = dict_user_input['save_directory_path']
+
+            print('dictionary transform')
 
             if not os.path.isfile(file_path_input):
                 print(False)
@@ -41,13 +45,17 @@ if __name__ == '__main__':
             )
             print('instructions created')
 
+            print(gpt_api_instruction)
+
             print('start requesting api')
             results = asyncio.run(gpt_api.get_all_responses(gpt_api_instruction, token_list))
-
-            print(results)
-            
             print('end api requesting')
+
+            print('processing to csv')
+            save_to_csv(results, save_path_output)
             print(token_len)
+
+            # TODO: prompt engineering
             
         except Exception as e:
             print(e)
