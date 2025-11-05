@@ -21,7 +21,7 @@ class ChatGptApi:
         load_dotenv()
         chat_gpt_api_key = os.getenv('OPENAI_API_KEY')
         self.client = AsyncOpenAI(api_key=chat_gpt_api_key)
-        
+
 
     def save_instruction(self, main_topic, **kwargs):
         '''Generate instructions for creating Anki cloze cards based on a given topic.
@@ -44,7 +44,9 @@ class ChatGptApi:
         instructions = f'''Task:
             - You are a proffesional teacher specialized in getting people ready for {main_topic} exam
             - Generate concise Anki cloze statements from {main_topic}, each with at least {self.cloze_number} (max {self.cloze_number+1}) clozes and <{self.word_count} words
-            - Format: Statement ; Note (no labels/headers, one per line, end with breakpoint). Statement: simple, standalone, key info, must contain cloze. Note: extra info, {'may include outside sources' if self.outside_scope else 'only from source text'}
+            - Format: Statement ; Note (no labels/headers, one per line, always ends with breakpoint). 
+            - Statement: simple, standalone, key info, must contain cloze. 
+            - Note: extra info, {'may include outside sources' if self.outside_scope else 'only from source text'}, never contains cloze.
             - Output at least {self.output_density} cards
             - Example: {{{{c1::Semi-supervised learning}}}} trains a model with both {{{{c2::labeled and unlabeled}}}} data; Semi-supervised learning is a machine learning approach combining labeled and unlabeled data for classification or regression'''
 
@@ -73,5 +75,6 @@ class ChatGptApi:
         print('finalized results')
         results = [task.result() for task in tasks]
 
+        print(len(results), ' - length')
         return results
 

@@ -45,16 +45,16 @@ if __name__ == '__main__':
             )
             print('instructions created')
 
-            print(gpt_api_instruction)
-
             print('start requesting api')
             results = asyncio.run(gpt_api.get_all_responses(gpt_api_instruction, token_list))
+            print(results)
+            print(type(results), ' - results type')
             print('end api requesting')
 
             print('processing to csv')
             save_to_csv(results, save_path_output)
             print(token_len)
-
+    
             # TODO: prompt engineering
             
         except Exception as e:
