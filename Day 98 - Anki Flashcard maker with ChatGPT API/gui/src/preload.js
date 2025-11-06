@@ -15,3 +15,7 @@ contextBridge.exposeInMainWorld('sendData', {
 contextBridge.exposeInMainWorld('showError', {
     toMainError: () => {ipcRenderer.send('open-error')}
 })
+
+contextBridge.exposeInMainWorld('lockInput', {
+  lockInput: (callback) => ipcRenderer.on('freeze-content', (_event, value) => callback(value))
+})

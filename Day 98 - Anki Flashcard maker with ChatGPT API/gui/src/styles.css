@@ -71,6 +71,11 @@ input:hover, button:hover, select:hover {
     opacity: 1;
 }
 
+input:disabled, button:disabled, select:disabled {
+    opacity: 0.4;
+    cursor: not-allowed; 
+}
+
 input:focus, select:focus {
     box-shadow: 0 0 2px 2px #ece5c3;;
     opacity: 1;

@@ -27,3 +27,13 @@ form.on('submit', (e) => {
         showError.toMainError()
     }
 })
+
+window.lockInput.lockInput((value) => {
+    const formItems = form.find('input, select, button')
+
+    if (value == 1) {
+        formItems.prop('disabled', true);
+    } else {
+        formItems.prop('disabled', false);
+    }
+})

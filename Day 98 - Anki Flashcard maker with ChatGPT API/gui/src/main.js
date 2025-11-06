@@ -26,7 +26,9 @@ const createWindow = () => {
         mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
     }
 
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
+
+    return mainWindow
 };
 
 const pyOptions = {
@@ -50,7 +52,7 @@ const saveDialogOptions = {
 let dialogOpened = false;
 
 app.whenReady().then(() => {
-    createWindow();
+    const mainWindow = createWindow();
     
     ipcMain.handle('open-file', async () => {
         if (dialogOpened) return null
@@ -88,7 +90,16 @@ app.whenReady().then(() => {
         if (message == 'False') {
             dialog.showErrorBox('Error', 'This file doesn\'t exist!')
         } else {
-            console.log(message);
+            // console.log(message);
+            if (message == 'input successful') {
+                console.log('freeeezeee')
+                mainWindow.webContents.send('freeze-content', 1)
+            } 
+
+            if (message == 'done') {
+                console.log('unfreeeezeee')
+                mainWindow.webContents.send('freeze-content', 0)
+            } 
         }
     });
 
