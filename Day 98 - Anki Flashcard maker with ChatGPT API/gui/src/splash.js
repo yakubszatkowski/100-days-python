@@ -16,11 +16,5 @@ export const createSplash = () => {
     const splashDir = path.join(__dirname, '../../src/splash.html')
     splash.loadFile(splashDir)
 
-    // splash.webContents.openDevTools();
-
     return splash
-}
-
-export const changeSplash = () => {
-    console.log(helloworld)
 }

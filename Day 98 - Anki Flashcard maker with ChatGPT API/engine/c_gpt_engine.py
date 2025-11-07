@@ -46,7 +46,7 @@ class ChatGptApi:
             - Generate concise Anki cloze statements from {main_topic}, each with at least {self.cloze_number} (max {self.cloze_number+1}) clozes and <{self.word_count} words
             - Format: Statement ; Note (no labels/headers, one per line, always ends with breakpoint). 
             - Statement: simple, standalone, key info, must contain cloze. 
-            - Note: extra info, {'may include outside sources' if self.outside_scope else 'only from source text'}, never contains cloze.
+            - Note: extra info, {'may include outside sources' if self.outside_scope else 'only from source text'}, must never include any {{c::}} brackets or cloze formatting.
             - Output at least {self.output_density} cards
             - Example: {{{{c1::Semi-supervised learning}}}} trains a model with both {{{{c2::labeled and unlabeled}}}} data; Semi-supervised learning is a machine learning approach combining labeled and unlabeled data for classification or regression'''
 
@@ -54,7 +54,6 @@ class ChatGptApi:
 
 
     async def get_response(self, instruction, prompt):
-        print('start task')
         response = await self.client.responses.create(
             model=self.model,
             instructions=instruction,
@@ -68,13 +67,9 @@ class ChatGptApi:
         tasks = []
         async with asyncio.TaskGroup() as tg:
             for i, prompt in enumerate(prompt_list):
-                print('create task', i)
                 task = tg.create_task(self.get_response(instruction, prompt))
                 tasks.append(task)
         
-        print('finalized results')
         results = [task.result() for task in tasks]
-
-        print(len(results), ' - length')
         return results
 

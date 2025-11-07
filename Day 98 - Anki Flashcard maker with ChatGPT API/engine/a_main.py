@@ -12,28 +12,26 @@ from utils import user_input_convert_to_dict
 from b_pdf_reader import PDFConverter
 from c_gpt_engine import ChatGptApi
 from d_csv_format import save_to_csv
-
+import time
 
 if __name__ == '__main__':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', line_buffering=True)
     for line in sys.stdin:
         try:
             raw_user_input = line.strip()
-            print('input successful')
+            print('Input successful')
+
             dict_user_input = user_input_convert_to_dict(raw_user_input)
-            
             file_path_input = dict_user_input['source_file_path']  
             save_path_output = dict_user_input['save_directory_path']
-
-            print('dictionary transform')
+            print('Dictionary transformed')
 
             if not os.path.isfile(file_path_input):
                 print(False)
                 sys.stdout.flush()
-
             pdf_file_converter = PDFConverter(file_path_input)
             token_len, token_list  = pdf_file_converter.tokenize_text()
-            print('pdf converted')
+            print('PDF file converted')
             
             gpt_api = ChatGptApi()
             gpt_api_instruction = gpt_api.save_instruction(
@@ -43,20 +41,17 @@ if __name__ == '__main__':
                 outside_scope =  dict_user_input['outside_scope'],
                 output_density = dict_user_input['flashcard_density_per_1000'],
             )
-            print('instructions created')
+            print('Instructions created')
 
-            print('start requesting api')
+            print('Start requesting OpenAI API')
             results = asyncio.run(gpt_api.get_all_responses(gpt_api_instruction, token_list))
-            print(results)
-            print(type(results), ' - results type')
-            print('end api requesting')
 
-            print('processing to csv')
+            print('Processing results to csv file')
             save_to_csv(results, save_path_output)
-            print(token_len)
+            print('Done')
+
+            #TODO: progress bar improvement
     
-            # TODO: prompt engineering
-            
         except Exception as e:
             print(e)
             continue

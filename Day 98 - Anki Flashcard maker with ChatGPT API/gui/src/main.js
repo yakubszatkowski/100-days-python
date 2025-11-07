@@ -3,7 +3,7 @@ import path from 'node:path';
 import started from 'electron-squirrel-startup';
 import {PythonShell} from 'python-shell'
 import dotenv from 'dotenv'
-import { createSplash, changeSplash } from './splash.js';
+import { createSplash } from './splash.js';
 
 dotenv.config()
 
@@ -18,7 +18,8 @@ const createWindow = () => {
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
         },
-        alwaysOnTop: true
+        // alwaysOnTop: true,
+        autoHideMenuBar: true,
     });
 
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
@@ -90,6 +91,7 @@ app.whenReady().then(() => {
 
     pyShellMain.on('message', (message) => {
         console.log(message)
+
         if (message == 'False') {
             dialog.showErrorBox('Error', 'This file doesn\'t exist!')
         } else {
