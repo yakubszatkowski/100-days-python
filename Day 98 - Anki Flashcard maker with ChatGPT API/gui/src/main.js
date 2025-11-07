@@ -3,6 +3,7 @@ import path from 'node:path';
 import started from 'electron-squirrel-startup';
 import {PythonShell} from 'python-shell'
 import dotenv from 'dotenv'
+import { createSplash, changeSplash } from './splash.js';
 
 dotenv.config()
 
@@ -17,8 +18,8 @@ const createWindow = () => {
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
         },
+        alwaysOnTop: true
     });
-    mainWindow.setAlwaysOnTop(true, 'screen');
 
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
         mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
@@ -26,7 +27,7 @@ const createWindow = () => {
         mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
     }
 
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     return mainWindow
 };
@@ -53,7 +54,8 @@ let dialogOpened = false;
 
 app.whenReady().then(() => {
     const mainWindow = createWindow();
-    
+    var loadingSplash
+
     ipcMain.handle('open-file', async () => {
         if (dialogOpened) return null
         dialogOpened = true
@@ -86,21 +88,28 @@ app.whenReady().then(() => {
         dialog.showErrorBox('Error', 'You must only enter .pdf files.')
     });
 
-    pyShellMain.on('message', function(message) {
+    pyShellMain.on('message', (message) => {
+        console.log(message)
         if (message == 'False') {
             dialog.showErrorBox('Error', 'This file doesn\'t exist!')
         } else {
-            // console.log(message);
-            if (message == 'input successful') {
-                console.log('freeeezeee')
-                mainWindow.webContents.send('freeze-content', 1)
-            } 
+            if (message == 'Input successful') {
+                mainWindow.webContents.send('freeze-content', 1);
+                loadingSplash = createSplash();
 
-            if (message == 'done') {
-                console.log('unfreeeezeee')
-                mainWindow.webContents.send('freeze-content', 0)
-            } 
+            };
+            if (message == 'Done') {
+                mainWindow.webContents.send('freeze-content', 0);
+            };
+        };
+
+        if (loadingSplash) {
+            loadingSplash.webContents.send('progress-text-change', message)
+            if (message == 'Done') {
+                loadingSplash.destroy()
+            }
         }
+
     });
 
     app.on('activate', () => {

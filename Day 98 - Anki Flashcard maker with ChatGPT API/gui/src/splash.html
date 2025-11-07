@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>splash</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div id="main-spinner">
+        <span class="spinner"></span>
+        <h3 id="progress-text">Creating your anki</h1>
+    </div>
+</body>
+<script> 
+    const progressText = document.getElementById('progress-text')
+    window.changeText.changeText((value) => {
+        progressText.textContent = value
+    })
+</script>
+</html>
