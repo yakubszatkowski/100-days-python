@@ -115,3 +115,8 @@ button#submit-button {
     align-items: center;
     gap: 12px;
 }
+
+#small-paragraph {
+    opacity: 0.5;
+    font-size: 9px;
+}

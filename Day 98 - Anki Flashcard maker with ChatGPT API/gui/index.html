@@ -9,29 +9,30 @@
     <div class="main">
       <h1>Flashai</h1>
       <h3>Your AI flashcard maker</h3>
+      <p id="small-paragraph">Powered by OpenAI - gpt-4o-mini</p>
 
       <form id="input-form">
         <div id="input-row">
           <span>Flashcard topic:</span>
-          <input type="text" id="input-topic" name="main-topic" placeholder="Enter topic of your flashcards"  value="AWS Cloud Practitioner" required>
+          <input type="text" id="input-topic" name="main-topic" placeholder="Enter topic of your flashcards" required>
         </div>
         <div id="input-row">
           <span>Load pdf file to process:</span>
-          <input type="text" id="input-file-path" name="source-file-path" value="C:\Users\kubas\Desktop\short.pdf" placeholder="Enter file path" required>
+          <input type="text" id="input-file-path" name="source-file-path" placeholder="Enter file path" required>
           <button type="button" id="choose-file-button">Choose file</button>
         </div>
         <div id="input-row">
           <span>Save flashcards directory:</span>
-          <input type="text" id="input-directory-path" name="source-directory-path" value="C:\Users\kubas\Downloads\short.csv" placeholder="Enter directory path" required>
+          <input type="text" id="input-directory-path" name="source-directory-path" placeholder="Enter directory path" required>
           <button type="button" id="choose-directory-button">Choose directory</button>
         </div>
         <div id="input-row">
           <span>Cloze count per card:</span>
-          <input type="text" pattern="^[1-9]\d*$" id="input-cloze" name="cloze-count" placeholder="Default 2"  value="2">
+          <input type="text" pattern="^[1-9]\d*$" id="input-cloze" name="cloze-count" placeholder="Default 2">
         </div>
         <div id="input-row">
           <span>Length of flashcards [words]:</span>
-          <input type="text" pattern="^[1-9]\d*$" id="input-word-count" name="flashcard-word-length" placeholder="Default 60" value="60">
+          <input type="text" pattern="^[1-9]\d*$" id="input-word-count" name="flashcard-word-length" placeholder="Default 60">
         </div>
         <div id="input-row">
           <span>Enable outsourcing:</span>
@@ -42,7 +43,7 @@
         </div>
         <div id="input-row">
           <span>Flashcard density per 1000 tokens:</span>
-          <input type="text" pattern="^[1-9]\d*$" id="input-output-density" name="flashcard-density-per-2500" placeholder="Default 10"  value="10">
+          <input type="text" pattern="^[1-9]\d*$" id="input-output-density" name="flashcard-density-per-2500" placeholder="Default 10">
         </div>
         <button type="submit" id="submit-button">Submit</button>
       </form>
