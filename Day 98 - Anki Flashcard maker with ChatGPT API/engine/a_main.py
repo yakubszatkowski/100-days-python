@@ -12,7 +12,7 @@ from utils import user_input_convert_to_dict
 from b_pdf_reader import PDFConverter
 from c_gpt_engine import ChatGptApi
 from d_csv_format import save_to_csv
-import time
+
 
 if __name__ == '__main__':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', line_buffering=True)
@@ -49,20 +49,9 @@ if __name__ == '__main__':
             print('Processing results to csv file')
             save_to_csv(results, save_path_output)
             print('Done')
-
-            #TODO: progress bar improvement
     
         except Exception as e:
             print(e)
             continue
 
         sys.stdout.flush()
-
-
-# test
-# [{"name":"main-topic","value":"AWS Cloud Practitioner"},{"name":"source-file-path","value":"C:\\Users\\kubas\\Desktop\\test_split.pdf"},{"name":"cloze-count","value":"2"},{"name":"flashcard-word-length","value":"40"},{"name":"outside-scope","value":"True"},{"name":"flashcard-density-per-1000","value":"20"}]
-
-# [{"name":"main-topic","value":"AWS Cloud Practitioner"},{"name":"source-file-path","value":"C:\\Users\\kubas\\Desktop\\test_split2.pdf"},{"name":"cloze-count","value":"2"},{"name":"flashcard-word-length","value":"40"},{"name":"outside-scope","value":"True"},{"name":"flashcard-density-per-1000","value":"20"}]
-
-# full
-# [{"name":"main-topic","value":"AWS Cloud Practitioner"},{"name":"source-file-path","value":"C:\\Users\\kubas\\Desktop\\AWS Certified Cloud Practitioner Slides v2.11.0.pdf"},{"name":"cloze-count","value":"2"},{"name":"flashcard-word-length","value":"40"},{"name":"outside-scope","value":"True"},{"name":"flashcard-density-per-1000","value":"20"}]

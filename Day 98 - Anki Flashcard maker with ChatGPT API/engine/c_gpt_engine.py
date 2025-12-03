@@ -17,6 +17,7 @@ class ChatGptApi:
         self.outside_scope = None
         self.output_density = None
         self.model = 'gpt-4o-mini'
+        self.processed_chunks_count = 0
 
         load_dotenv()
         chat_gpt_api_key = os.getenv('OPENAI_API_KEY')
@@ -53,23 +54,33 @@ class ChatGptApi:
         return re.sub('  ', '', instructions)
 
 
-    async def get_response(self, instruction, prompt):
+    async def get_response(self, instruction, prompt, prompt_part_count):
         response = await self.client.responses.create(
             model=self.model,
             instructions=instruction,
             input=prompt,
         )
+        self.processed_chunks_count += 1
+
+        print(f'Chunks processed {self.processed_chunks_count}/{prompt_part_count}')
 
         return response.output_text
 
 
     async def get_all_responses(self, instruction, prompt_list):
         tasks = []
+
+        prompt_part_count = len(prompt_list)
+
         async with asyncio.TaskGroup() as tg:
             for i, prompt in enumerate(prompt_list):
-                task = tg.create_task(self.get_response(instruction, prompt))
+                task = tg.create_task(self.get_response(instruction, prompt, prompt_part_count))
+
                 tasks.append(task)
         
+
         results = [task.result() for task in tasks]
+        self.processed_chunks_count = 0
+
         return results
 
