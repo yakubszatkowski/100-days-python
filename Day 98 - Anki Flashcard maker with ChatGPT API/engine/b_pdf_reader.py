@@ -7,7 +7,7 @@ Module that contains class used to process .pdf files to tokenized text
 import pymupdf
 import re
 from collections import Counter 
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 class PDFConverter():
 
