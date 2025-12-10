@@ -22,7 +22,7 @@ The goal of the course was to take me from understanding basic Python concepts, 
 <p style='font-style: italic;'>The following projects are arranged in reverse chronological order.</p>
 
 <h2>Day 98 - AI Powered Flashcard Maker</h2>
-<p>Stack: <b>LangChain, ElectronJS, OpenAI api, panda, pymupdf</b></p>
+<p>Stack: <b>LangChain, ElectronJS, OpenAI api, panda, pymupdf, asyncio</b></p>
 <p align="center"><img class="img" src="readmegifs/flashcards.gif" ></p>
 <p>A flashcard maker with an ElectronJS GUI powered by the OpenAI gpt-4o-mini model. After the user provides a file and specifies parameters describing their needs, 
 asynchronous requests are sent to the OpenAI API. The responses are then formatted and saved into a CSV file.</p>
